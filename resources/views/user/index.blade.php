@@ -1,0 +1,66 @@
+@extends('layouts.app')
+@section('content')
+    <div id="toolbar">
+        <a class="btn btn-primary" href="{{ route('user.create') }}" role="button"><i class="fa fa-plus"></i> Новый пользователь
+        </a>
+    </div>
+
+
+    <table id="table" data-toolbar="#toolbar" data-toggle="table" data-show-fullscreen="true" data-cache="false"
+        data-show-footer="true" data-locale="ru-RU" data-cookie="true" data-search="true" data-show-refresh="true"
+        data-show-search-clear-button="true" data-url="/api/v1/user" data-data-field="items" data-side-pagination="server"
+        data-pagination="true" data-page-list="[10, 25, 50 ]" class="table-information" data-search-highlight="true">
+
+
+        <thead>
+            <tr>
+                <th data-field="id">#</th>
+                <th data-field="name">Наименование</th>
+                <th data-field="role">Роль </th>
+
+                <th data-field="organization">Организация </th>
+                <th data-field="email">E-mail </th>
+                <th data-formatter="nameFormatter" data-switchable="false">Действия</th>
+            </tr>
+        </thead>
+
+    </table>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
+
+    <link href="https://unpkg.com/bootstrap-table@1.21.4/dist/bootstrap-table.min.css" rel="stylesheet">
+
+    <script src="https://unpkg.com/bootstrap-table@1.21.4/dist/bootstrap-table.min.js"></script>
+
+    <script src="https://unpkg.com/bootstrap-table@1.21.4/dist/bootstrap-table-locale-all.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.21.4/dist/extensions/group-by-v2/bootstrap-table-group-by.min.js">
+    </script>
+    <script
+        src="https://unpkg.com/bootstrap-table@1.21.4/dist/extensions/filter-control/bootstrap-table-filter-control.min.js">
+    </script>
+
+    <script>
+        $(function() {
+            $('#table').bootstrapTable()
+        })
+
+        function nameFormatter(value, row) {
+
+            return '<div class="btn-group" role="group" aria-label="Basic example">' +
+                '<a class="btn btn-primary  btn-sm" href="' + row.edit_link +
+                '" title="Редактировать" target="_blank"><i class="fa fa-edit"></i></a>' +
+                '<a class="btn btn-info  btn-sm" href="' + row.report_link +
+                '" title="Отчеты" target="_blank"><i class="fa fa-file"></i></a>' + '</div>'
+        }
+    </script>
+
+    <style>
+         .mark {
+            padding: 0.0em !important;
+            background-color: #f75a5a !important;
+        }
+    </style>
+@endsection
+
+
+@section('script')
+@endsection
