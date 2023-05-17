@@ -1,12 +1,10 @@
 <div>
-
-
     <div wire:ignore.self class="modal fade" id="photoModal" tabindex="-1" role="dialog" wire:model="modalFormVisible"
         aria-labelledby="photoModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="photoModalLabel">Фотографии пункта
+                    <h5 class="modal-title" id="photoModalLabel">Фотографии пункта "<span>{{ $item_name }}</span>"
                     </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true close-btn">×</span>
@@ -16,23 +14,24 @@
                     @if (session()->has('message'))
                         <div class="alert alert-success text-center">{{ session('message') }}</div>
                     @endif
-
                     <input type="hidden" wire:model="item_id">
-                    <span>{{ $item_name }}</span>
-                    <h3> Фотографии </h3>
                     <div class="row">
                         @if (count($images) > 0)
                             <div class="row">
                                 @foreach ($images as $image)
                                     <div class="col-md-2 mb-4">
-                                        <img src="{{ $image->getUrl('preview') }}" class="img-fluid"
-                                            alt="{{ $image->getFullUrl() }}">
+                                        <figure class="figure">
+                                            <a class="my-image-links" data-gall="gallery01" data-maxwidth="1600px"
+                                                data-ratio="16x9" href="#" data-href="{{ $image->getUrl() }}"><img
+                                                    src="{{ $image->getUrl('preview') }}" class="img-fluid my-link"
+                                                    alt="{{ $image->getFullUrl() }}"></a>
 
-                                        размер {{ $image->human_readable_size }}</br>
-
-                                        <button class="btn btn-info  btn-sm"><i class="fa fa-trash"></i></button>
-
-
+                                            Размер: {{ $image->human_readable_size }}</br>
+                                            <figcaption class="figure-caption">
+                                                <button class="btn btn-danger "   wire:click="delete({{ $image->id }})"  ><i
+                                                        class="fa fa-trash"></i></button>
+                                            </figcaption>
+                                        </figure>
                                     </div>
                                 @endforeach
                             </div>
@@ -50,7 +49,6 @@
                         @error('photos.*')
                             <span class="error">{{ $message }}</span>
                         @enderror
-
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -61,5 +59,4 @@
             </div>
         </div>
     </div>
-
 </div>

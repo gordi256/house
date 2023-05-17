@@ -1,7 +1,7 @@
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="{{ route('dashboard')}}" class="brand-link">
+    <a href="{{ route('dashboard') }}" class="brand-link">
         <img src="/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
             style="opacity: 0.8" />
         <span class="brand-text font-weight-light">AdminLTE 3</span>
@@ -18,14 +18,14 @@
                 <a href="/profile" class="d-block">{{ Auth::user()->fio_short }}</a>
             </div>
 
-            
-        <form method="POST" action="{{ route('logout') }}">
-            @csrf
 
-            <button type="submit"  >
-                Выйти 
-            </button>
-        </form>
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+
+                <button type="submit">
+                    Выйти
+                </button>
+            </form>
         </div>
 
         <!-- SidebarSearch Form -->
@@ -46,8 +46,8 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                 data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
-                <li class="nav-item menu-open">
+               with font-awesome or any other icon font library menu-open-->
+                <li class="nav-item ">
                     <a href="#" class="nav-link active">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
@@ -86,13 +86,41 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="#" class="nav-link active">
+                    <a href="#" class="nav-link  active">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
                             Настройки
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('log-viewer.index') }}" target="_blank" class="nav-link">
+                                <i class="nav-icon fas fa-th"></i>
+                                <p>Логи ошибок<span class="right badge badge-danger">Админ</span></p>
+                            </a>
+                        </li>
+
+
+                        @can('manage roles')
+                            <li class="nav-item">
+                                <a href="{{ route('rap.rap.list') }}" target="_blank" class="nav-link">
+                                    <i class="nav-icon fas fa-th"></i>
+                                    <p>Роли и доступы<span class="right badge badge-danger">Админ</span></p>
+                                </a>
+                            </li>
+                        @endcan
+                        <li class="nav-item">
+                            <a href="https://chatbot.theb.ai/" target="_blank" class="nav-link">
+                                <i class="nav-icon fas fa-th"></i>
+                                <p>chatbot<span class="right badge badge-danger">Админ</span></p>
+                            </a>
+                        </li>
+
+                    </ul>
+
+
+
                 </li>
 
                 <li class="nav-item">
@@ -113,27 +141,9 @@
                         <p>Отчеты</p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="{{ route('log-viewer.index') }}" target="_blank" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
-                        <p>log-viewer<span class="right badge badge-danger">Админ</span></p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="https://chatbot.theb.ai/" target="_blank" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
-                        <p>chatbot<span class="right badge badge-danger">Админ</span></p>
-                    </a>
-                </li>
 
-                @can('manage roles')
-                    <li class="nav-item">
-                        <a href="{{ route('rap.rap.list') }}" target="_blank" class="nav-link">
-                            <i class="nav-icon fas fa-th"></i>
-                            <p>Роли и доступы<span class="right badge badge-danger">Админ</span></p>
-                        </a>
-                    </li>
-                @endcan
+
+
 
             </ul>
         </nav>

@@ -98,5 +98,7 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         //
+        // TODO удаление!
+
     }
 }

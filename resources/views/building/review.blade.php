@@ -1,7 +1,8 @@
 @extends('layouts.app')
 @section('content')
     <div id="toolbar">
-        <a class="btn btn-primary" href="{{ route('review.create',  ['building_id' => $building->id])  }}" role="button"><i class="fa fa-plus"></i> Новый отчет по зданию
+        <a class="btn btn-primary" href="{{ route('review.create', ['building_id' => $building->id]) }}" role="button"><i
+                class="fa fa-plus"></i> Новый отчет по зданию
         </a>
     </div>
 
@@ -10,8 +11,6 @@
         data-show-search-clear-button="true" data-url="/api/v1/building/review" data-data-field="items"
         data-side-pagination="server" data-pagination="true" data-page-list="[10, 25, 50 ]" data-query-params="queryParams"
         class="table-information">
-
-
         <thead>
             <tr>
                 <th data-field="id">#</th>
@@ -21,18 +20,13 @@
                 <th data-formatter="nameFormatter" data-switchable="false">Действия</th>
             </tr>
         </thead>
-
     </table>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
 
     <link href="https://unpkg.com/bootstrap-table@1.21.4/dist/bootstrap-table.min.css" rel="stylesheet">
-
     <script src="https://unpkg.com/bootstrap-table@1.21.4/dist/bootstrap-table.min.js"></script>
     <script src="https://unpkg.com/bootstrap-table@1.21.4/dist/bootstrap-table-locale-all.min.js"></script>
     <script src="https://unpkg.com/bootstrap-table@1.21.4/dist/extensions/group-by-v2/bootstrap-table-group-by.min.js">
     </script>
-
-
     <script
         src="https://unpkg.com/bootstrap-table@1.21.4/dist/extensions/filter-control/bootstrap-table-filter-control.min.js">
     </script>
@@ -48,7 +42,7 @@
                 '<a class="btn btn-primary  btn-sm" href="' + row.edit_link +
                 '" title="Редактировать" target="_blank"><i class="fa fa-edit"></i></a>' +
                 '<a class="btn btn-info  btn-sm" href="' + row.report_link +
-                '" title="Отчеты" target="_blank"><i class="fa fa-file"></i></a>' +   
+                '" title="Отчеты" target="_blank"><i class="fa fa-file"></i></a>' +
                 '<a class="btn btn-success  btn-sm disabled"   href="' + row.download_link +
                 '" title="Скачать отчет" target="_blank"><i class="fa fa-download"></i></a>' + '</div>'
         }

@@ -28,10 +28,11 @@ class BuildingController extends Controller
 
         $res = array();
         if ($request->filled('search')) {
-            $items = Building::search($request->search)->orderBy('created_at', 'desc')->get();
+            $items = Building::withCount('review')->search($request->search)->orderBy('created_at', 'desc')->get();
+       
             $res['total'] = $items->count();
         } else {
-            $items = Building::offset($offset)->limit($limit)->orderBy('created_at', 'desc')->get();
+            $items = Building::withCount('review')->offset($offset)->limit($limit)->orderBy('created_at', 'desc')->get();
             $res['total'] = Building::count();
         }
 

@@ -13,10 +13,14 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="  hold-transition register-page">
+<body class="hold-transition register-page body-style">
     @yield('content')
 
- 
+    <style>
+        .body-style {
+            background: #727271 url("/img/colorkit.jpg")
+        }
+    </style>
 </body>
 
 </html>

@@ -95,7 +95,6 @@ class UserController extends Controller
         if (!Gate::allows('manage users')) {
             return abort(401);
         }
-        // $this->check_permission('manage administrators');
         $input = $request->except(['roles', 'permissions']);
         isset($input['active']) ? $input['active'] = '1' : $input['active'] = '0';
         isset($input['is_admin']) ? $input['is_admin'] = '1' : $input['is_admin'] = '0';
@@ -104,10 +103,6 @@ class UserController extends Controller
         $this->syncPermissions($request, $user);
         //  TODO сделать копирование пермишенов роли!
 
-
-        // $input = $request->all();
-        // // isset($input['active']) ? $input['active'] = '1' : $input['active'] = '0';
-        // $item = $user->update($input);
         flash('Message')->success();
         return redirect(route('user.edit', ['user' => $user]));
     }
@@ -121,6 +116,9 @@ class UserController extends Controller
         if (!Gate::allows('manage users')) {
             return abort(401);
         }
+
+        // TODO удаление!
+
     }
 
     public function updatepass(AdminPassUpdateRequest $request)

@@ -23,10 +23,10 @@ return new class extends Migration
             $table->integer('rating');
             $table->decimal('rate', 10, 2)->nullable();
             $table->decimal('value', 10, 2)->nullable();
-            $table->longText('description')->nullable();
+            $table->longText('description');
             $table->longText('conclusion')->nullable();
             $table->boolean('active')->nullable();
-
+            $table->string('unit')->default('-');;
             $table->softDeletes();
             $table->timestamps();
         });

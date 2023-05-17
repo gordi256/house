@@ -18,7 +18,7 @@
         <thead>
             <tr>
                 <th data-field="index" data-sortable="true">#</th>
-                <th  data-width="500"  data-field="name">Наименование</th>
+                <th data-width="500" data-field="name">Наименование</th>
                 <th data-field="check" data-align="center">Отметка при наличии</br> повреждений</th>
                 <th data-field="unit" data-align="center">Ед.изм.</th>
                 <th data-field="value" data-align="right" data-sortable="true">Ориентировочный объём </br>работ,кол-во </th>
@@ -36,19 +36,10 @@
         </thead>
     </table>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js" crossorigin="anonymous">
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
-        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous">
-    </script>
 
     <link href="https://unpkg.com/bootstrap-table@1.21.4/dist/bootstrap-table.min.css" rel="stylesheet">
-
     <script src="https://unpkg.com/bootstrap-table@1.21.4/dist/bootstrap-table.min.js"></script>
-    
     <script src="https://unpkg.com/bootstrap-table@1.21.4/dist/bootstrap-table-locale-all.min.js"></script>
-
 
 
     <script>

@@ -52,7 +52,7 @@ class  RolesController extends Controller
         // }
 
         $data = [
-            // 'breadcrumb' => $this->breadcrumb,
+            'title' =>  "Роли и доступы",
         ];
 
         // dd(  $data );
@@ -73,6 +73,7 @@ class  RolesController extends Controller
 
         $roles = Role::all();
         $data = [
+            'title' =>  "Роли пользователей",
             'items' => $roles,
             'breadcrumb' =>  'admin_roles',
         ];
@@ -107,7 +108,7 @@ class  RolesController extends Controller
      */
     public function store(RoleCreateRequest $request)
     {
-   
+
         if (!Gate::allows('edit roles')) {
             return abort(401);
         }
@@ -118,7 +119,7 @@ class  RolesController extends Controller
         $role->guard_name =  $request->guard_name;
         $role->save();
         flash(__('admin.roles.created'))->success();
-        return redirect(route('rap.roles.index' ));
+        return redirect(route('rap.roles.index'));
     }
 
     /**
@@ -136,6 +137,7 @@ class  RolesController extends Controller
 
         SEOTools::setTitle(trans('admin.roles.edit'));
         $data = [
+            'title' =>  "Редактирование роли",
             'role' =>  $role,
             'permissions' =>  $permissions,
             'breadcrumb' => $this->breadcrumb,
@@ -146,31 +148,28 @@ class  RolesController extends Controller
 
 
     /**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  \Illuminate\Http\Request  $request
-	 * @param  \App\Role  $role
-	 * @return \Illuminate\Http\Response
-	 */
-	public function update(Request $request, int $id) {
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Role  $role
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, int $id)
+    {
 
-		// $this->check_permission('edit_roles');
+        // $this->check_permission('edit_roles');
 
-// dd($request->all());
+        // dd($request->all());
 
-		$role             = Role::findOrFail($id);
-		$role->name       = $request->name;
-		$role->guard_name = $request->guard_name;
-		$role->save();
+        $role             = Role::findOrFail($id);
+        $role->name       = $request->name;
+        $role->guard_name = $request->guard_name;
+        $role->save();
 
-		$permissions = $request->get('permissions', []);
-		$role->syncPermissions($permissions);
+        $permissions = $request->get('permissions', []);
+        $role->syncPermissions($permissions);
 
-	    flash(__('admin.roles.updated'))->success();
-        return redirect(route('rap.roles.index' ));
-
-	}
-
-
-    
+        flash(__('admin.roles.updated'))->success();
+        return redirect(route('rap.roles.index'));
+    }
 }

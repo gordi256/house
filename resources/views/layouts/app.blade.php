@@ -13,7 +13,9 @@
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
-
+     <script src="{{ asset('js/jquery-3.5.1.min.js') }}" type="text/javascript"></script>
+     <script src="{{ asset('js/popper.min.js') }}" type="text/javascript"></script>
+     <script src="{{ asset('js/bootstrap.bundle.min.js') }}" type="text/javascript"></script>
 
 </head>
 
@@ -40,12 +42,12 @@
                             </h1>
                         </div>
                         <!-- /.col -->
-                        <div class="col-sm-6">
+                        {{-- <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="#">Home</a></li>
                                 <li class="breadcrumb-item active">Starter Page</li>
                             </ol>
-                        </div>
+                        </div> --}}
                         <!-- /.col -->
                     </div>
                     <!-- /.row -->
@@ -73,11 +75,7 @@
     <!-- ./wrapper -->
     @yield('script')
     @include('flash::message')
-
- 
     @livewireScripts
- 
-
 </body>
 
 </html>

@@ -16,6 +16,9 @@ use Illuminate\Support\Facades\Gate;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ReviewExport;
 use App\Exports\TestExport;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
+use Zip;
 
 class ReviewController extends Controller
 {
@@ -49,7 +52,7 @@ class ReviewController extends Controller
             $building->load('review');
         }
         $buildings = Building::all()->pluck('name', 'id');
-        
+
         $data = [
             'title' => 'Новый отчет',
             'building' => $building,
@@ -108,6 +111,60 @@ class ReviewController extends Controller
         // return Excel::forReview($review->id)->download(new ReviewExport, 'test.xlsx');
     }
 
+    public function download_photo(Review $review)
+    {
+        // попробуем показать фото  
+        $temp_dir_name = 'temp_' . $review->id;
+        $dir = Storage::createDirectory($temp_dir_name);
+        $bad_symbols = array(".", ",", "%", " ", " _");
+
+
+        $items  = $review->item;
+
+        //    $zip = Zip::create( public_path('file.zip') );
+
+        foreach ($items as $item) {
+            // получим фото
+            $temp_medias = $item->getMedia('images');
+
+            if (count($temp_medias) > 0) {
+                //       var_dump('</br>');
+                $temp_file_name =  str_replace($bad_symbols, "_", $item->item->name);
+                //       var_dump($temp_file_name);
+
+                foreach ($temp_medias as $temp_media) {
+                    $ext = pathinfo($temp_media->getPath(), PATHINFO_EXTENSION);
+                    $copy_file_name = $temp_file_name . '_' . $temp_media->order_column . '.' . $ext;
+                    $file = public_path('media' . DIRECTORY_SEPARATOR . $temp_media->id . DIRECTORY_SEPARATOR . $temp_media->file_name);
+                    $destination =  $temp_dir_name . DIRECTORY_SEPARATOR . $copy_file_name;
+                    $contents = Storage::disk('media')->get(DIRECTORY_SEPARATOR . $temp_media->id . DIRECTORY_SEPARATOR . $temp_media->file_name);
+                    Storage::put($destination, $contents);
+                }
+            }
+        }
+
+        $files = Storage::allFiles($temp_dir_name);
+        // добавим в архив
+        $temp_zip_name =  str_replace($bad_symbols, "_", $review->building->name);
+        $zip =    Zip::create($temp_zip_name . '.zip');
+        foreach ($files as $file) {
+            $zip->add(storage_path('/app/' . $file));
+        }
+        return $zip;
+
+
+        // TODO удалим архив
+
+
+    }
+
+    public function confirm(Review $review)
+    {
+        // установим confirmed!
+        $review->confirmed = 1;
+        $review->save();
+        return redirect(route('review.edit', ['review' => $review]));
+    }
 
     /**
      * Display the specified resource.

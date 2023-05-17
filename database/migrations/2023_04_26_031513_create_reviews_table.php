@@ -26,6 +26,7 @@ return new class extends Migration
             $table->longText('description')->nullable();
 
             $table->softDeletes();
+            $table->boolean('confirmed')->nullable();
 
             $table->timestamps();
         });

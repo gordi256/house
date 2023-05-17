@@ -6,16 +6,24 @@
         <a class="btn btn-primary" href="#" id="newItem" role="button"><i class="fa fa-plus"></i> Новая строка
         </a>
 
-        <a class="btn btn-success" href="{{ route('report.download', ['review' => $review->id]) }}" id="newItem"
+        <a class="btn btn-danger" href="{{ route('report.download_photo', ['review' => $review->id]) }}" 
+            role="button"><i class="fa  fa-camera"></i> Скачать фото
+        </a>
+        {{-- {{ route('review.confirm', ['review' => $review->id]) }} --}}
+     <a class="btn btn-danger confirm_button"data-id="{{$review->id}}" href="#" 
+            role="button">  Подтвердить анкету
+        </a>
+
+
+        <a class="btn btn-success" href="{{ route('report.download', ['review' => $review->id]) }}"  
             role="button"><i class="fa fa-download"></i> Скачать отчет
         </a>
-        <a class="btn btn-success" href="{{ route('review.show', ['review' => $review->id]) }}" id="newItem"
+        <a class="btn btn-success" href="{{ route('review.show', ['review' => $review->id]) }}" 
             role="button"><i class="fa fa-eye"></i> Отчет
         </a>
         <button type="button" id="info" data-toggle="modal" data-target="#infoModal" class="btn btn-info">
             Помощь</button>
     </div>
-
 
     <table class="table">
         <thead>
@@ -198,12 +206,7 @@
 
     <!-- /Modal info-->
 
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js" crossorigin="anonymous">
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
-        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous">
-    </script>
+
 
     <link href="https://unpkg.com/bootstrap-table@1.21.4/dist/extensions/group-by-v2/bootstrap-table-group-by.css"
         rel="stylesheet">
@@ -217,9 +220,29 @@
         src="https://unpkg.com/bootstrap-table@1.21.4/dist/extensions/filter-control/bootstrap-table-filter-control.min.js">
     </script>
 
+
+
     @livewire('photo-item')
     @livewire('edit-item')
+
+
+
+    <link rel="stylesheet" href="{{ asset('/vendor/venobox/venobox.min.css') }}">
+    <script src="{{ asset('/vendor/venobox/venobox.min.js') }}" type="text/javascript"></script>
     <script>
+        new VenoBox({
+            selector: '.my-image-links',
+            numeration: true,
+            infinigall: true,
+            share: true,
+            spinner: 'rotating-plane'
+        });
+    </script>
+    <script>
+
+
+
+
         // editModal
         window.addEventListener('openModal', event => {
             $("#exampleModal").modal('show');
@@ -235,6 +258,14 @@
 
         // photoModal
         window.addEventListener('openModalPhoto', event => {
+
+            new VenoBox({
+                selector: '.my-image-links',
+                numeration: true,
+                infinigall: true,
+                share: true,
+                spinner: 'rotating-plane'
+            });
             $("#photoModal").modal('show');
         })
 
@@ -242,6 +273,7 @@
             $("#photoModal").modal('hide');
         })
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
         $(function() {
@@ -261,7 +293,44 @@
             console.log(" photo-button product_id:", product_id);
             window.livewire.emit("photo_item", $(this).data('id'));
         });
+        $(function() {
 
+            $('body').on('click', '.confirm_button', function(e) {
+                //   $("a.delete_button").click(function(e) {
+
+
+                      var review_id = $(this).data('id');
+                const swalWithBootstrapButtons = Swal.mixin({
+                    customClass: {
+                        confirmButton: 'btn btn-danger',
+                        cancelButton: 'btn btn-success'
+                    },
+                    buttonsStyling: false,
+                })
+
+                swalWithBootstrapButtons.fire({
+                    title: 'Утверждение анкеты',
+                    text: 'Вы действительно хотите утвердить анкету?',
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'ДА!',
+                    cancelButtonText: 'Нет',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.value) {
+                        swalWithBootstrapButtons.fire(
+                                'Отлично!',
+                                'Выполняется утверждение объекта.',
+                                'success'
+                            ),
+                            //  swalWithBootstrapButtons.close();
+                            setTimeout(() => {
+                                window.location.href = "/review/"+review_id+"/confirm";
+                            }, 10 * 500);
+                    }
+                })
+            });
+        });
         function priceFormatter(data) {
             var field = this.field
             return 'Итого :' + data.map(function(row) {

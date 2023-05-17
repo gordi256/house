@@ -18,7 +18,7 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label>Укажите здание</label>
-                        <select class="form-control select2" name="building_id" id="building_id" style="width: 100%;">
+                        <select class="form-control " name="building_id" id="building_id" style="width: 100%;">
                             <option>Выберите значение</option>
                         </select>
                     </div>
@@ -31,8 +31,7 @@
 
         </div>
     </form>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
-    <!-- Select2 -->
+
 
     <link rel="stylesheet" href="{{ asset('js/select2/css/select2.min.css') }}">
     <script src="{{ asset('js/select2/js/select2.full.min.js') }}" type="text/javascript"></script>
@@ -42,9 +41,11 @@
 
             //Initialize Select2 Elements
             $('#building_id').select2({
-                theme: 'bootstrap4',
+                theme: "classic",
                 language: "ru",
                 minimumInputLength: 2,
+                placeholder: "Начните вводить наименование здания",
+
                 ajax: {
                     delay: 250,
                     url: '/api/v1/building',

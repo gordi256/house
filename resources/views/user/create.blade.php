@@ -111,7 +111,6 @@
 @endsection
 
 @section('script')
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
     <script src="{{ asset('js/jquery.inputmask.min.js') }}" type="text/javascript"></script>
 
     <script>

@@ -61,6 +61,7 @@ class ReviewItemController extends Controller
      */
     public function destroy(ReviewItem $reviewItem)
     {
-        //
+        // TODO удаление!
+
     }
 }

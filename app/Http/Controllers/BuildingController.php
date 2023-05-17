@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Building;
 use App\Http\Requests\StoreBuildingRequest;
 use App\Http\Requests\UpdateBuildingRequest;
+use Illuminate\Support\Facades\Gate;
 
 class BuildingController extends Controller
 {
@@ -25,7 +26,10 @@ class BuildingController extends Controller
      */
     public function create()
     {
-        //
+        if (!Gate::allows('manage building')) {
+            return abort(401);
+        }
+
         $data = [
             'title' =>  "Новое здание",
             'buildings' => " Обслуживаемые здания",
@@ -38,6 +42,9 @@ class BuildingController extends Controller
      */
     public function store(StoreBuildingRequest $request)
     {
+        if (!Gate::allows('manage building')) {
+            return abort(401);
+        }
         $building = Building::create($request->all());
         flash('Message Building create')->success();
         return redirect(route('building.edit', ['building' => $building]));
@@ -48,7 +55,9 @@ class BuildingController extends Controller
      */
     public function show(Building $building)
     {
-        $data = [];
+        $data = [
+            'building' => $building
+        ];
         return view('building.show', $data);
     }
     /**
@@ -84,6 +93,10 @@ class BuildingController extends Controller
      */
     public function edit(Building $building)
     {
+        if (!Gate::allows('manage building')) {
+            return abort(401);
+        }
+
         $data = [
             'title' =>  "Редактирование здания",
             'building' => $building
@@ -97,6 +110,10 @@ class BuildingController extends Controller
      */
     public function update(UpdateBuildingRequest $request, Building $building)
     {
+        if (!Gate::allows('manage building')) {
+            return abort(401);
+        }
+
         $input = $request->all();
         // isset($input['active']) ? $input['active'] = '1' : $input['active'] = '0';
         $item = $building->update($input);
@@ -109,6 +126,9 @@ class BuildingController extends Controller
      */
     public function destroy(Building $building)
     {
-        //
+        if (!Gate::allows('manage building')) {
+            return abort(401);
+        }
+        // TODO удаление!
     }
 }

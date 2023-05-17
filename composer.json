@@ -29,7 +29,8 @@
         "spatie/eloquent-sortable": "^4.0",
         "spatie/laravel-html": "^3.2",
         "spatie/laravel-medialibrary": "^10.6",
-        "spatie/laravel-permission": "^5.10"
+        "spatie/laravel-permission": "^5.10",
+        "stechstudio/laravel-zipstream": "^4.13"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.8",

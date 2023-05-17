@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Models\ReviewItem;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class PhotoItem extends  Component
 {
@@ -16,7 +17,7 @@ class PhotoItem extends  Component
 
     public $modalFormVisible = false;
 
-    public $item_id,  $item, $check, $item_name, $rating, $rate, $description, $conclusion, $value;
+    public $item_id,  $item,  $media_id, $check, $item_name, $rating, $rate, $description, $conclusion, $value;
     protected $listeners = ['photo_item' => 'photoItem'];
 
 
@@ -31,7 +32,7 @@ class PhotoItem extends  Component
     public function photoItem($item_id)
     {
         $item = ReviewItem::where('id', $item_id)->with('item')->first();
-        $this->item;
+        $this->item= $item;
         $this->item_id = $item_id;
         $this->item_name = $item->item->name;
 
@@ -53,12 +54,24 @@ class PhotoItem extends  Component
     public function render()
     {
         $this->modalFormVisible = false;
-        return view('livewire.bootstrap-modal',['images'=>$this->images]);
+
+        return view('livewire.bootstrap-modal', ['images' => $this->images]);
+    }
+
+    public function delete($media_id)
+    {
+        // dd($media_id);
+        // Media::delete($media_id);
+
+
+        $media = Media::find($media_id);
+        $media->delete();
+        $this->images =  $this->item->getMedia('images');
     }
 
     public function upload()
     {
-  
+
         $this->validate([
             'photos.*' => 'image|mimes:jpeg,png,jpg|max:10240', // 10MB Max
         ]);
@@ -76,7 +89,7 @@ class PhotoItem extends  Component
 
 
 
-
+        $this->images = $item->getMedia('images');
 
 
         // $this->updateMode = false;

@@ -27,7 +27,8 @@ class Building extends Model
          */
         'columns' => [
             'buildings.name' => 10,
-            'buildings.organization' => 10,
+            'buildings.street' => 9,
+            // 'buildings.organization' => 10,
             'buildings.description' => 5,
 
         ]
@@ -44,11 +45,16 @@ class Building extends Model
         return   "/building/" . $this->id . "/edit";
     }
 
+    public function getShowLinkAttribute()
+    {
+        return   "/building/" . $this->id;
+    }
+
     public function getReportLinkAttribute()
     {
         return   "/building/" . $this->id . "/review";
     }
-    
+
     public function getNewReportLinkAttribute()
     {
         return   "/building/" . $this->id . "/new";
