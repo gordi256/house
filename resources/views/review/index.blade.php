@@ -23,10 +23,29 @@
         </thead>
     </table>
 
-    <link href="https://unpkg.com/bootstrap-table@1.21.4/dist/bootstrap-table.min.css" rel="stylesheet">
-    <script src="https://unpkg.com/bootstrap-table@1.21.4/dist/bootstrap-table.min.js"></script>
-    <script src="https://unpkg.com/bootstrap-table@1.21.4/dist/bootstrap-table-locale-all.min.js"></script>
+    <link href="{{ asset('js/bootstrap-table/bootstrap-table.min.css') }}" rel="stylesheet">
+    <script src="{{ asset('js/bootstrap-table/bootstrap-table.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap-table/bootstrap-table-locale-all.min.js') }}"></script>
 
+    <script src="{{ asset('js/calert.unbabel.min.js') }}"></script>
+    <script>
+        $('body').on('click', '.delete_button', function(e) {
+            var product_id = $(this).data('id');
+            console.log("product_id:", product_id);
+            calert('Вы действительно хотите удалить отчет ?', {
+                    cancelButton: true,
+                    icon: 'question'
+                })
+                .then(result => {
+                    if (result.isConfirmed) {
+
+                        return calert('Operation Success', '', 'success')
+                    } else {
+                        return calert('Cancel', 'Операция отменена', 'error')
+                    }
+                })
+        });
+    </script>
 
     <script>
         $(function() {
@@ -37,22 +56,14 @@
             return '<div class="btn-group" role="group" aria-label="Basic example">' +
                 '<a class="btn btn-primary  btn-sm" href="' + row.edit_link +
                 '" title="Редактировать" target="_blank"><i class="fa fa-edit"></i></a>' +
-                '<a class="btn btn-info  btn-sm" href="' + row.report_link +
-                '" title="Отчеты" target="_blank"><i class="fa fa-file"></i></a>' + '</div>'
+                '<a class="btn btn-danger  btn-sm delete_button"   data-id="' + row.id +
+                '" href="#" title="Удалить"  ><i class="fa fa-trash"></i></a>' + '</div>'
         }
 
         function buildingFormatter(value, row) {
             return '<a href="' + row.edit_link + '" title="Редактировать" >' + row.building + '</a>'
         }
-
     </script>
-
-    <style>
-        .mark {
-            padding: 0.0em !important;
-            background-color: #f75a5a !important;
-        }
-    </style>
 @endsection
 
 

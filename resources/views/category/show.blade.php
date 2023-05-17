@@ -18,11 +18,12 @@
         <thead>
             <tr>
                 <th data-field="id" data-sortable="true">#</th>
-                <th data-field="name" data-editable="true" data-sortable="true">Наименование</th>
+                <th data-field="name" data-editable="true" data-sortable="true" data-formatter="nameFormatter">Наименование
+                </th>
                 <th data-field="unit" data-editable="true" data-align="center">Ед.изм.</th>
                 <th data-field="rate" data-editable="true" data-align="right" data-editable="true">Стоимость на ед., руб.
                 </th>
-                <th data-formatter="nameFormatter" data-switchable="false">Действия</th>
+                <th data-formatter="actionFormatter" data-switchable="false">Действия</th>
             </tr>
         </thead>
     </table>
@@ -97,13 +98,30 @@
     <!-- /Modal   -->
 
 
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js" crossorigin="anonymous">
-    </script>
-   
-    <link href="https://unpkg.com/bootstrap-table@1.21.4/dist/bootstrap-table.min.css" rel="stylesheet">
-    <script src="https://unpkg.com/bootstrap-table@1.21.4/dist/bootstrap-table.min.js"></script>
-    <script src="https://unpkg.com/bootstrap-table@1.21.4/dist/bootstrap-table-locale-all.min.js"></script>
 
+    <link href="{{ asset('js/bootstrap-table/bootstrap-table.min.css') }}" rel="stylesheet">
+    <script src="{{ asset('js/bootstrap-table/bootstrap-table.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap-table/bootstrap-table-locale-all.min.js') }}"></script>
+
+    <script src="{{ asset('js/calert.unbabel.min.js') }}"></script>
+    <script>
+        $('body').on('click', '.delete_button', function(e) {
+            var product_id = $(this).data('id');
+            console.log("product_id:", product_id);
+            calert('Вы действительно хотите удалить расценку ?', {
+                    cancelButton: true,
+                    icon: 'question'
+                })
+                .then(result => {
+                    if (result.isConfirmed) {
+
+                        return calert('Operation Success', '', 'success')
+                    } else {
+                        return calert('Cancel', 'Операция отменена', 'error')
+                    }
+                })
+        });
+    </script>
 
 
     <script>
@@ -121,139 +139,23 @@
 
         function nameFormatter(value, row) {
 
+            return '<a class="" href="' + row.edit_link +
+                '" title="Редактировать" > ' + row.name +
+                '</a>'
+        }
+
+        function actionFormatter(value, row) {
+
             return '<div class="btn-group" role="group" aria-label="Basic example">' +
                 '<a class="btn btn-primary  btn-sm" href="' + row.edit_link +
                 '" title="Редактировать" target="_blank"><i class="fa fa-edit"></i></a>' +
-                '<a class="btn btn-info  btn-sm" href="' + row.show_link +
-                '" title="Отчеты" target="_blank"><i class="fa fa-file"></i></a>' + '</div>'
+                '<a class="btn btn-danger  btn-sm delete_button"   data-id="' + row.id +
+                '" href="#" title="Новый отчет"  ><i class="fa fa-trash"></i></a>' + '</div>'
         }
 
-        $("#table").on("click-row.bs.table", function(editable, columns, row) {
-            console.log("columns:", columns);
-            // You can either collect the data one by one
-            var params = {
-                id: columns.id,
-                check: columns.check,
-            };
-            console.log("Params:", params);
-            // OR, you can remove the one that you don't want
-            //   delete columns.name;
-            console.log("columns:", columns);
-            // if (columns.check == 'Да') {
-            //  $("#favoritesModalLabel").html($(e.relatedTarget).data('title'));
-            //  $("#fav-title").html($(e.relatedTarget).data('title'));
-            $("#recordId").val(columns.id);
-            $("#recordName").val(columns.name);
-            $("#recordDescription").val(columns.description);
-            $("#recordRate").val(columns.rate);
-            $("#recordRating").val(columns.rating);
-            $("#recordValue").val(columns.value);
-            $("#recordCheck").val(columns.check);
-            $('#formModal').modal('show');
-            //  }
-        });
-
-        $('#formModal').on('hidden.bs.modal', function(e) {
-            $("#recordId").val('0');
-            $("#recordName").val('');
-            $("#recordDescription").val('');
-            $("#recordRate").val('');
-            console.log("hidden:");
-        })
-
-        $(function() {
-
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
-            /* When user click add product button */
-            $('#create-new-product').click(function() {
-                $('#btn-save').val("create-product");
-                $('#product_id').val('');
-                $('#productForm').trigger("reset");
-                $('#formModalLabel').html("Add New Product");
-                $('#formModal').modal('show');
-            });
-
-            /* When user clicks edit product button */
-            $('body').on('click', '.edit-product', function() {
-                var product_id = $(this).data('id');
-                $.get('products/' + product_id + '/edit', function(data) {
-                    $('#formModalLabel').html("Edit Product");
-                    $('#btn-save').val("edit-product");
-                    $('#formModal').modal('show');
-                    $('#product_id').val(data.id);
-                    $('#name').val(data.name);
-                    $('#description').val(data.description);
-                    $('#price').val(data.price);
-                })
-            });
-
-            /* When user clicks delete product button */
-            $('body').on('click', '.delete-product', function() {
-                var product_id = $(this).data("id");
-                confirm("Are You sure want to delete !");
-
-                $.ajax({
-                    type: "DELETE",
-                    url: "{{ url('products') }}" + '/' + product_id,
-                    success: function(data) {
-                        $table.bootstrapTable('refresh')
-
-                    },
-                    error: function(data) {
-                        console.log('Error:', data);
-                    }
-                });
-            });
-
-            /* When user clicks save button on the product form */
-            $('#productForm').submit(function(e) {
-                e.preventDefault();
-
-                console.log('submit:');
-                var formData = {
-                    name: $('#recordName').val(),
-                    description: $('#recordDescription').val(),
-                    price: $('#recordPrice').val()
-                };
-
-                var state = $('#btn-save').val();
-                var type = "POST";
-                var product_id = $('#product_id').val();
-                var ajaxurl = '{{ route('item.store') }}';
-                if (state === "edit-product") {
-                    type = "PUT";
-                    ajaxurl = '{{ url('item') }}' + '/' + product_id;
-                }
-
-                $.ajax({
-                    type: type,
-                    url: ajaxurl,
-                    data: formData,
-                    dataType: 'json',
-                    success: function(data) {
-                        $('#formModal').modal('hide');
-                        $table.bootstrapTable('refresh')
-
-                    },
-                    error: function(data) {
-                        console.log('Error:', data);
-                    }
-                });
-            });
-
-        });
+    
     </script>
-    <style>
-        .mark {
-            padding: 0.0em !important;
-            background-color: #f75a5a !important;
-        }
-    </style>
+
 @endsection
 
 

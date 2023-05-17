@@ -23,11 +23,15 @@ return new class extends Migration
                 ->constrained()
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
+
+
+            $table->foreignId('approver_id')->nullable()->constrained('users');
+
             $table->longText('description')->nullable();
+            $table->boolean('confirmed')->nullable();
+            $table->boolean('approved')->nullable();
 
             $table->softDeletes();
-            $table->boolean('confirmed')->nullable();
-
             $table->timestamps();
         });
     }

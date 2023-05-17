@@ -62,6 +62,13 @@ class Review extends Model
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
+    
+    public function approver(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'approver_id', 'id');
+    }
+
+
     public function getEditLinkAttribute()
     {
         // config('app.url') .

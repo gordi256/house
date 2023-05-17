@@ -55,7 +55,7 @@ class PhotoItem extends  Component
     {
         $this->modalFormVisible = false;
 
-        return view('livewire.bootstrap-modal', ['images' => $this->images]);
+        return view('livewire.bootstrap-modal1', ['images' => $this->images]);
     }
 
     public function delete($media_id)

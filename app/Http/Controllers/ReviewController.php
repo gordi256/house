@@ -80,6 +80,7 @@ class ReviewController extends Controller
             $review_item->review_id =  $review_id;
             $review_item->item_id =  $item->id;
             $review_item->rate =  $item->rate;
+            $review_item->description =  "";
             $review_item->rating =  0;
             $review_item->save();
         }
@@ -115,23 +116,17 @@ class ReviewController extends Controller
     {
         // попробуем показать фото  
         $temp_dir_name = 'temp_' . $review->id;
-        $dir = Storage::createDirectory($temp_dir_name);
+        Storage::createDirectory($temp_dir_name);
+        
         $bad_symbols = array(".", ",", "%", " ", " _");
-
-
         $items  = $review->item;
-
-        //    $zip = Zip::create( public_path('file.zip') );
 
         foreach ($items as $item) {
             // получим фото
             $temp_medias = $item->getMedia('images');
 
             if (count($temp_medias) > 0) {
-                //       var_dump('</br>');
                 $temp_file_name =  str_replace($bad_symbols, "_", $item->item->name);
-                //       var_dump($temp_file_name);
-
                 foreach ($temp_medias as $temp_media) {
                     $ext = pathinfo($temp_media->getPath(), PATHINFO_EXTENSION);
                     $copy_file_name = $temp_file_name . '_' . $temp_media->order_column . '.' . $ext;

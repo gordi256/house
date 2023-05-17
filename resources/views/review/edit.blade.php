@@ -1,26 +1,16 @@
 @extends('layouts.app')
 @section('content')
     <div id="toolbar">
-        <a class="btn btn-primary" href="#" id="newGroup" role="button"><i class="fa fa-plus"></i> Новая группа
-        </a>
-        <a class="btn btn-primary" href="#" id="newItem" role="button"><i class="fa fa-plus"></i> Новая строка
-        </a>
-
-        <a class="btn btn-danger" href="{{ route('report.download_photo', ['review' => $review->id]) }}" 
-            role="button"><i class="fa  fa-camera"></i> Скачать фото
-        </a>
-        {{-- {{ route('review.confirm', ['review' => $review->id]) }} --}}
-     <a class="btn btn-danger confirm_button"data-id="{{$review->id}}" href="#" 
-            role="button">  Подтвердить анкету
-        </a>
-
-
-        <a class="btn btn-success" href="{{ route('report.download', ['review' => $review->id]) }}"  
-            role="button"><i class="fa fa-download"></i> Скачать отчет
-        </a>
-        <a class="btn btn-success" href="{{ route('review.show', ['review' => $review->id]) }}" 
-            role="button"><i class="fa fa-eye"></i> Отчет
-        </a>
+        <a class="btn btn-success" href="{{ route('review.show', ['review' => $review->id]) }}" role="button"><i
+                class="fa fa-eye"></i> Отчет</a>
+        <a class="btn btn-danger confirm_button" data-id="{{ $review->id }}" href="#" role="button"> Подтвердить
+            анкету</a>
+        <a class="btn btn-primary approve_button" data-id="{{ $review->id }}" href="#" role="button"><i
+                class="fa fa-plus"></i>Утвердить анкету </a>
+        <a class="btn btn-success" href="{{ route('report.download', ['review' => $review->id]) }}" role="button"><i
+                class="fa fa-download"></i> Скачать отчет</a>
+        <a class="btn btn-danger" href="{{ route('report.download_photo', ['review' => $review->id]) }}" role="button"><i
+                class="fa  fa-camera"></i> Скачать фото</a>
         <button type="button" id="info" data-toggle="modal" data-target="#infoModal" class="btn btn-info">
             Помощь</button>
     </div>
@@ -29,13 +19,15 @@
         <thead>
             <tr>
                 <th scope="col">Здание (сооружение)</th>
-                <th scope="col">Автор</th>
+                <th scope="col">Разработал</th>
+                <th scope="col">Утвердил</th>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <td>{{ $review->building->name }}</td>
-                <td>{{ $review->creator->fio }}</td>
+                <td>{{ @$review->creator->fio }}</td>
+                <td>{{ @$review->approver->fio }}</td>
             </tr>
         </tbody>
     </table>
@@ -66,7 +58,7 @@
                     data-align="right" data-footer-formatter="priceFormatter">Ориентировочная
                     стоимость работ, руб.
                 </th>
-                <th data-formatter="nameFormatter" data-switchable="false">Действия</th>
+                <th data-formatter="actionFormatter" data-switchable="false">Действия</th>
 
             </tr>
         </thead>
@@ -208,19 +200,14 @@
 
 
 
-    <link href="https://unpkg.com/bootstrap-table@1.21.4/dist/extensions/group-by-v2/bootstrap-table-group-by.css"
-        rel="stylesheet">
-    <link href="https://unpkg.com/bootstrap-table@1.21.4/dist/bootstrap-table.min.css" rel="stylesheet">
 
-    <script src="https://unpkg.com/bootstrap-table@1.21.4/dist/bootstrap-table.min.js"></script>
-    <script src="https://unpkg.com/bootstrap-table@1.21.4/dist/extensions/group-by-v2/bootstrap-table-group-by.min.js">
+    <link href="{{ asset('js/bootstrap-table/extensions/group-by-v2/bootstrap-table-group-by.css') }}" rel="stylesheet">
+    <link href="{{ asset('js/bootstrap-table/bootstrap-table.min.css') }}" rel="stylesheet">
+    <script src="{{ asset('js/bootstrap-table/bootstrap-table.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap-table/bootstrap-table-locale-all.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap-table/extensions/group-by-v2/bootstrap-table-group-by.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap-table/extensions/filter-control/bootstrap-table-filter-control.min.js') }}">
     </script>
-    <script src="https://unpkg.com/bootstrap-table@1.21.4/dist/bootstrap-table-locale-all.min.js"></script>
-    <script
-        src="https://unpkg.com/bootstrap-table@1.21.4/dist/extensions/filter-control/bootstrap-table-filter-control.min.js">
-    </script>
-
-
 
     @livewire('photo-item')
     @livewire('edit-item')
@@ -239,10 +226,6 @@
         });
     </script>
     <script>
-
-
-
-
         // editModal
         window.addEventListener('openModal', event => {
             $("#exampleModal").modal('show');
@@ -277,29 +260,21 @@
 
     <script>
         $(function() {
-            $('#table').bootstrapTable({
-
-            })
+            $('#table').bootstrapTable({})
         })
 
         $('body').on('click', '.edit-button', function() {
-            var product_id = $(this).data('id');
-            console.log("product_id:", product_id);
             window.livewire.emit("edit_item", $(this).data('id'));
         });
 
         $('body').on('click', '.photo-button', function() {
-            var product_id = $(this).data('id');
-            console.log(" photo-button product_id:", product_id);
             window.livewire.emit("photo_item", $(this).data('id'));
         });
+
         $(function() {
 
             $('body').on('click', '.confirm_button', function(e) {
-                //   $("a.delete_button").click(function(e) {
-
-
-                      var review_id = $(this).data('id');
+                var review_id = $(this).data('id');
                 const swalWithBootstrapButtons = Swal.mixin({
                     customClass: {
                         confirmButton: 'btn btn-danger',
@@ -325,12 +300,13 @@
                             ),
                             //  swalWithBootstrapButtons.close();
                             setTimeout(() => {
-                                window.location.href = "/review/"+review_id+"/confirm";
+                                window.location.href = "/review/" + review_id + "/confirm";
                             }, 10 * 500);
                     }
                 })
             });
         });
+
         function priceFormatter(data) {
             var field = this.field
             return 'Итого :' + data.map(function(row) {
@@ -347,11 +323,12 @@
             return params
         }
 
-        function nameFormatter(value, row) {
-            return '<button  class="btn btn-primary  btn-sm edit-button"  data-id="' + row.id +
+        function actionFormatter(value, row) {
+            return '<div class="btn-group" role="group" aria-label="Basic example">' +
+                '<button  class="btn btn-primary  btn-sm edit-button"  data-id="' + row.id +
                 '"><i class="fas fa-edit"></i></button>' +
                 '<button  class="btn btn-primary  btn-sm photo-button"  data-id="' + row.id +
-                '"><i class="fas fa-camera"></i> </button>'
+                '"><i class="fas fa-camera"></i> </button>' + '</div>'
         }
 
 

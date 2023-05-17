@@ -27,6 +27,7 @@ class ItemController extends Controller
         }
         $categories = Category::all()->pluck('name', 'id');
         $data = [
+            'title' =>  'Создание нового параметра',
             'category' => $category,
             'categories' => $categories
         ];
@@ -59,6 +60,7 @@ class ItemController extends Controller
         }
         $categories = Category::all()->pluck('name', 'id');
         $data = [
+            'title' =>  'Редактирование параметра',
             'item' => $item,
             'categories' => $categories
         ];
@@ -74,9 +76,7 @@ class ItemController extends Controller
         if (!Gate::allows('manage item')) {
             return abort(401);
         }
-        // $request->unit  = ItemEnum::tryFrom($request->unit);
         $input = $request->all();
-        // dd( $input);
         // isset($input['active']) ? $input['active'] = '1' : $input['active'] = '0';
         $item->update($input);
         return redirect(route('item.edit', ['item' => $item]));

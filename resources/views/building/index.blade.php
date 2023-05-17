@@ -30,7 +30,26 @@
     <script src="{{ asset('js/bootstrap-table/extensions/group-by-v2/bootstrap-table-group-by.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap-table/extensions/filter-control/bootstrap-table-filter-control.min.js') }}">
     </script>
+    
+    <script src="{{ asset('js/calert.unbabel.min.js') }}"></script>
+    <script>
+        $('body').on('click', '.delete_button', function(e) {
+            var product_id = $(this).data('id');
+            console.log("product_id:", product_id);
+            calert('Вы действительно хотите удалить здание ?', {
+                    cancelButton: true,
+                    icon: 'question'
+                })
+                .then(result => {
+                    if (result.isConfirmed) {
 
+                        return calert('Operation Success', '', 'success')
+                    } else {
+                        return calert('Cancel', 'Операция отменена', 'error')
+                    }
+                })
+        });
+    </script>
 
     <script>
         $(function() {
@@ -52,46 +71,6 @@
                 '<a class="btn btn-danger  btn-sm delete_button"   data-id="' + row.id +
                 '" href="#" title="Новый отчет"  ><i class="fa fa-trash"></i></a>' + '</div>'
         }
-
-    </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        $(function() {
-
-            $('body').on('click', '.delete_button', function(e) {
-                //   $("a.delete_button").click(function(e) {
-                const swalWithBootstrapButtons = Swal.mixin({
-                    customClass: {
-                        confirmButton: 'btn btn-danger',
-                        cancelButton: 'btn btn-success'
-                    },
-                    buttonsStyling: false,
-                })
-
-                swalWithBootstrapButtons.fire({
-                    title: 'Удаление ',
-                    text: 'Вы действительно хотите удалить объект?',
-                    type: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'ДА!',
-                    cancelButtonText: 'Нет',
-                    reverseButtons: true
-                }).then((result) => {
-                    if (result.value) {
-                        swalWithBootstrapButtons.fire(
-                                'Удаляем!',
-                                'Выполняется удаление объекта.',
-                                'success'
-                            ),
-                            //  swalWithBootstrapButtons.close();
-                            setTimeout(() => {
-                                window.location.href = "/upload/clear";
-                            }, 10 * 500);
-                    }
-                })
-            });
-        });
     </script>
 @endsection
 

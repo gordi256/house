@@ -17,21 +17,40 @@
         <thead>
             <tr>
                 <th data-field="id" data-sortable="true">#</th>
-                <th data-field="name" data-sortable="true">Наименование</th>
+                <th data-field="name" data-formatter="nameFormatter" data-sortable="true">Наименование</th>
                 <th data-field="item_count">()</th>
-                <th data-formatter="nameFormatter" data-switchable="false">Действия</th>
+                <th data-formatter="actionFormatter" data-switchable="false">Действия</th>
             </tr>
         </thead>
     </table>
 
-    <link href="https://unpkg.com/bootstrap-table@1.21.4/dist/bootstrap-table.min.css" rel="stylesheet">
-    <script src="https://unpkg.com/bootstrap-table@1.21.4/dist/bootstrap-table.min.js"></script>
-    <script src="https://unpkg.com/bootstrap-table@1.21.4/dist/bootstrap-table-locale-all.min.js"></script>
-    <script src="https://unpkg.com/bootstrap-table@1.21.4/dist/extensions/group-by-v2/bootstrap-table-group-by.min.js">
+
+
+    <link href="{{ asset('js/bootstrap-table/bootstrap-table.min.css') }}" rel="stylesheet">
+    <script src="{{ asset('js/bootstrap-table/bootstrap-table.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap-table/bootstrap-table-locale-all.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap-table/extensions/group-by-v2/bootstrap-table-group-by.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap-table/extensions/filter-control/bootstrap-table-filter-control.min.js') }}">
     </script>
 
-    <script
-        src="https://unpkg.com/bootstrap-table@1.21.4/dist/extensions/filter-control/bootstrap-table-filter-control.min.js">
+    <script src="{{ asset('js/calert.unbabel.min.js') }}"></script>
+    <script>
+        $('body').on('click', '.delete_button', function(e) {
+            var product_id = $(this).data('id');
+            console.log("product_id:", product_id);
+            calert('Вы действительно хотите удалить категорию расценок ?', {
+                    cancelButton: true,
+                    icon: 'question'
+                })
+                .then(result => {
+                    if (result.isConfirmed) {
+
+                        return calert('Operation Success', '', 'success')
+                    } else {
+                        return calert('Cancel', 'Операция отменена', 'error')
+                    }
+                })
+        });
     </script>
 
     <script>
@@ -39,22 +58,24 @@
             $('#table').bootstrapTable()
         })
 
-        function nameFormatter(value, row) {
+        function actionFormatter(value, row) {
 
             return '<div class="btn-group" role="group" aria-label="Basic example">' +
                 '<a class="btn btn-primary  btn-sm" href="' + row.edit_link +
                 '" title="Редактировать" target="_blank"><i class="fa fa-edit"></i></a>' +
-                '<a class="btn btn-info  btn-sm" href="' + row.show_link +
-                '" title="Отчеты" target="_blank"><i class="fa fa-file"></i></a>' + '</div>'
+                '<a class="btn btn-danger  btn-sm delete_button"   data-id="' + row.id +
+                '" href="#" title="Новый отчет"  ><i class="fa fa-trash"></i></a>' + '</div>'
+        }
+
+        function nameFormatter(value, row) {
+
+            return '<a class="" href="' + row.show_link +
+                '" title="Редактировать" > ' + row.name +
+                '</a>'
         }
     </script>
 
-    <style>
-        .mark {
-            padding: 0.0em !important;
-            background-color: #f75a5a !important;
-        }
-    </style>
+ 
 @endsection
 
 

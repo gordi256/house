@@ -49,10 +49,11 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        //
-        $temp = $request->validated();
+        
+      //  $temp = $request->validated();
+
+        $temp = $request->all();   
         $temp['password'] = Hash::make($request->password);
-        //    dd($temp, $request->validated());
         $user = User::create($temp);
         flash('Message User create')->success();
         return redirect(route('user.edit', ['user' => $user]));
@@ -63,7 +64,6 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //
         return view('user.show', compact('user'));
     }
 
@@ -101,7 +101,7 @@ class UserController extends Controller
 
         $user->update($input);
         $this->syncPermissions($request, $user);
-        //  TODO сделать копирование пермишенов роли!
+        //  TODO сделать копирование пермишенов роли! Или не надо?
 
         flash('Message')->success();
         return redirect(route('user.edit', ['user' => $user]));
