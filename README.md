@@ -5,7 +5,8 @@ Test
 
 
 1. Clone this repo by running `git clone git@github.com:gordi256/house.git` on your CLI.
-2. Setup your virtual host.
+2. Setup your virtual host.  /etc/php/8.1/cli/php.ini включить extention ext-dom ext-intl  gd!
+
 3. Выполнить команду composer install в корневом каталоге
 4. cp .env.example .env
 5. php artisan key:generate
