@@ -18,10 +18,8 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-// Route::get('/test', [TestController::class, 'test'])->name('test.test');
 Route::get('/test2', [TestController::class, 'test2'])->name('test.test2');
 Route::get('/test_import', [TestController::class, 'import'])->name('test_import');
-
 Route::get('/test', function () {
     return view('test');
 })->middleware(['auth', 'verified'])->name('test');
@@ -32,7 +30,6 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['au
 
 
 Route::middleware('auth')->group(function () {
-    // Route::resource('/catalog', CatalogController::class);
     Route::resource('/category', CategoryController::class);
     Route::get('/catalog', [CategoryController::class, 'catalog'])->name('category.catalog');
     Route::resource('/item', ItemController::class);
