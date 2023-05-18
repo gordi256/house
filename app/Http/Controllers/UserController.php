@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Requests\AdminPassUpdateRequest;
+use App\Mail\UserCreated;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Gate;
-
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
@@ -49,16 +50,19 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        
-      //  $temp = $request->validated();
 
-        $temp = $request->all();   
+        //  $temp = $request->validated();
+
+        $temp = $request->all();
         $temp['password'] = Hash::make($request->password);
         $user = User::create($temp);
+
+        $this->syncPermissions($request, $user);
+        Mail::to($request->user())->send(new UserCreated($user));
+
         flash('Message User create')->success();
         return redirect(route('user.edit', ['user' => $user]));
     }
-
     /**
      * Display the specified resource.
      */
