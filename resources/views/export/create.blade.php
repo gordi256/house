@@ -16,14 +16,14 @@
     <tbody>
         @foreach ($items as $item)
             <tr>
-                <td>{{ $item->id }}</td>
+                <td>{{ $item->index }}</td>
                 <td>{{ $item->item->name }}</td>
                 <td>{{ $item->check }}</td>
                 <td>{{ $item->item->unit }}</td>
                 <td>{{ $item->value }}</td>
                 <td>{{ $item->rating }}</td>
                 <td>{{ $item->description }}</td>
-                <td>{{ $item->rate }}</td>
+                <td>{{ $item->rate * $item->value }}</td>
                 <td></td>
 
             </tr>

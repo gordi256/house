@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Gate;
 
 
 use Maatwebsite\Excel\Facades\Excel;
-use App\Exports\ReviewExport;
+use App\Exports\FullStringReportExport;
 use App\Exports\TestExport;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -95,29 +95,38 @@ class ReviewController extends Controller
         dd($review);
     }
 
+
+    public function report_download(Review $review)
+    {
+        // попробуем показать отчет  только с заполненными строками
+        $bad_symbols = array(".", ",", "%");
+        $file_name =  str_replace($bad_symbols, "_", $review->building->name) . '.xlsx';
+        return (new TestExport($review->id))->download($file_name);
+        // return Excel::forReview($review->id)->download(new ReviewExport, 'test.xlsx');
+    }
+
+
     /**
      * Display the specified resource.
      */
-    public function report_download(Review $review)
+    public function report_download_all(Review $review)
     {
-        // попробуем показать отчет  
-        // dd($review);
-        // $file_name = $review->building->name . '.xlsx';
-
+        // попробуем показать отчет  со всеми строками
         $bad_symbols = array(".", ",", "%");
-
         $file_name =  str_replace($bad_symbols, "_", $review->building->name) . '.xlsx';
-        return (new TestExport($review->id))->download($file_name);
+        return (new FullStringReportExport($review->id))->download($file_name);
 
         // return Excel::forReview($review->id)->download(new ReviewExport, 'test.xlsx');
     }
+
+
 
     public function download_photo(Review $review)
     {
         // попробуем показать фото  
         $temp_dir_name = 'temp_' . $review->id;
         Storage::createDirectory($temp_dir_name);
-        
+
         $bad_symbols = array(".", ",", "%", " ", " _");
         $items  = $review->item;
 

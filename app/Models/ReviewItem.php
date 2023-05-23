@@ -16,7 +16,7 @@ class ReviewItem extends Model implements HasMedia
 {
     use HasFactory, InteractsWithMedia;
     use SearchableTrait;
-    
+
     protected $guarded = [];
 
     public function review(): BelongsTo
@@ -40,5 +40,11 @@ class ReviewItem extends Model implements HasMedia
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('images');
+    }
+
+
+    public function getIndexAttribute()
+    {
+        return  ' '. $this->item->category->id . '.' . $this->item->order_column;
     }
 }

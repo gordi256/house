@@ -45,26 +45,26 @@
                         @endif
                     </div>
                     <div class="row">
-                        <input type="file" class="form-control" wire:model="photos" multiple
-                            style="padding: 3px 5px;" />
 
 
-
-                        <div class="input-group mb-3">
+                        <div class="input-group mb-3" wire:loading.remove>
                             <div class="custom-file">
                                 <input type="file" class="custom-file-input" wire:model="photos" multiple>
                                 <label class="custom-file-label" for="inputGroupFile02">Выберите файлы</label>
                             </div>
                             <div class="input-group-append">
-                                <span class="input-group-text" wire:click.prevent="upload()">Загрузить</span>
+                                <span wire:loading.class="bg-red" class="input-group-text btn btn-success"
+                                    wire:click.prevent="upload()">Загрузить</span>
                             </div>
                         </div>
-
-
                         @error('photos.*')
                             <span class="error">{{ $message }}</span>
                         @enderror
                     </div>
+                    <div class="row" wire:loading wire:target="upload()">
+                        Загружаем фото...
+                    </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary close-btn" data-dismiss="modal">Отмена</button>

@@ -90,10 +90,11 @@ class PhotoItem extends  Component
 
 
         $this->images = $item->getMedia('images');
+        $this->photos = [];
 
 
         // $this->updateMode = false;
-        // $this->resetInputFields();
+    //    $this->resetInputFields();
         $this->dispatchBrowserEvent('alert', [
             'type' => 'success',
             'message' => "Фото сохранено!"

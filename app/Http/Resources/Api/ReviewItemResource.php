@@ -20,8 +20,8 @@ class ReviewItemResource extends JsonResource
 
 
 
-     //    return parent::toArray($request); //
-//
+        //    return parent::toArray($request); //
+        //
 
 
         return [
@@ -30,15 +30,15 @@ class ReviewItemResource extends JsonResource
             'unit' =>  $this->item->unit,
             'category_order' =>   $this->item->category->order_column . ' ' . $this->item->category->name,
             'category_name' =>   $this->item->category->name,
-            'index' =>   $this->item->category->id . '.' . $this->item->order_column,
+            'index' =>   $this->index,
             'rating' =>  $this->rating,
             'price' =>   $this->rate,
             'value' =>   $this->value,
             'description' =>   $this->description,
-            'summa' =>  round($this->value  * $this->rate, 2),
-            // 'check' => $check[array_rand($check, 1)],
+            'summa' => number_format(round($this->value  * $this->rate, 2), 2, '.', '') ,
+            'photo_count' => $this->getMedia('images')->count(),
             'check' => $this->check,
-            'modal_link'=> json_encode(['item' => $this->id])  , 
+            'modal_link' => json_encode(['item' => $this->id]),
             // 'modal_link'=> json_encode(['item' => $this->id])  ,
             'edit_link' => @$this->edit_link,
 

@@ -100,7 +100,7 @@
                             </div>
                             <div class="col ">
                                 <div class="form-group">
-                                    <label for="entrances">Количество подъездов ПЭО</label>
+                                    <label for="entrances">Количество подъездов</label>
                                     <input type="number" value="{{ $building->entrances }}"
                                         class="form-control @error('entrances') is-invalid @enderror" id="entrances"
                                         name="entrances" placeholder="1" />

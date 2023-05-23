@@ -11,148 +11,101 @@
                 </div>
                 <!-- /.card-header -->
                 <!-- form start -->
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="name">Наименование</label>
+                        {{ $building->name }}
 
-      
+                    </div>
 
-        
+                    <div class="row">
+                        <div class="col ">
+                            <div class="form-group">
+                                <label for="street">Улица</label>
+                                {{ $building->street }}
 
-                    <div class="card-body">
-                        <div class="form-group">
-                            <label for="name">Наименование</label>
-                            <input type="text" value="{{ $building->name }}"
-                                class="form-control @error('name') is-invalid @enderror" id="name" name="name"
-                                placeholder="Наименование объекта" />
-                            @error('name')
-                                <div class="alert alert-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <div class="row">
-                            <div class="col ">
-                                <div class="form-group">
-                                    <label for="street">Улица</label>
-                                    <input type="text" value="{{ $building->street }}"
-                                        class="form-control @error('street') is-invalid @enderror" id="street"
-                                        name="street" placeholder="Наименование улицы " />
-                                    @error('street')
-                                        <div class="alert alert-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="row">
-                            <div class="col ">
-                                <div class="form-group">
-                                    <label for="house">Номер дома</label>
-                                    <input type="text" value="{{ $building->house }}"
-                                        class="form-control @error('house') is-invalid @enderror" id="house"
-                                        name="house" placeholder="Номер дома" />
-                                    @error('house')
-                                        <div class="alert alert-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col ">
-                                <div class="form-group">
-                                    <label for="building">Корпус</label>
-                                    <input type="text" value="{{ $building->building }}"
-                                        class="form-control @error('building') is-invalid @enderror" id="building"
-                                        name="building" placeholder="Корпус" />
-                                    @error('building')
-                                        <div class="alert alert-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col ">
-                                <div class="form-group">
-                                    <label for="liter">Литер</label>
-                                    <input type="text" value="{{ $building->liter }}"
-                                        class="form-control @error('liter') is-invalid @enderror" id="liter"
-                                        name="liter" placeholder="Литер" />
-                                    @error('liter')
-                                        <div class="alert alert-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col ">
-                                <div class="form-group">
-                                    <label for="floors">Этажность</label>
-                                    <input type="number" value="{{ $building->floors }}"
-                                        class="form-control @error('floors') is-invalid @enderror" id="floors"
-                                        name="floors" placeholder="1" />
-                                    @error('floors')
-                                        <div class="alert alert-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col ">
-                                <div class="form-group">
-                                    <label for="entrances">Количество подъездов ПЭО</label>
-                                    <input type="number" value="{{ $building->entrances }}"
-                                        class="form-control @error('entrances') is-invalid @enderror" id="entrances"
-                                        name="entrances" placeholder="1" />
-                                    @error('entrances')
-                                        <div class="alert alert-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col ">
-                                <div class="form-group">
-                                    <label for="improvement">Кат. благоустройства</label>
-                                    <input type="number" value="{{ $building->improvement }}"
-                                        class="form-control @error('improvement') is-invalid @enderror" id="improvement"
-                                        name="improvement" placeholder="1" />
-                                    @error('improvement')
-                                        <div class="alert alert-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
+                    <div class="row">
+                        <div class="col ">
+                            <div class="form-group">
+                                <label for="house">Номер дома</label>
+                                {{ $building->house }}
 
-                        <div class="form-group">
-                            <label for="organization">Обслуживающая организация</label>
-                            <input type="text" value="{{ $building->organization }}"
-                                class="form-control @error('organization') is-invalid @enderror" id="organization"
-                                name="organization" placeholder="Наименование обслуживающей  организации" />
-                            @error('organization')
-                                <div class="alert alert-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-                        <div class="form-group">
-                            <label for="description">Описание, примечания</label>
-                            <textarea class="form-control" name="description" id="description" rows="3">{{ $building->description }}</textarea>
-                            @error('description')
-                                <div class="alert alert-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label for="description">Широта</label>
-                                <input type="text" class="form-control" name="longitude" id="longitude"
-                                    value="{{ $building->longitude }}" placeholder="34.5643545">
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="description">Долгота</label>
-                                <input type="text" class="form-control" name="latitude" id="latitude"
-                                    value="{{ $building->latitude }}" placeholder="35.34234234">
                             </div>
                         </div>
+                        <div class="col ">
+                            <div class="form-group">
+                                <label for="building">Корпус</label>
+                                {{ $building->building }}
+                            </div>
+                        </div>
+                        <div class="col ">
+                            <div class="form-group">
+                                <label for="liter">Литер</label>
+                                {{ $building->liter }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col ">
+                            <div class="form-group">
+                                <label for="floors">Этажность</label>
+                                {{ $building->floors }}
+                            </div>
+                        </div>
+                        <div class="col ">
+                            <div class="form-group">
+                                <label for="entrances">Количество подъездов</label>
+                                {{ $building->entrances }}
+                            </div>
+                        </div>
+                        <div class="col ">
+                            <div class="form-group">
+                                <label for="improvement">Кат. благоустройства</label>
+                                {{ $building->improvement }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="organization">Обслуживающая организация</label>
+                        {{ $building->organization }}
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Описание, примечания</label>
+                        {{ $building->description }}
+                    </div>
+                    {{-- <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="description">Широта</label>
+                            <input type="text" class="form-control" name="longitude" id="longitude"
+                                value="{{ $building->longitude }}" placeholder="34.5643545">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="description">Долгота</label>
+                            <input type="text" class="form-control" name="latitude" id="latitude"
+                                value="{{ $building->latitude }}" placeholder="35.34234234">
+                        </div>
+                    </div> --}}
 
 
-                        {{-- <div class="form-check">
+                    {{-- <div class="form-check">
                             <input type="checkbox" class="form-check-input" id="exampleCheck1" />
                             <label class="form-check-label" for="exampleCheck1">Check me out</label>
                         </div> --}}
-                    </div>
-                    <!-- /.card-body -->
+                </div>
+                <!-- /.card-body -->
 
-                    <div class="card-footer">
-                         <a class="btn btn-default " href="{{ route('building.index') }}" role="button">Отмена</a>
-                    </div>
-             </div>
+                <div class="card-footer">
+                    <a class="btn btn-primary float-right" href="{{ route('building.edit', $building->id) }}"
+                        role="button">Редактировать</a>
+
+                    <a class="btn btn-default " href="{{ route('building.index') }}" role="button">Отмена</a>
+                </div>
+            </div>
             <!-- /.card -->
         </div>
         <!--/.col (left) -->

@@ -7,8 +7,22 @@
             анкету</a>
         <a class="btn btn-primary approve_button" data-id="{{ $review->id }}" href="#" role="button"><i
                 class="fa fa-plus"></i>Утвердить анкету </a>
-        <a class="btn btn-success" href="{{ route('report.download', ['review' => $review->id]) }}" role="button"><i
-                class="fa fa-download"></i> Скачать отчет</a>
+
+        <div class="btn-group" role="group">
+            <button id="btnGroupDrop1" type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false"> <i class="fa fa-download"></i>
+                Скачать отчет
+            </button>
+            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                <a class="dropdown-item" href="{{ route('report.download_all', ['review' => $review->id]) }}">С пустыми
+                    строками</a>
+                <a class="dropdown-item" href="{{ route('report.download', ['review' => $review->id]) }}">Только
+                    заполненные</a>
+            </div>
+        </div>
+
+
+
         <a class="btn btn-danger" href="{{ route('report.download_photo', ['review' => $review->id]) }}" role="button"><i
                 class="fa  fa-camera"></i> Скачать фото</a>
         <button type="button" id="info" data-toggle="modal" data-target="#infoModal" class="btn btn-info">
@@ -40,25 +54,26 @@
 
         <thead>
             <tr>
+                {{-- --}}
                 <th data-field="index" data-sortable="true">#</th>
-                {{-- data-formatter="selectFormatter" --}}
                 <th data-field="name">Наименование</th>
-                <th data-field="check" data-editable="true" data-filter-control="select">Отметка при наличии повреждений
+                <th data-field="check" {{-- data-editable="true" data-editable-type="select" data-editable-mode="popup"      data-editable-emptytext="Custom empty text." data-always-use-formatter="true"  data-editable-source='[{value: 1, text: "text1"}, {value: 2, text: "text2"} ]'  --}} data-width="150" data-filter-control="select">
+                    Отметка при наличии повреждений
                 </th>
                 <th data-field="unit" data-align="center">Ед.изм.</th>
                 <th data-field="value" data-align="right" data-sortable="true">Ориентировочный объём работ,кол-во </th>
-                <th data-field="rating" data-align="center" data-filter-control="select" data-cell-style="cellStyle"
-                    data-editable="true">&nbsp;Степень важности исполнения, оценка рисков при эксплуатации
-                    "Опасность&nbsp;в&nbsp;эксплуатации" (опасно/безопасно)</th>
-                <th data-field="description" data-editable="true" class="cellStyle1" data-formatter="descriptionFormatter">
+                <th data-field="rating" data-align="center" data-filter-control="select" data-sortable="true"
+                    data-cell-style="cellStyle">&nbsp;Степень важности исполнения, оценка рисков при
+                    эксплуатации "Опасность&nbsp;в&nbsp;эксплуатации" (опасно/безопасно)</th>
+                <th data-field="description" class="cellStyle1" data-formatter="descriptionFormatter">
                     Примечание, дополнение</th>
-                <th data-field="price" data-editable="true" data-sortable="true" data-align="right">Стоимость на ед., руб.
+                <th data-field="price" data-sortable="true" data-align="right">Стоимость на ед., руб.
                 </th>
-                <th data-field="summa" data-editable="true" data-sortable="true" data-filter-control="input"
-                    data-align="right" data-footer-formatter="priceFormatter">Ориентировочная
+                <th data-field="summa" data-sortable="true" data-filter-control="input" data-align="right"
+                    data-footer-formatter="priceFormatter">Ориентировочная
                     стоимость работ, руб.
                 </th>
-                <th data-formatter="actionFormatter" data-switchable="false">Действия</th>
+                <th data-formatter="actionFormatter" data-width="120" data-switchable="false">Действия</th>
 
             </tr>
         </thead>
@@ -198,7 +213,10 @@
 
     <!-- /Modal info-->
 
+    {{-- <link href="{{ asset('js/bootstrap-editable.css') }}" rel="stylesheet">
 
+    <script src="https://cdn.jsdelivr.net/gh/Talv/x-editable@develop/dist/bootstrap4-editable/js/bootstrap-editable.min.js">
+    </script> --}}
 
 
     <link href="{{ asset('js/bootstrap-table/extensions/group-by-v2/bootstrap-table-group-by.css') }}" rel="stylesheet">
@@ -208,9 +226,20 @@
     <script src="{{ asset('js/bootstrap-table/extensions/group-by-v2/bootstrap-table-group-by.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap-table/extensions/filter-control/bootstrap-table-filter-control.min.js') }}">
     </script>
+    <script src="{{ asset('js/bootstrap-table/extensions/editable/bootstrap-table-editable.min.js') }}"></script>
+
+    <link href="{{ asset('js/x-editable-develop/dist/bootstrap4-editable/css/bootstrap-editable.css') }}"
+        rel="stylesheet" />
+    <script src="{{ asset('js/x-editable-develop/dist/bootstrap4-editable/js/bootstrap-editable.min.js') }}"></script>
+
+
+
 
     @livewire('photo-item')
     @livewire('edit-item')
+
+    {{-- / inline  селект / --}}
+    {{-- <script src="{{ asset('/js/inline-edit.jquery.js') }}" type="text/javascript"></script> --}}
 
 
 
@@ -256,12 +285,43 @@
             $("#photoModal").modal('hide');
         })
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
 
     <script>
+        $("#table").on("editable-save.bs.table", function(event, field, row, rowIndex, oldValue, el) {
+            alert("New value = " + row[field] + ", old value = " + oldValue);
+        });
         $(function() {
             $('#table').bootstrapTable({})
         })
+        $.fn.editable.defaults.mode = 'inline';
+
+        $('.sex').editable({
+            type: 'select',
+            prepend: "not selected",
+
+            title: 'Select status',
+            placement: 'right',
+            value: 2,
+            source: [{
+                    value: 1,
+                    text: 'status 1'
+                },
+                {
+                    value: 2,
+                    text: 'status 2'
+                },
+                {
+                    value: 3,
+                    text: 'status 3'
+                }
+            ]
+            /*
+            //uncomment these lines to send data on server
+            ,pk: 1
+            ,url: '/post'
+            */
+        });
 
         $('body').on('click', '.edit-button', function() {
             window.livewire.emit("edit_item", $(this).data('id'));
@@ -271,41 +331,13 @@
             window.livewire.emit("photo_item", $(this).data('id'));
         });
 
-        $(function() {
 
-            $('body').on('click', '.confirm_button', function(e) {
-                var review_id = $(this).data('id');
-                const swalWithBootstrapButtons = Swal.mixin({
-                    customClass: {
-                        confirmButton: 'btn btn-danger',
-                        cancelButton: 'btn btn-success'
-                    },
-                    buttonsStyling: false,
-                })
 
-                swalWithBootstrapButtons.fire({
-                    title: 'Утверждение анкеты',
-                    text: 'Вы действительно хотите утвердить анкету?',
-                    type: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'ДА!',
-                    cancelButtonText: 'Нет',
-                    reverseButtons: true
-                }).then((result) => {
-                    if (result.value) {
-                        swalWithBootstrapButtons.fire(
-                                'Отлично!',
-                                'Выполняется утверждение объекта.',
-                                'success'
-                            ),
-                            //  swalWithBootstrapButtons.close();
-                            setTimeout(() => {
-                                window.location.href = "/review/" + review_id + "/confirm";
-                            }, 10 * 500);
-                    }
-                })
-            });
-        });
+        function selectFormatter(value, row) {
+            return '<div  class="editable222" >' + row.check + '</div >'
+        }
+
+
 
         function priceFormatter(data) {
             var field = this.field
@@ -324,21 +356,23 @@
         }
 
         function actionFormatter(value, row) {
-            return '<div class="btn-group" role="group" aria-label="Basic example">' +
+            return '<div class="btn-group  mr-2" role="group" aria-label="Basic example">' +
                 '<button  class="btn btn-primary  btn-sm edit-button"  data-id="' + row.id +
                 '"><i class="fas fa-edit"></i></button>' +
-                '<button  class="btn btn-primary  btn-sm photo-button"  data-id="' + row.id +
-                '"><i class="fas fa-camera"></i> </button>' + '</div>'
+                '<button class="btn btn-primary   btn-sm photo-button"   data-id="' + row.id +
+                '"><i class="fas fa-camera"></i> <span class="badge badge-pill badge-success">' + row.photo_count +
+                '</span></button>' + '</div>'
         }
 
+        // function actionFormatter(value, row) {
+        //     return '<span class="editable">' + row.unit + '</span>'
+        // }
 
         function descriptionFormatter(value, row) {
             return '<div class="container"><div class="truncate-text">' + row.description + '</div></div>'
         }
 
-        function selectFormatter(value, row) {
-            return '<div><select class="form-control  " style="width: 100%;"><option value="0"></option><option value="1">Да </option><option value="2">Нет</option><option value="3">Отсутствует</option></select></div>'
-        }
+
 
         function cellStyle(value, row, index) {
             if (value == 10) {

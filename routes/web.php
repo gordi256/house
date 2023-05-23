@@ -41,6 +41,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/review/{review}/report', [ReviewController::class, 'report'])->name('review.report');
     Route::get('/review/{review}/download', [ReviewController::class, 'download'])->name('review.download');
     Route::get('/review/{review}/report_download', [ReviewController::class, 'report_download'])->name('report.download');
+    Route::get('/review/{review}/report_download_all', [ReviewController::class, 'report_download_all'])->name('report.download_all');
+    
     Route::get('/review/{review}/download_photo', [ReviewController::class, 'download_photo'])->name('report.download_photo');
     Route::get('/review/{review}/confirm', [ReviewController::class, 'confirm'])->name('review.confirm');
 
