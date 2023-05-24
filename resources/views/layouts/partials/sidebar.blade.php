@@ -28,7 +28,7 @@
             </form>
         </div>
 
-        <!-- SidebarSearch Form -->
+        <!-- SidebarSearch Form
         <div class="form-inline">
             <div class="input-group" data-widget="sidebar-search">
                 <input class="form-control form-control-sidebar" type="search" placeholder="Поиск"
@@ -40,7 +40,7 @@
                 </div>
             </div>
         </div>
-
+ -->
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
@@ -64,24 +64,19 @@
                         </li>
                         @can('manage users')
                             <li class="nav-item">
-                                <a href="{{ route('user.index') }}" class="nav-link active">
+                                <a href="{{ route('user.index') }}" class="nav-link  ">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Пользователи</p>
                                 </a>
                             </li>
                         @endcan
                         <li class="nav-item">
-                            <a href="{{ route('category.index') }}" class="nav-link active">
+                            <a href="{{ route('category.index') }}" class="nav-link  ">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Расценки</p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Inactive Page</p>
-                            </a>
-                        </li>
+                   
                     </ul>
                 </li>
 
@@ -123,18 +118,7 @@
 
                 </li>
 
-                <li class="nav-item">
-                    <a href="{{ route('test') }}" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
-                        <p>Тест таблицы<span class="right badge badge-danger">New</span></p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('test_import') }}" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
-                        <p>Тест загрузки <span class="right badge badge-danger">New</span></p>
-                    </a>
-                </li>
+                
                 <li class="nav-item">
                     <a href="{{ route('review.index') }}" class="nav-link active">
                         <i class="nav-icon fas fa-columns"></i>

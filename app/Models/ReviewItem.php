@@ -42,9 +42,18 @@ class ReviewItem extends Model implements HasMedia
         $this->addMediaCollection('images');
     }
 
-
     public function getIndexAttribute()
     {
         return    $this->item->category->id . '.' . $this->item->order_column;
+    }
+
+    public function getIndexExportAttribute()
+    {
+        return    $this->item->category->id . ' . ' . $this->item->order_column;
+    }
+
+    public function getSummaAttribute()
+    {
+        return    number_format(round($this->value  * $this->rate, 2), 2, '.', '');
     }
 }

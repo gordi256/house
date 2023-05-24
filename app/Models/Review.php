@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Nicolaslopezj\Searchable\SearchableTrait;
 
-
-
 class Review extends Model
 {
     use HasFactory;
@@ -20,31 +18,17 @@ class Review extends Model
      * @var array
      */
     protected $searchable = [
-        /**
-         * Columns and their priority in search results.
-         * Columns with higher values are more important.
-         * Columns with equal values have equal importance.
-         *
-         * @var array
-         */
-        // 'columns' => [
-        //     'reviews.name' => 10,
-        // ]
-
         'columns' => [
             'buildings.name' => 10,
             'buildings.street' => 8,
             'users.first_name' => 8,
             'users.last_name' => 10,
             'reviews.description' => 8,
-
         ],
         'joins' => [
             'buildings' => ['reviews.building_id', 'buildings.id'],
             'users' => ['reviews.user_id', 'users.id'],
         ],
-
-
     ];
 
     public function item()
@@ -57,21 +41,28 @@ class Review extends Model
         return $this->belongsTo(Building::class, 'building_id', 'id');
     }
 
-
     public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
-    
+
     public function approver(): BelongsTo
     {
         return $this->belongsTo(User::class, 'approver_id', 'id');
     }
 
-
     public function getEditLinkAttribute()
     {
-        // config('app.url') .
         return   "/review/" . $this->id . "/edit";
+    }
+
+    public function getSummaryAttribute()
+    {
+        $summa = 0;
+
+        foreach ($this->item  as $item) {
+            $summa +=  $item->value  * $item->rate;
+        }
+        return number_format(round($summa, 2), 2, '.', '');
     }
 }
