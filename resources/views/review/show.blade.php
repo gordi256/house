@@ -1,10 +1,36 @@
 @extends('layouts.app')
 @section('content')
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Здание (сооружение)</th>
+                <th scope="col">Разработал</th>
+                <th scope="col">Утвердил</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ $review->building->name }}</td>
+                <td>{{ @$review->creator->fio }}</td>
+                <td>{{ @$review->approver->fio }}</td>
+            </tr>
+        </tbody>
+    </table>
     <div id="toolbar">
-
-        <a class="btn btn-success" href="{{ route('report.download', ['review' => $review->id]) }}" id="newItem"
-            role="button"><i class="fa fa-download"></i>Скачать отчет
-        </a>
+        <a class="btn btn-success" href="{{ route('review.edit', ['review' => $review->id]) }}" role="button"><i
+                class="fa fa-eye"></i> Анкета</a>
+        <div class="btn-group" role="group">
+            <button id="btnGroupDrop1" type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false"> <i class="fa fa-download"></i>
+                Скачать отчет
+            </button>
+            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                <a class="dropdown-item" href="{{ route('report.download_all', ['review' => $review->id]) }}">С пустыми
+                    строками</a>
+                <a class="dropdown-item" href="{{ route('report.download', ['review' => $review->id]) }}">Только
+                    заполненные</a>
+            </div>
+        </div>
 
     </div>
 

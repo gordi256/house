@@ -178,9 +178,10 @@ class ReviewController extends Controller
         // попробуем показать отчет 
         $review->load('building', 'creator');
         $data = [
-            'title' => ' ТЕСТ  отчет',
+            'title' => 'Отчет № ' .  $review->id . ' от ' . $review->created_at,
             'review' => $review,
         ];
+
 
         return view('review.show', $data);
     }
@@ -192,7 +193,7 @@ class ReviewController extends Controller
     {
         $review->load('building', 'creator');
         $data = [
-            'title' => 'Отчет № ' .  $review->id . ' от ' . $review->created_at,
+            'title' => 'Анкета  № ' .  $review->id . ' от ' . $review->created_at,
             'review' => $review,
         ];
 

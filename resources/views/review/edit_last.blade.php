@@ -1,5 +1,23 @@
 @extends('layouts.app')
 @section('content')
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Здание (сооружение)</th>
+                <th scope="col">Разработал</th>
+                <th scope="col">Утвердил</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ $review->building->name }}</td>
+                <td>{{ @$review->creator->fio }}</td>
+                <td>{{ @$review->approver->fio }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+
     <div id="toolbar">
         <a class="btn btn-success" href="{{ route('review.show', ['review' => $review->id]) }}" role="button"><i
                 class="fa fa-eye"></i> Отчет</a>
@@ -25,18 +43,23 @@
         <button type="button" id="info" data-toggle="modal" data-target="#infoModal" class="btn btn-info">
             Помощь</button>
         <div id="filter">
-            Отметка
-            <select class="form-control bootstrap-table-filter-control-check_text">
-                <option value=""></option>
-            </select>
-            Степень
-            <select class="form-control bootstrap-table-filter-control-rating">
-                <option value=""></option>
-            </select>
+            <div class="row">
+                <div class="col">
+                    <label>Отметка при наличии повреждений</label>
+                    <select class="form-control bootstrap-table-filter-control-check_text">
+                        <option value=""></option>
+                    </select>
+                </div>
+                <div class="col">
+                    <label>Степень важности исполнения</label>
+                    <select class="form-control bootstrap-table-filter-control-rating">
+                        <option value=""></option>
+                    </select>
+                </div>
+            </div>
         </div>
     </div>
     <!-- Modal info-->
-
     <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="formModalLabel"
         aria-hidden="true">
         <div class="modal-dialog  modal-xl" role="document">
@@ -189,16 +212,12 @@
                 <th data-field="unit" data-align="center">Ед.изм.</th>
                 <th data-field="value" data-align="right" data-sortable="true">Ориентировочный объём работ,кол-во </th>
                 <th data-field="rating" data-align="center" data-filter-control="select" data-sortable="true"
-                    data-cell-style="cellStyle">Степень важности исполнения, оценка рисков при эксплуатации
-                    "Опасность&nbsp;в&nbsp;эксплуатации" (опасно/безопасно)</th>
-                <th data-field="description" class="cellStyle1" data-formatter="descriptionFormatter">
-                    Примечание, дополнение</th>
-                <th data-field="price" data-sortable="true" data-align="right">Стоимость на ед., руб.
-                </th>
+                    data-cell-style="cellStyle">Степень важности исполнения, оценка рисков при эксплуатации "Опасность в эксплуатации" (опасно/безопасно)</th>
+                <th data-field="description" class="cellStyle1" data-formatter="descriptionFormatter">Примечание,
+                    дополнение</th>
+                <th data-field="price" data-sortable="true" data-align="right">Стоимость на ед., руб.</th>
                 <th data-field="summa" data-sortable="true" data-filter-control="input" data-align="right"
-                    data-footer-formatter="priceFormatter">Ориентировочная
-                    стоимость работ, руб.
-                </th>
+                    data-footer-formatter="priceFormatter">Ориентировочная стоимость работ, руб.</th>
                 <th data-formatter="actionFormatter" data-width="120" data-switchable="false">Действия</th>
 
             </tr>
@@ -263,6 +282,16 @@
             });
 
         });
+
+
+        $("#table").on("click-row.bs.table", function(editable, columns, row) {
+            
+            console.log("columns:", columns);
+            if (columns.check == 'Да') {
+                window.livewire.emit("edit_item", columns.id);
+            }
+        });
+
 
         function priceFormatter(data) {
             var field = this.field
