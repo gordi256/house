@@ -1,73 +1,40 @@
 @extends('layouts.app')
 @section('content')
     <div id="toolbar">
-        <a class="btn btn-primary" href="#" id="newGroup" role="button"><i class="fa fa-plus"></i> Новая группа
-        </a>
-        <a class="btn btn-primary" href="#" id="newItem" role="button"><i class="fa fa-plus"></i> Новая строка
-        </a>
-        <a class="btn btn-success" href="{{ route('report.download', ['review' => $review->id]) }}" id="newItem"
-            role="button"><i class="fa fa-download"></i> Скачать отчет
-        </a>
-        <a class="btn btn-success" href="{{ route('review.show', ['review' => $review->id]) }}" id="newItem"
-            role="button"><i class="fa fa-eye"></i> Отчет
-        </a>
+        <a class="btn btn-success" href="{{ route('review.show', ['review' => $review->id]) }}" role="button"><i
+                class="fa fa-eye"></i> Отчет</a>
+        <a class="btn btn-danger confirm_button" data-id="{{ $review->id }}" href="#" role="button"> Подтвердить
+            анкету</a>
+        <a class="btn btn-primary approve_button" data-id="{{ $review->id }}" href="#" role="button"><i
+                class="fa fa-plus"></i>Утвердить анкету </a>
+
+        <div class="btn-group" role="group">
+            <button id="btnGroupDrop1" type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false"> <i class="fa fa-download"></i>
+                Скачать отчет
+            </button>
+            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                <a class="dropdown-item" href="{{ route('report.download_all', ['review' => $review->id]) }}">С пустыми
+                    строками</a>
+                <a class="dropdown-item" href="{{ route('report.download', ['review' => $review->id]) }}">Только
+                    заполненные</a>
+            </div>
+        </div>
+        <a class="btn btn-danger" href="{{ route('report.download_photo', ['review' => $review->id]) }}" role="button"><i
+                class="fa  fa-camera"></i> Скачать фото</a>
         <button type="button" id="info" data-toggle="modal" data-target="#infoModal" class="btn btn-info">
             Помощь</button>
+        <div id="filter">
+            Отметка
+            <select class="form-control bootstrap-table-filter-control-check_text">
+                <option value=""></option>
+            </select>
+            Степень
+            <select class="form-control bootstrap-table-filter-control-rating">
+                <option value=""></option>
+            </select>
+        </div>
     </div>
-
-
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">Здание (сооружение)</th>
-                <th scope="col">Автор</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>{{ $review->building->name }}</td>
-                <td>{{ $review->creator->fio }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-
-    <table id="table" data-toolbar="#toolbar" data-show-fullscreen="true" data-toggle="table"
-        data-url="/api/v1/review/list" data-locale="ru-RU" class="table-information" data-data-field="items"
-        data-filter-control="true" data-group-by="true" data-group-by-field="category_order"
-        data-show-search-clear-button="true" data-query-params="queryParams" data-show-refresh="true"
-        data-show-footer="true" data-show-columns="true">
-
-        <thead>
-            <tr>
-                <th data-field="index" data-sortable="true">#</th>
-                {{-- data-formatter="selectFormatter" --}}
-                <th data-field="name">Наименование</th>
-                <th data-field="check" data-editable="true" data-filter-control="select">Отметка при наличии повреждений
-                </th>
-                <th data-field="unit" data-align="center">Ед.изм.</th>
-                <th data-field="value" data-align="right" data-sortable="true">Ориентировочный объём работ,кол-во </th>
-                <th data-field="rating" data-align="center" data-filter-control="select" data-cell-style="cellStyle"
-                    data-editable="true">&nbsp;Степень важности исполнения, оценка рисков при эксплуатации
-                    "Опасность&nbsp;в&nbsp;эксплуатации" (опасно/безопасно)</th>
-                <th data-field="description" data-editable="true" class="cellStyle1" data-formatter="descriptionFormatter">
-                    Примечание, дополнение</th>
-                <th data-field="price" data-editable="true" data-sortable="true" data-align="right">Стоимость на ед., руб.
-                </th>
-                <th data-field="summa" data-editable="true" data-sortable="true" data-filter-control="input"
-                    data-align="right" data-footer-formatter="priceFormatter">Ориентировочная
-                    стоимость работ, руб.
-                </th>
-                <th data-formatter="nameFormatter" data-switchable="false">Действия</th>
-
-            </tr>
-        </thead>
-
-
-
-    </table>
-
     <!-- Modal info-->
 
     <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="formModalLabel"
@@ -94,8 +61,8 @@
                                 <tbody>
                                     <tr>
                                         <td> </td>
-                                        <td style="background:#98c3e6">Незначительный</td>
-                                        <td style="background:#98c3e6">Высокий </td>
+                                        <td style="background:#98c3e6 ;width:150px">Незначительный</td>
+                                        <td style="background:#98c3e6 ;width:150px">Высокий </td>
                                     </tr>
                                     <tr>
                                         <td style="background:#98c3e6">Низкая</td>
@@ -201,148 +168,101 @@
     </div>
 
     <!-- /Modal info-->
+    <table id="table" data-toolbar="#toolbar" data-show-fullscreen="true" data-toggle="table"
+        data-url="/api/v1/review/list" data-locale="ru-RU" class="table-information" data-data-field="items"
+        data-filter-control="true" data-group-by="true" data-group-by-toggle="true"
+        data-group-by-show-toggle-icon="true" data-group-by-field="category_order" data-query-params="queryParams"
+        data-show-refresh="true" data-show-footer="true" data-filter-control-container="#filter">
+        {{-- data-editable-url="/api/v1/review/update" --}}
+        <thead>
+            <tr>
+                {{-- data-editable="true"  
+                    data-editable-type="select" data-filter-control="select" --}}{{-- data-editable-pk="check_text"   data-editable-emptytext="Custom empty text." data-editable="true"
+                 data-editable-source='[{value: 1, text: "text1"}, {value: 2, text: "text2"} ]'  --}}
+                <th data-field="index" data-sortable="true">#</th>
+                <th data-field="name">Наименование</th>
+                <th data-field="check" data-visible="true" data-editable-source="/api/v1/review/select_list"
+                    data-editable="true" data-editable-type="select" data-editable-emptytext="---">Отметка при наличии
+                    повреждений</th>
+                <th data-field="check_text" data-width="150" data-visible="false" data-filter-control="select"
+                    data-sortable="true">Отметка</th>
+                <th data-field="unit" data-align="center">Ед.изм.</th>
+                <th data-field="value" data-align="right" data-sortable="true">Ориентировочный объём работ,кол-во </th>
+                <th data-field="rating" data-align="center" data-filter-control="select" data-sortable="true"
+                    data-cell-style="cellStyle">Степень важности исполнения, оценка рисков при эксплуатации
+                    "Опасность&nbsp;в&nbsp;эксплуатации" (опасно/безопасно)</th>
+                <th data-field="description" class="cellStyle1" data-formatter="descriptionFormatter">
+                    Примечание, дополнение</th>
+                <th data-field="price" data-sortable="true" data-align="right">Стоимость на ед., руб.
+                </th>
+                <th data-field="summa" data-sortable="true" data-filter-control="input" data-align="right"
+                    data-footer-formatter="priceFormatter">Ориентировочная
+                    стоимость работ, руб.
+                </th>
+                <th data-formatter="actionFormatter" data-width="120" data-switchable="false">Действия</th>
 
-    <!-- Modal -->
-    <div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-labelledby="formModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog  modal-xl" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="formModalLabel">Редактирование пункта</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <input type="hidden" id="recordId" value="">
-                    <div class="row">
-                        <div class="col ">
-                            <div class="form-group">
-                                <label for="recordCheck">Отметка при наличии повреждений</label>
-                                <select class="form-control bootstrap-table-filter-control-step " id="recordCheck"
-                                    style="width: 100%;" dir="ltr">
-                                    <option value=""></option>
-                                    <option value="1">Да</option>
-                                    <option value="2">Нет</option>
-                                    <option value="3">Отсутствует </option>
-
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col ">
-                            <div class="form-group">
-                                <label for="recordRating">Степень важности исполнения</label>
-                                <select class="form-control bootstrap-table-filter-control-step " id="recordRating"
-                                    style="width: 100%;" dir="ltr">
-                                    <option value=""></option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                    <option value="6">6</option>
-                                    <option value="8">8</option>
-                                    <option value="9">9</option>
-                                    <option value="10">10</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col ">
-                            <div class="form-group">
-                                <label for="recordValue">Ориентировочный объём работ,кол-во</label>
-                                <input type="number" step="0.01" min="0" id="recordValue"
-                                    class="form-control" value="">
-                            </div>
-                        </div>
-                        <div class="col ">
-                            <div class="form-group">
-                                <label for="recordPrice">Стоимость на ед., руб.</label>
-                                <input type="number" step="0.01" min="0" class="form-control"
-                                    id="recordPrice" value="">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col ">
-                            <div class="form-group">
-                                <label for="recordDescription">Примечание, дополнение</label>
-                                <textarea class="form-control" id="recordDescription" rows="3"></textarea>
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col ">
-                            <div class="form-group">
-                                <label for="exampleFormControlTextarea1">Фото</label>
-                                <!-- 2. Initialize -->
-                                <div id="uppy"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
-                    <button type="button" id="saveRecord" class="btn btn-primary">Сохранить</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /Modal -->
-
-    <!-- Modal Images-->
-    <div class="modal fade" id="formModalImages" tabindex="-1" role="dialog" aria-labelledby="formModalImagesLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="formModalLabel">Загрузка фото</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-
-                    <input type="hidden" id="recordIdImages" value="">
+            </tr>
+        </thead>
+    </table>
 
 
 
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
-                    <button type="button" id="saveImages" class="btn btn-primary">Сохранить</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /Modal Images -->
 
 
-
-    <link href="https://unpkg.com/bootstrap-table@1.21.4/dist/extensions/group-by-v2/bootstrap-table-group-by.css"
-        rel="stylesheet">
-    <link href="https://unpkg.com/bootstrap-table@1.21.4/dist/bootstrap-table.min.css" rel="stylesheet">
-
-    <script src="https://unpkg.com/bootstrap-table@1.21.4/dist/bootstrap-table.min.js"></script>
-    <script src="https://unpkg.com/bootstrap-table@1.21.4/dist/extensions/group-by-v2/bootstrap-table-group-by.min.js">
+    <link href="{{ asset('js/bootstrap-table/extensions/group-by-v2/bootstrap-table-group-by.css') }}" rel="stylesheet">
+    <link href="{{ asset('js/bootstrap-table/bootstrap-table.min.css') }}" rel="stylesheet">
+    <script src="{{ asset('js/bootstrap-table/bootstrap-table.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap-table/bootstrap-table-locale-all.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap-table/extensions/group-by-v2/bootstrap-table-group-by.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap-table/extensions/filter-control/bootstrap-table-filter-control.min.js') }}">
     </script>
-    <script src="https://unpkg.com/bootstrap-table@1.21.4/dist/bootstrap-table-locale-all.min.js"></script>
-    <script
-        src="https://unpkg.com/bootstrap-table@1.21.4/dist/extensions/filter-control/bootstrap-table-filter-control.min.js">
-    </script>
+    <script src="{{ asset('js/bootstrap-table/extensions/editable/bootstrap-table-editable.min.js') }}"></script>
 
+    <link href="{{ asset('js/x-editable-develop/dist/bootstrap4-editable/css/bootstrap-editable.css') }}"
+        rel="stylesheet" />
+    <script src="{{ asset('js/x-editable-develop/dist/bootstrap4-editable/js/bootstrap-editable.min.js') }}"></script>
+
+
+    @livewire('photo-item')
+    @livewire('edit-item')
+
+    {{-- просмотр фото --}}
+    <script src="{{ asset('/vendor/venobox/venobox.min.js') }}" type="text/javascript"></script>
+
+    {{-- просмотр фото --}}
 
     <script>
-        $(function() {
-            $('#table').bootstrapTable({
+        $('#table').bootstrapTable({})
+        $.fn.editable.defaults.mode = 'inline';
 
-            })
-        })
+        $("#table").on("editable-save.bs.table", function(event, field, row, rowIndex, oldValue, el) {
+            // alert(field + "  New value = " + row[field] + ", old value = " + oldValue + ", rowIndex value = " + ro.id);
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    'X-XSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                }
+            });
+            $.ajax({
+                type: "POST",
+                url: "insert_data", // This is the URL of your PHP script which will handle inserting data into the database
+                data: {
+                    field: field,
+                    id: row.id,
+                    value: row[field]
+                }, // The data to be sent to the server. Replace with your own data.
+                success: function(data) {
+                    console.log("Data successfully sent to server!");
+                    $('#table').bootstrapTable('refresh');
 
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error sending data to server: " + error);
+                    alert("Error sending data to server: " + error);
+                }
+            });
 
+        });
 
         function priceFormatter(data) {
             var field = this.field
@@ -353,58 +273,30 @@
             }, 0).toFixed(2)
         }
 
-        $("#table").on("click-row.bs.table", function(editable, columns, row) {
-            console.log("columns:", columns);
-            // You can either collect the data one by one
-            var params = {
-                id: columns.id,
-                check: columns.check,
-            };
-            console.log("Params:", params);
-            // OR, you can remove the one that you don't want
-            //   delete columns.name;
-            console.log("columns:", columns);
-            if (columns.check == 'Да') {
-                //  $("#favoritesModalLabel").html($(e.relatedTarget).data('title'));
-                //  $("#fav-title").html($(e.relatedTarget).data('title'));
-                $("#recordId").val(columns.id);
-                $("#formModalLabel").html("Редактирование пункта </br>" + columns.name);
-
-
-                $("#recordPrice").val(columns.price);
-                $("#recordDescription").val(columns.description);
-                $("#recordPrice").val(columns.price);
-                $("#recordRating").val(columns.rating);
-                $("#recordValue").val(columns.value);
-                $("#recordCheck").val(columns.check);
-                $('#formModal').modal('show');
-            }
-        });
 
         function queryParams(params) {
             params.review_id = {{ $review->id }} // add param1
             params.your_param2 = 2 // add param2
-            // console.log(JSON.stringify(params));
-            // {"limit":10,"offset":0,"order":"asc","your_param1":1,"your_param2":2}
             return params
         }
 
-        function nameFormatter(value, row) {
-            return '<div class="btn-group" role="group" aria-label="Basic example">' +
-                '<a class="btn btn-primary  btn-sm edit-button"  data-row-id="' + row.id +
-                '" href="' + row.edit_link +
-                '" title="Редактировать" target="_blank"><i class="fas fa-edit"></i> </a> ' +
-                '<a class="btn btn-primary  btn-sm" href="#" title="Фото" target="_blank"><i class="fas fa-camera"></i> </a> ' +
-                '</div>'
+        function actionFormatter(value, row) {
+            return '<div class="btn-group  mr-2" role="group" aria-label="Basic example">' +
+                '<button  class="btn btn-primary  btn-sm edit-button"  data-id="' + row.id +
+                '"><i class="fas fa-edit"></i></button>' +
+                '<button class="btn btn-primary   btn-sm photo-button"   data-id="' + row.id +
+                '"><i class="fas fa-camera"></i> <span class="badge badge-pill badge-success">' + row
+                .photo_count +
+                '</span></button>' + '</div>'
         }
+
+
 
         function descriptionFormatter(value, row) {
             return '<div class="container"><div class="truncate-text">' + row.description + '</div></div>'
         }
 
-        function selectFormatter(value, row) {
-            return '<div><select class="form-control  " style="width: 100%;"><option value="0"></option><option value="1">Да </option><option value="2">Нет</option><option value="3">Отсутствует</option></select></div>'
-        }
+
 
         function cellStyle(value, row, index) {
             if (value == 10) {
@@ -483,6 +375,46 @@
                 }
             }
         }
+
+
+        // editModal
+        window.addEventListener('openModal', event => {
+            $("#exampleModal").modal('show');
+        })
+
+        window.addEventListener('closeModal', event => {
+            $("#exampleModal").modal('hide');
+        })
+
+        window.addEventListener('reloadTable', event => {
+            $('#table').bootstrapTable('refresh');
+        })
+
+        // photoModal
+        window.addEventListener('openModalPhoto', event => {
+
+            new VenoBox({
+                selector: '.my-image-links',
+                numeration: true,
+                infinigall: true,
+                share: true,
+                spinner: 'rotating-plane'
+            });
+            $("#photoModal").modal('show');
+        })
+
+        window.addEventListener('closeModalPhoto', event => {
+            $("#photoModal").modal('hide');
+        })
+
+
+        $('body').on('click', '.edit-button', function() {
+            window.livewire.emit("edit_item", $(this).data('id'));
+        });
+
+        $('body').on('click', '.photo-button', function() {
+            window.livewire.emit("photo_item", $(this).data('id'));
+        });
     </script>
 
     <style>
@@ -548,13 +480,8 @@
             margin: auto;
         }
 
-      
 
-        */ th.table-col--vertical .th-inner {
-            writing-mode: vertical-lr;
-            transform: rotate(-180deg);
-            letter-spacing: 0.02em;
-        }
+
 
         th.table-col--notes {
             min-width: 200px;

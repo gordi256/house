@@ -38,6 +38,8 @@ class ReviewItemResource extends JsonResource
             'summa' => number_format(round($this->value  * $this->rate, 2), 2, '.', '') ,
             'photo_count' => $this->getMedia('images')->count(),
             'check' => $this->check,
+            'check_text' => $this->check,
+
             'modal_link' => json_encode(['item' => $this->id]),
             // 'modal_link'=> json_encode(['item' => $this->id])  ,
             'edit_link' => @$this->edit_link,

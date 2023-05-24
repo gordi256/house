@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ @$title  }}</title>
+    <title>{{ @$title }}</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
@@ -80,6 +80,16 @@
         .mark {
             padding: 0.0em !important;
             background-color: #f75a5a !important;
+        }
+
+        .brand-link .brand-image {
+            float: left;
+            line-height: .8;
+            margin-left: 0.8rem;
+            margin-right: 0.5rem;
+            margin-top: -3px;
+            max-height: 47px;
+            width: 200px;
         }
     </style>
 </body>

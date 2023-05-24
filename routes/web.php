@@ -45,6 +45,7 @@ Route::middleware('auth')->group(function () {
     
     Route::get('/review/{review}/download_photo', [ReviewController::class, 'download_photo'])->name('report.download_photo');
     Route::get('/review/{review}/confirm', [ReviewController::class, 'confirm'])->name('review.confirm');
+    Route::post('/review/{review}/insert_data', [ReviewController::class, 'insert_data'])->name('review.insert_data');
 
     Route::resource('/user', UserController::class);
 

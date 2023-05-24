@@ -12,9 +12,7 @@ class PhotoItem extends  Component
     use WithFileUploads;
 
     public $photos = [];
-
     public $images = [];
-
     public $modalFormVisible = false;
 
     public $item_id,  $item,  $media_id, $check, $item_name, $rating, $rate, $description, $conclusion, $value;
@@ -32,12 +30,10 @@ class PhotoItem extends  Component
     public function photoItem($item_id)
     {
         $item = ReviewItem::where('id', $item_id)->with('item')->first();
-        $this->item= $item;
+        $this->item = $item;
         $this->item_id = $item_id;
         $this->item_name = $item->item->name;
-
         $this->images = $item->getMedia('images');
-        // dd($this->images);
         $this->openModal();
     }
 
@@ -60,10 +56,6 @@ class PhotoItem extends  Component
 
     public function delete($media_id)
     {
-        // dd($media_id);
-        // Media::delete($media_id);
-
-
         $media = Media::find($media_id);
         $media->delete();
         $this->images =  $this->item->getMedia('images');
@@ -77,9 +69,6 @@ class PhotoItem extends  Component
         ]);
 
         $item = ReviewItem::find($this->item_id);
-        // $item = ReviewItem::find($this->item_id);
-
-        // dd($item, $this->photos);
 
         foreach ($this->photos as $photo) {
             $item
@@ -87,14 +76,11 @@ class PhotoItem extends  Component
                 ->toMediaCollection('images');
         }
 
-
-
         $this->images = $item->getMedia('images');
         $this->photos = [];
 
-
         // $this->updateMode = false;
-    //    $this->resetInputFields();
+        $this->resetInputFields();
         $this->dispatchBrowserEvent('alert', [
             'type' => 'success',
             'message' => "Фото сохранено!"

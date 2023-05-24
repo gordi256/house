@@ -196,7 +196,21 @@ class ReviewController extends Controller
             'review' => $review,
         ];
 
-        return view('review.edit', $data);
+        return view('review.edit_last', $data);
+    }
+    /**
+     * Update the specified resource in storage.
+     */
+    public function insert_data(Request $request)
+    {
+        //
+        // dd($request->all());
+
+        $item = ReviewItem::find($request->id);
+        if ($request->field === 'check') {
+            $item->check = $request->value;
+        }
+        $item->save();
     }
 
     /**

@@ -56,9 +56,6 @@
             $("#table").on("editable-save.bs.table", function(event, field, row, rowIndex, oldValue, el) {
                 alert("New value = " + row[field] + ", old value = " + oldValue + ", rowIndex value = " +
                     row.id);
-
-
-
             });
 
 
@@ -76,13 +73,7 @@
             //  });
 
             // });
-            var data = [{
-                'name': 'Да'
-            }, {
-                'name': 'Нет'
-            }, {
-                'name': 'deleted'
-            }]
+       
             $('#table').bootstrapTable({
                 showRefresh: 'true',
                 url: '/api/v1/review/list',

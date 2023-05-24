@@ -100,4 +100,34 @@ class ReviewController extends Controller
 
         return json_encode($res);
     }
+
+
+    /**
+     *  
+     */
+    public function select_list(Request $request)
+    {
+        //
+
+        $res = array(
+
+            "null" => "---",
+            "Да" => "Да",
+            "Нет" => "Нет",
+            "Отсутствует" => "Отсутствует"
+
+        );
+
+
+        return  json_encode($res);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update( Request $request )
+    {
+        //
+        dd($request->all());
+    }
 }

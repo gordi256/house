@@ -4,7 +4,7 @@
     <a href="{{ route('dashboard') }}" class="brand-link">
         <img src="/img/logo1.jpg" alt=" Logo" class="brand-image  elevation-3"
             style="opacity: 0.8" />
-        <span class="brand-text font-weight-light">3</span>
+        <span class="brand-text font-weight-light">&nbsp;</span>
     </a>
 
     <!-- Sidebar -->

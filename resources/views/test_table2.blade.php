@@ -166,7 +166,7 @@
                     }
                 ],
                 pager: {
-                    limit: 5
+                   // limit: 5
                 }
             });
             grid.on('rowDataChanged', function(e, id, record) {

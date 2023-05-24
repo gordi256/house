@@ -66,7 +66,6 @@ class FullStringReportExport implements FromView, WithColumnWidths, WithStyles
         $items = ReviewItem::query()->where('review_id', $this->review_id)->get();
         $items->load('item', 'item.category');
 
-        //   dd($items);
         return view('export.create', [
             'items' => $items
         ]);

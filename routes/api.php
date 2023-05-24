@@ -29,6 +29,9 @@ Route::prefix('v1')->name('v1.')->group(function () {
     Route::get('/user', [UserController::class, 'index']);
     Route::get('/review', [ReviewController::class, 'index']);
     Route::get('/review/list', [ReviewController::class, 'list']);
+    Route::post('/review/update', [ReviewController::class, 'update']);
+    Route::get('/review/select_list', [ReviewController::class, 'select_list']);
+
     Route::get('/review/report', [ReviewController::class, 'report']);
 
     Route::prefix('/admin')->name('admin.')->group(function () {

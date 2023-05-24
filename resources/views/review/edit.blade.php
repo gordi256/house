@@ -47,19 +47,22 @@
     </table>
 
     <table id="table" data-toolbar="#toolbar" data-show-fullscreen="true" data-toggle="table"
-        data-url="/api/v1/review/list" data-locale="ru-RU" class="table-information" data-data-field="items"
-        data-filter-control="true" data-group-by="true" data-group-by-field="category_order"
-        data-show-search-clear-button="true" data-query-params="queryParams" data-show-refresh="true"
-        data-show-footer="true" data-show-columns="true">
-
+        data-url="/api/v1/review/list" data-editable="true" 
+        data-editable-source="/api/v1/review/select_list" data-locale="ru-RU" class="table-information"
+        data-data-field="items" data-filter-control="true" data-group-by="true" data-group-by-toggle="true"
+        data-group-by-show-toggle-icon="true" data-group-by-field="category_order" data-show-search-clear-button="true"
+        data-query-params="queryParams" data-show-refresh="true" data-show-footer="true" data-show-columns="true">
+{{-- data-editable-url="/api/v1/review/update" --}}
         <thead>
             <tr>
-                {{-- --}}
+                {{-- --}}{{-- data-editable-pk="check_text"   data-editable-emptytext="Custom empty text." data-editable="true"
+                 data-editable-source='[{value: 1, text: "text1"}, {value: 2, text: "text2"} ]'  --}}
                 <th data-field="index" data-sortable="true">#</th>
                 <th data-field="name">Наименование</th>
-                <th data-field="check" {{-- data-editable="true" data-editable-type="select" data-editable-mode="popup"      data-editable-emptytext="Custom empty text." data-always-use-formatter="true"  data-editable-source='[{value: 1, text: "text1"}, {value: 2, text: "text2"} ]'  --}} data-width="150" data-filter-control="select">
-                    Отметка при наличии повреждений
-                </th>
+                <th data-field="check_text" data-width="150" data-editable="true" data-editable-value="check" 
+                    data-formatter="checkFormatter" data-always-use-formatter="true" 
+                    data-editable-emptytext="---" data-editable-type="select" data-filter-control="select">
+                    Отметка при наличии повреждений</th>
                 <th data-field="unit" data-align="center">Ед.изм.</th>
                 <th data-field="value" data-align="right" data-sortable="true">Ориентировочный объём работ,кол-во </th>
                 <th data-field="rating" data-align="center" data-filter-control="select" data-sortable="true"
@@ -241,6 +244,7 @@
     {{-- / inline  селект / --}}
     {{-- <script src="{{ asset('/js/inline-edit.jquery.js') }}" type="text/javascript"></script> --}}
 
+    <script src="{{ asset('/js/doomEdit/jquery.doomEdit.js') }}" type="text/javascript"></script>
 
 
     <link rel="stylesheet" href="{{ asset('/vendor/venobox/venobox.min.css') }}">
@@ -288,40 +292,72 @@
     {{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
 
     <script>
-        $("#table").on("editable-save.bs.table", function(event, field, row, rowIndex, oldValue, el) {
-            alert("New value = " + row[field] + ", old value = " + oldValue);
+        $("#table").on("click-row.bs.table", function(editable, columns, row) {
+            console.log("columns:", columns);
+            // You can either collect the data one by one
+            var params = {
+                id: columns.id,
+                check: columns.check,
+            };
+            console.log("Params11:", params);
+            // OR, you can remove the one that you don't want
+            //   delete columns.name;
+            console.log("columns:", columns);
+            if (columns.check == 'Да') {
+                //  window.livewire.emit("edit_item", $(this).data('id'));
+
+            }
         });
-        $(function() {
-            $('#table').bootstrapTable({})
-        })
+
+
+          $(function() {
+                $("#table").on("editable-save.bs.table", function(event, field, row, rowIndex, oldValue, el) {
+                    alert("New value = " + row[field] + ", old value = " + oldValue);
+                });
+            });
+
+        $('#table').bootstrapTable({})
         $.fn.editable.defaults.mode = 'inline';
 
-        $('.sex').editable({
-            type: 'select',
-            prepend: "not selected",
+        $("#table").on("load-success.bs.table", function() {
+            $().editable({
 
-            title: 'Select status',
-            placement: 'right',
-            value: 2,
-            source: [{
-                    value: 1,
-                    text: 'status 1'
-                },
-                {
-                    value: 2,
-                    text: 'status 2'
-                },
-                {
-                    value: 3,
-                    text: 'status 3'
-                }
-            ]
-            /*
-            //uncomment these lines to send data on server
-            ,pk: 1
-            ,url: '/post'
-            */
+                source: [{
+                        value: 'null',
+                        text: '---'
+                    }, {
+                        value: 'Да',
+                        text: 'Да'
+                    },
+                    {
+                        value: 'Нет',
+                        text: 'Нет'
+                    },
+                    {
+                        value: 'Отсутствует',
+                        text: 'Отсутствует'
+                    }
+                ]
+            })
         });
+        $("#table").on("dbl-click-cell.bs.table", function(field, value, row, $element) {
+
+            console.log("field:", field);
+
+            console.log("element:", $element);
+            alert("New field = " + field + ",   value = " + value + ", row value = " + row.id);
+
+        });
+
+
+
+        $("#table").on("editable-save.bs.table", function(event, field, row, rowIndex, oldValue, el) {
+            alert("New value = " + row[field] + ", old value = " + oldValue + ", rowIndex value = " + row.id);
+        });
+
+
+
+
 
         $('body').on('click', '.edit-button', function() {
             window.livewire.emit("edit_item", $(this).data('id'));
@@ -334,9 +370,14 @@
 
 
         function selectFormatter(value, row) {
-            return '<div  class="editable222" >' + row.check + '</div >'
+            return '<div  class="editable222" >' + row.check + '</div>'
         }
 
+        function checkFormatter(value, row) {
+
+            return   row.check  
+
+        }
 
 
         function priceFormatter(data) {
@@ -360,13 +401,12 @@
                 '<button  class="btn btn-primary  btn-sm edit-button"  data-id="' + row.id +
                 '"><i class="fas fa-edit"></i></button>' +
                 '<button class="btn btn-primary   btn-sm photo-button"   data-id="' + row.id +
-                '"><i class="fas fa-camera"></i> <span class="badge badge-pill badge-success">' + row.photo_count +
+                '"><i class="fas fa-camera"></i> <span class="badge badge-pill badge-success">' + row
+                .photo_count +
                 '</span></button>' + '</div>'
         }
 
-        // function actionFormatter(value, row) {
-        //     return '<span class="editable">' + row.unit + '</span>'
-        // }
+      
 
         function descriptionFormatter(value, row) {
             return '<div class="container"><div class="truncate-text">' + row.description + '</div></div>'

@@ -45,6 +45,6 @@ class ReviewItem extends Model implements HasMedia
 
     public function getIndexAttribute()
     {
-        return  ' '. $this->item->category->id . '.' . $this->item->order_column;
+        return    $this->item->category->id . '.' . $this->item->order_column;
     }
 }

@@ -47,23 +47,22 @@
                     <div class="row">
 
 
-                        <div class="input-group mb-3" wire:loading.remove>
+                        <div class="input-group mb-3"  >
                             <div class="custom-file">
                                 <input type="file" class="custom-file-input" wire:model="photos" multiple>
                                 <label class="custom-file-label" for="inputGroupFile02">Выберите файлы</label>
                             </div>
                             <div class="input-group-append">
-                                <span wire:loading.class="bg-red" class="input-group-text btn btn-success"
+                                <span   class="input-group-text btn btn-success"
                                     wire:click.prevent="upload()">Загрузить</span>
                             </div>
+                            {{-- .prevent --}}
                         </div>
                         @error('photos.*')
                             <span class="error">{{ $message }}</span>
                         @enderror
                     </div>
-                    <div class="row" wire:loading wire:target="upload()">
-                        Загружаем фото...
-                    </div>
+                  
 
                 </div>
                 <div class="modal-footer">
