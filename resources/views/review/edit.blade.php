@@ -289,8 +289,7 @@
             $("#photoModal").modal('hide');
         })
     </script>
-    {{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
-
+ 
     <script>
         $("#table").on("click-row.bs.table", function(editable, columns, row) {
             console.log("columns:", columns);

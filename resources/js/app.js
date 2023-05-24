@@ -2,8 +2,7 @@
 import '~adminlte/plugins/jquery/jquery.min.js';
 import '~adminlte/dist/js/adminlte.min.js';
 import Alpine from 'alpinejs';
-import Swal from 'sweetalert2';
-
+ 
 // import Uppy from '@uppy/core'
 // import Webcam from '@uppy/webcam'
 // import Dashboard from '@uppy/dashboard'
