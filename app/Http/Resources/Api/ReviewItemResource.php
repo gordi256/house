@@ -27,7 +27,7 @@ class ReviewItemResource extends JsonResource
         return [
             'id' =>   $this->id,
             'name' =>  $this->item->name,
-            'unit' =>  $this->item->unit,
+            'unit' =>  $this->unit,
             'category_order' =>   $this->item->category->order_column . ' ' . $this->item->category->name,
             'category_name' =>   $this->item->category->name,
             'index' =>   $this->index,

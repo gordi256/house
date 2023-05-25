@@ -46,6 +46,18 @@
                         </div>
                     </div>
                     <div class="row">
+                          <div class="col ">
+                            <div class="form-group">
+                                <label for="unit">Единица измерения</label>
+                                        <select class="form-control bootstrap-table-filter-control-step " wire:model="unit" >
+                                        <option value="-">-</option>
+                                        <option value="м">м</option>
+                                        <option value="м2">м2</option>
+                                        <option value="м3">м3</option>
+                                        <option value="шт">шт</option>
+                                    </select>
+                            </div>
+                        </div>
                         <div class="col ">
                             <div class="form-group">
                                 <label for="recordValue">Ориентировочный объём работ,кол-во</label>

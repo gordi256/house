@@ -13,7 +13,7 @@ class EditItem extends  Component
     public $photos = [];
     public $modalFormVisible = false;
 
-    public $item_id, $check, $item_name, $rating, $rate, $description, $conclusion, $value;
+    public $item_id, $check, $item_name, $rating, $rate, $description, $conclusion, $value, $unit;
     protected $listeners = ['edit_item' => 'editItem'];
 
 
@@ -27,17 +27,15 @@ class EditItem extends  Component
         $this->rate =  '';
         $this->conclusion =  '';
         $this->value =  '';
+        $this->unit =  '';
     }
 
     public function editItem($item_id)
     {
-        //se null diamo un messaggio di errore, e non mostriamo il modal di inserimento
-        // if ($this->item_id == null) {
-        //     return back()->with('error', 'Seleziona una pratica');
-        // } else {
+
         $item = ReviewItem::where('id', $item_id)->with('item')->first();
         $this->item_id = $item_id;
-
+        $this->unit = $item->item->unit;
         $this->item_name = $item->item->name;
         $this->check = $item->check;
         $this->rating = $item->rating;
@@ -82,6 +80,7 @@ class EditItem extends  Component
             'rating' => $this->rating,
             'rate' => $this->rate,
             'value' => $this->value,
+            'unit' => $this->unit,
             'conclusion' => $this->conclusion,
         ]);
 
@@ -89,10 +88,10 @@ class EditItem extends  Component
 
         // $this->updateMode = false;
         $this->resetInputFields();
-        $this->dispatchBrowserEvent('alert', [
-            'type' => 'success',
-            'message' => "Опция сохранена!"
-        ]);
+        // $this->dispatchBrowserEvent('alert', [
+        //     'type' => 'success',
+        //     'message' => "Опция сохранена!"
+        // ]);
         $this->dispatchBrowserEvent('reloadTable');
 
         $this->dispatchBrowserEvent('closeModal');
