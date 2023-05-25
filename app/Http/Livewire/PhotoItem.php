@@ -16,7 +16,7 @@ class PhotoItem extends  Component
     public $modalFormVisible = false;
 
     public $item_id,  $item,  $media_id, $check, $item_name, $rating, $rate, $description, $conclusion, $value;
-    protected $listeners = ['photo_item' => 'photoItem'];
+    protected $listeners = ['photo_item' => 'photoItem','photo_refresht' => '$refresh'];
 
 
     private function resetInputFields()
@@ -24,7 +24,7 @@ class PhotoItem extends  Component
         $this->item =  '';
         $this->item_id =  '';
         $this->item_name =  '';
-        $this->photos =  '';
+        $this->photos =  [];
     }
 
     public function photoItem($item_id)
@@ -44,6 +44,8 @@ class PhotoItem extends  Component
 
     public function closeModal()
     {
+        $this->resetInputFields();
+        $this->reset(['photos']);
         $this->dispatchBrowserEvent('closeModalPhoto');
     }
 
@@ -56,9 +58,17 @@ class PhotoItem extends  Component
 
     public function delete($media_id)
     {
-        $media = Media::find($media_id);
-        $media->delete();
+        try {
+            $media = Media::find($media_id);
+            $media->delete();
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+        $this->emit('photo_refresht');
+
         $this->images =  $this->item->getMedia('images');
+
+        $this->photos = [];
     }
 
     public function upload()
@@ -80,7 +90,7 @@ class PhotoItem extends  Component
         $this->photos = [];
 
         // $this->updateMode = false;
-        $this->resetInputFields();
+        // $this->resetInputFields();
         $this->dispatchBrowserEvent('alert', [
             'type' => 'success',
             'message' => "Фото сохранено!"

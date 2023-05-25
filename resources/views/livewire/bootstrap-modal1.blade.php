@@ -44,6 +44,11 @@
                             </div>
                         @endif
                     </div>
+                        <div class="row" wire:loading wire:target="delete">
+                        <div class="alert alert-danger" role="alert">
+                            Удаляем фото...
+                        </div>
+                    </div>
                     {{-- <div class="row">
                         <div class="input-group mb-3"  >
                             <div class="custom-file">
@@ -60,14 +65,16 @@
                             <span class="error">{{ $message }}</span>
                         @enderror
                     </div> --}}
-                    <div class="row" wire:loading.remove>
-                        <input type="file" class="form-control" wire:model="photos" multiple
-                            style="padding: 3px 5px;" />
-                        @error('photos.*')
-                            <span class="error">{{ $message }}</span>
-                        @enderror
+                    <div class="row">
+                        <form wire:submit.prevent="save">
+                            <input type="file" class="form-control" wire:model="photos" multiple
+                                style="padding: 3px 5px;" />
+                            @error('photos.*')
+                                <span class="error">{{ $message }}</span>
+                            @enderror
+                        </form>
                     </div>
-                    <div class="row" wire:loading wire:target="upload()">
+                    <div class="row" wire:loading wire:target="upload">
                         <div class="alert alert-success" role="alert">
                             Загружаем фото...
                         </div>
