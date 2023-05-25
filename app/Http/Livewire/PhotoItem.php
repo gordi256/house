@@ -16,7 +16,7 @@ class PhotoItem extends  Component
     public $modalFormVisible = false;
 
     public $item_id,  $item,  $media_id, $check, $item_name, $rating, $rate, $description, $conclusion, $value;
-    protected $listeners = ['photo_item' => 'photoItem','photo_refresht' => '$refresh'];
+    protected $listeners = ['photo_item' => 'photoItem','photo_refresh' => '$refresh'];
 
 
     private function resetInputFields()
@@ -46,6 +46,8 @@ class PhotoItem extends  Component
     {
         $this->resetInputFields();
         $this->reset(['photos']);
+        $this->dispatchBrowserEvent('reloadTable');
+
         $this->dispatchBrowserEvent('closeModalPhoto');
     }
 
@@ -64,7 +66,7 @@ class PhotoItem extends  Component
         } catch (\Throwable $th) {
             //throw $th;
         }
-        $this->emit('photo_refresht');
+        $this->emit('photo_refresh');
 
         $this->images =  $this->item->getMedia('images');
 
@@ -91,12 +93,14 @@ class PhotoItem extends  Component
 
         // $this->updateMode = false;
         // $this->resetInputFields();
-        $this->dispatchBrowserEvent('alert', [
-            'type' => 'success',
-            'message' => "Фото сохранено!"
-        ]);
+        // $this->dispatchBrowserEvent('alert', [
+        //     'type' => 'success',
+        //     'message' => "Фото сохранено!"
+        // ]);
+        $this->emit('photo_refresh');
+
         $this->dispatchBrowserEvent('reloadTable');
 
-        $this->dispatchBrowserEvent('closeModal');
+       // $this->dispatchBrowserEvent('closeModal');
     }
 }

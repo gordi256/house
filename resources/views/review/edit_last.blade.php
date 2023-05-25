@@ -439,6 +439,7 @@
 
         window.addEventListener('closeModalPhoto', event => {
             $("#photoModal").modal('hide');
+            
         })
 
 
