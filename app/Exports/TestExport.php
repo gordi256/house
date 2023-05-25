@@ -68,7 +68,7 @@ class TestExport implements FromView,    WithColumnWidths,    WithStyles,    Wit
 
     public function view(): View
     {
-        $items = ReviewItem::query()->where('review_id', $this->review_id)->where('check', 'Да')->get();
+        $items = ReviewItem::query()->where('review_id', $this->review_id)->where('check', 'Да')->orderBy('id', 'desc')->get();
 
         $review = Review::find($this->review_id)->first();
         $items->load('item', 'item.category');

@@ -74,7 +74,8 @@ class ReviewController extends Controller
         // dd($request->all(), Auth::id(), $review);
 
         $review_id = $review->id;
-        $items = Item::all();
+        // $items = Item::all();
+        $items = Item::orderBy('category_id', 'desc')->orderBy('order_column', 'desc')->get();  
         foreach ($items as $item) {
             $review_item = new ReviewItem;
             $review_item->review_id =  $review_id;

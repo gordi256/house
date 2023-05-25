@@ -59,10 +59,10 @@ class ReviewController extends Controller
 
         if ($request->filled('search')) {
 
-            $items = ReviewItem::where('review_id', $request->review_id)->search($request->search)->orderBy('created_at', 'desc')->get();
+            $items = ReviewItem::where('review_id', $request->review_id)->search($request->search)->orderBy('id', 'desc')->get();
             $res['total'] = $items->count();
         } else {
-            $items = ReviewItem::where('review_id', $request->review_id)->orderBy('created_at', 'desc')->get();
+            $items = ReviewItem::where('review_id', $request->review_id)->orderBy('id', 'desc')->get();
 
             $res['total'] = ReviewItem::where('review_id', $request->review_id)->count();
         }
@@ -81,9 +81,9 @@ class ReviewController extends Controller
     // Отчет по объекту
     public function report(Request $request)
     {
+// ->orderBy('id', 'desc')
 
-
-        $items = ReviewItem::where('review_id', $request->review_id)->where('check', 'Да')->orderBy('created_at', 'desc')->get();
+        $items = ReviewItem::where('review_id', $request->review_id)->where('check', 'Да')->get();
 
         $res['total'] = ReviewItem::where('review_id', $request->review_id)->where('check', 'Да')->count();
 

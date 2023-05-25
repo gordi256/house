@@ -193,16 +193,16 @@
     <!-- /Modal info-->
     <table id="table" data-toolbar="#toolbar" data-show-fullscreen="true" data-toggle="table"
         data-url="/api/v1/review/list" data-locale="ru-RU" class="table-information" data-data-field="items"
-        data-filter-control="true" data-group-by="true" data-group-by-toggle="true"
+        data-filter-control="true" data-group-by="true" data-group-by-toggle="true" data-search="true" data-show-search-clear-button="true"
         data-group-by-show-toggle-icon="true" data-group-by-field="category_order" data-query-params="queryParams"
         data-show-refresh="true" data-show-footer="true" data-filter-control-container="#filter">
         {{-- data-editable-url="/api/v1/review/update" --}}
         <thead>
             <tr>
-                {{-- data-editable="true"  
+                {{-- data-editable="true"   
                     data-editable-type="select" data-filter-control="select" --}}{{-- data-editable-pk="check_text"   data-editable-emptytext="Custom empty text." data-editable="true"
                  data-editable-source='[{value: 1, text: "text1"}, {value: 2, text: "text2"} ]'  --}}
-                <th data-field="index" data-sortable="true" data-sort-name="id" data-sort-order="desc">#</th>
+                <th data-field="index" data-sortable="true" data-sort-name="index"  data-sort-order="asc">#</th>
                 <th data-field="name">Наименование</th>
                 <th data-field="check" data-visible="true" data-editable-source="/api/v1/review/select_list"
                     data-editable="true" data-editable-type="select" data-editable-emptytext="---">Отметка при наличии

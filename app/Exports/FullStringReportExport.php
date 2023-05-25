@@ -46,7 +46,7 @@ class FullStringReportExport implements FromView,    WithColumnWidths,    WithSt
 
     public function query()
     {
-        return ReviewItem::query()->where('review_id', $this->review_id);
+        return ReviewItem::query()->where('review_id', $this->review_id)->orderBy('id', 'desc');
     }
 
     public function columnWidths(): array
@@ -68,7 +68,7 @@ class FullStringReportExport implements FromView,    WithColumnWidths,    WithSt
     {
         //$items = ReviewItem::query()->where('review_id', $this->review_id)->where('check', 'Да')->get();
 
-        $items = ReviewItem::query()->where('review_id', $this->review_id)->get();
+        $items = ReviewItem::query()->where('review_id', $this->review_id)->orderBy('id', 'desc')->get();
         $review = Review::find($this->review_id)->first();
         $items->load('item', 'item.category');
 
