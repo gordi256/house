@@ -1,7 +1,5 @@
 @extends('layouts.app')
 @section('content')
-
-
     @if ($errors->any())
         <div class="alert alert-danger">
             <ul>
@@ -32,7 +30,6 @@
         </div>
     </form>
 
-
     <link rel="stylesheet" href="{{ asset('js/select2/css/select2.min.css') }}">
     <script src="{{ asset('js/select2/js/select2.full.min.js') }}" type="text/javascript"></script>
 
@@ -57,21 +54,16 @@
                         return query;
                     },
                     processResults: function(data) {
-                        // console.log(data.items);
-                        // console.log(data.total);
                         // Transforms the top-level key of the response object from 'items' to 'results'
                         return {
                             results: $.map(data.items, function(item) {
                                 return {
                                     text: item.name,
                                     id: item.id
-
                                 }
                             })
                         };
-
                     },
-                    // Additional AJAX parameters go here; see the end of this chapter for the full code of this example
                 }
             })
         })

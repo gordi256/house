@@ -14,7 +14,7 @@ Test
 7.  curl -fsSL https://deb.nodesource.com/setup_20.x | bash - &&\ apt-get install -y nodejs
 8.  Выполнить команды   npm i , npm run build в корневом каталоге
 
-9. Настроить соединение с базой данных в файле .env и выполнить php artisan migrate, php artisan db::seed
+9. Настроить соединение с базой данных и почтовым сервером (для отправки уведомлений пользователям) в файле .env и выполнить php artisan migrate, php artisan db::seed
 
 10. выполнить php artisan op:c
 11. sudo chown -R www-data.www-data /var/www/house/bootstrap/cache
@@ -27,7 +27,7 @@ Test
 email: `admin@admin.com`
 password: `password`
 
-Пользователи
+Пользователи (10 штук)
 
 user1 - user10@admin.com
 
