@@ -202,7 +202,7 @@
                 {{-- data-editable="true"  
                     data-editable-type="select" data-filter-control="select" --}}{{-- data-editable-pk="check_text"   data-editable-emptytext="Custom empty text." data-editable="true"
                  data-editable-source='[{value: 1, text: "text1"}, {value: 2, text: "text2"} ]'  --}}
-                <th data-field="index" data-sortable="true">#</th>
+                <th data-field="index" data-sortable="true" data-sort-name="id" data-sort-order="desc">#</th>
                 <th data-field="name">Наименование</th>
                 <th data-field="check" data-visible="true" data-editable-source="/api/v1/review/select_list"
                     data-editable="true" data-editable-type="select" data-editable-emptytext="---">Отметка при наличии
