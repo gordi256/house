@@ -29,7 +29,9 @@
                                         Размер: {{ $image->human_readable_size }}</br>
                                         <figcaption class="figure-caption">
                                             <button class="btn btn-danger " wire:click="delete({{ $image->id }})"><i
-                                                    class="fa fa-trash"></i></button>
+                                                    class="fa fa-trash"></i></button> 
+                                                    <button class="btn btn-success" wire:click="download({{ $image->id }})"><i
+                                                    class="fa fa-download"></i></button>
                                         </figcaption>
                                     </figure>
                                 </div>

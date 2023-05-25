@@ -73,17 +73,11 @@ class PhotoItem extends  Component
         $this->photos = [];
     }
 
-
-    public function download(Media $mediaItem)
-    {
-        return response()->download($mediaItem->getPath(), $mediaItem->file_name);
-    }
-
     public function upload()
     {
 
         $this->validate([
-            'photos.*' => 'image|mimes:jpeg,png,jpg|max:102400', // 10MB Max
+            'photos.*' => 'image|mimes:jpeg,png,jpg', // 10MB Max|max:102400
         ]);
 
         $item = ReviewItem::find($this->item_id);
