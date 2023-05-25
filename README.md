@@ -10,16 +10,16 @@ Test
 3. Выполнить команду composer install в корневом каталоге
 4. cp .env.example .env
 5. php artisan key:generate
-    5.1 npm установился после apt install ,
-    5.2 curl -fsSL https://deb.nodesource.com/setup_20.x | bash - &&\ apt-get install -y nodejs
-    5.3  Выполнить команды   npm i , npm run build в корневом каталоге
+6. npm установился после apt install ,
+7.  curl -fsSL https://deb.nodesource.com/setup_20.x | bash - &&\ apt-get install -y nodejs
+8.  Выполнить команды   npm i , npm run build в корневом каталоге
 
-6. Настроить соединение с базой данных в файле .env и выполнить php artisan migrate, php artisan db::seed
+9. Настроить соединение с базой данных в файле .env и выполнить php artisan migrate, php artisan db::seed
 
-7. выполнить php artisan op:c
-8. sudo chown -R www-data.www-data /var/www/house/bootstrap/cache
-9. sudo chown -R www-data.www-data /var/www/house/storage
-10. sudo chown -R www-data.www-data /var/www/house/public/media
+10. выполнить php artisan op:c
+11. sudo chown -R www-data.www-data /var/www/house/bootstrap/cache
+12. sudo chown -R www-data.www-data /var/www/house/storage
+13. sudo chown -R www-data.www-data /var/www/house/public/media
 
 ## ДЕМО ПОЛЬЗОВАТЕЛИ
 
