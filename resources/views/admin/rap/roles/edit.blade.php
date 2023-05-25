@@ -28,7 +28,7 @@
         @include('admin.blocks.role_perms_form')
 
         <div class=" py-3 form-row justify-content-center">
-            <button type="submit" class="btn btn-primary float-right">Записать</button>
+            <button type="submit" class="btn btn-primary float-right">Сохранить</button>
             <a class="btn btn-default " href="{{ route('rap.roles.index') }}" role="button">Отмена</a>
         </div>
     </form>

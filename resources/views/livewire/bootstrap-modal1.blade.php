@@ -44,9 +44,7 @@
                             </div>
                         @endif
                     </div>
-                    <div class="row">
-
-
+                    {{-- <div class="row">
                         <div class="input-group mb-3"  >
                             <div class="custom-file">
                                 <input type="file" class="custom-file-input" wire:model="photos" multiple>
@@ -56,19 +54,28 @@
                                 <span   class="input-group-text btn btn-success"
                                     wire:click.prevent="upload()">Загрузить</span>
                             </div>
-                            {{-- .prevent --}}
+                             
                         </div>
                         @error('photos.*')
                             <span class="error">{{ $message }}</span>
                         @enderror
+                    </div> --}}
+                    <div class="row" wire:loading.remove>
+                        <input type="file" class="form-control" wire:model="photos" multiple
+                            style="padding: 3px 5px;" />
+                        @error('photos.*')
+                            <span class="error">{{ $message }}</span>
+                        @enderror
                     </div>
-                  
-
+                    <div class="row" wire:loading wire:target="upload()">
+                        <div class="alert alert-success" role="alert">
+                            Загружаем фото...
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary close-btn" data-dismiss="modal">Отмена</button>
-                    {{-- <button type="button" wire:click.prevent="upload()"
-                        class="btn btn-primary close-modal">Сохранить</button> --}}
+                    <button type="button" wire:click="upload()" class="btn btn-primary close-modal">Сохранить</button>
                 </div>
             </div>
         </div>

@@ -36,7 +36,7 @@
                                 <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
                         </div>
- 
+
                         <div class="form-group">
                             <label for="description">Описание, примечания</label>
                             <textarea class="form-control" name="description" id="description" rows="3">{{ $category->description }}</textarea>
@@ -44,7 +44,7 @@
                                 <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
                         </div>
-      
+
                         {{-- <div class="form-check">
                             <input type="checkbox" class="form-check-input" id="exampleCheck1" />
                             <label class="form-check-label" for="exampleCheck1">Check me out</label>
@@ -53,8 +53,9 @@
                     <!-- /.card-body -->
 
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-primary float-right">Записать</button>
-                        <button type="submit" class="btn btn-default ">Отмена</button>
+                        <button type="submit" class="btn btn-primary float-right">Сохранить</button>
+                        <a class="btn btn-default " href="{{ route('category.index') }}" role="button">Отмена</a>
+
                     </div>
                 </form>
             </div>

@@ -43,10 +43,11 @@ class ItemController extends Controller
         if (!Gate::allows('manage item')) {
             return abort(401);
         }
-        $request->unit  = ItemEnum::tryFrom($request->unit);
-        // dd($request->all());
+        
+        $request->unit = ItemEnum::tryFrom($request->unit);
         $item  = Item::create($request->all());
-        // flash('Message Category create')->success();
+        session()->flash('success', 'Запись успешно создана');
+
         return redirect(route('item.edit', ['item' => $item]));
     }
 
@@ -77,8 +78,9 @@ class ItemController extends Controller
             return abort(401);
         }
         $input = $request->all();
-        // isset($input['active']) ? $input['active'] = '1' : $input['active'] = '0';
         $item->update($input);
+        session()->flash('success', 'Запись успешно обновлена');
+
         return redirect(route('item.edit', ['item' => $item]));
     }
 

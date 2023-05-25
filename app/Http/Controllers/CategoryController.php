@@ -42,7 +42,8 @@ class CategoryController extends Controller
     {
 
         $category  = Category::create($request->validated());
-        // flash('Message Category create')->success();
+        session()->flash('success', 'Категория успешно создана');
+
         return redirect(route('category.edit', ['category' => $category]));
     }
 
@@ -51,8 +52,6 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-
-
         $data = [
             'title' =>  "Категория " . $category->name,
             'category' => $category
@@ -75,7 +74,6 @@ class CategoryController extends Controller
             'category' => $category
         ];
 
-
         return view('category.edit',   $data);
     }
 
@@ -88,7 +86,8 @@ class CategoryController extends Controller
         $input = $request->all();
         // isset($input['active']) ? $input['active'] = '1' : $input['active'] = '0';
         $item = $category->update($input);
-        flash('Message')->success();
+        session()->flash('success', 'Категория успешно обновлена');
+
         return redirect(route('category.edit', ['category' => $category]));
     }
 

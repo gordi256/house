@@ -94,7 +94,8 @@ class  PermissionsController extends Controller
         $permission->name       = $request->name;
         $permission->guard_name =  $request->guard_name;
         $permission->save();
-        flash(__('admin.permissions.created'))->success();
+        session()->flash('success', 'Доступ  успешно создан');
+
         return redirect(route('rap.permissions.edit',    [$permission]));
     }
 
@@ -132,7 +133,8 @@ class  PermissionsController extends Controller
         $permission->guard_name    = $request->guard_name;
         $permission->save();
 
-        flash(__('admin.permissions.updated'))->success();
+        session()->flash('success', 'Доступ  успешно обновлен');
+
         return redirect(route('rap.permissions.index'));
     }
 }

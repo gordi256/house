@@ -212,13 +212,15 @@
                 <th data-field="unit" data-align="center">Ед.изм.</th>
                 <th data-field="value" data-align="right" data-sortable="true">Ориентировочный объём работ,кол-во </th>
                 <th data-field="rating" data-align="center" data-filter-control="select" data-sortable="true"
-                    data-cell-style="cellStyle">Степень важности исполнения, оценка рисков при эксплуатации "Опасность в эксплуатации" (опасно/безопасно)</th>
+                    data-cell-style="cellStyle">Степень важности исполнения, оценка рисков при эксплуатации "Опасность в
+                    эксплуатации" (опасно/безопасно)</th>
                 <th data-field="description" class="cellStyle1" data-formatter="descriptionFormatter">Примечание,
                     дополнение</th>
                 <th data-field="price" data-sortable="true" data-align="right">Стоимость на ед., руб.</th>
                 <th data-field="summa" data-sortable="true" data-filter-control="input" data-align="right"
                     data-footer-formatter="priceFormatter">Ориентировочная стоимость работ, руб.</th>
-                <th data-formatter="actionFormatter" data-width="120" data-switchable="false">Действия</th>
+                <th data-field="id" data-formatter="actionFormatter" data-width="120" data-switchable="false">Действия
+                </th>
 
             </tr>
         </thead>
@@ -272,7 +274,14 @@
                 }, // The data to be sent to the server. Replace with your own data.
                 success: function(data) {
                     console.log("Data successfully sent to server!");
-                    $('#table').bootstrapTable('refresh');
+
+                    if (row[field] == "Да") {
+                        window.livewire.emit("edit_item", row.id);
+
+                    } else {
+                        $('#table').bootstrapTable('refresh');
+                    }
+                    //  
 
                 },
                 error: function(xhr, status, error) {
@@ -284,14 +293,16 @@
         });
 
 
-        $("#table").on("click-row.bs.table", function(editable, columns, row) {
-            
-            console.log("columns:", columns);
-            if (columns.check == 'Да') {
-                window.livewire.emit("edit_item", columns.id);
+
+        $("#table").on("click-cell.bs.table", function(field, value, row, $el) {
+
+               // alert($el.id+"-"+$el.check+"-"+$el.name );
+            if (value != "id") {
+                if ($el.check == 'Да') {
+                    window.livewire.emit("edit_item", $el.id);
+                }
             }
         });
-
 
         function priceFormatter(data) {
             var field = this.field
@@ -301,7 +312,6 @@
                 return sum + i
             }, 0).toFixed(2)
         }
-
 
         function queryParams(params) {
             params.review_id = {{ $review->id }} // add param1
@@ -319,13 +329,9 @@
                 '</span></button>' + '</div>'
         }
 
-
-
         function descriptionFormatter(value, row) {
             return '<div class="container"><div class="truncate-text">' + row.description + '</div></div>'
         }
-
-
 
         function cellStyle(value, row, index) {
             if (value == 10) {
@@ -404,7 +410,6 @@
                 }
             }
         }
-
 
         // editModal
         window.addEventListener('openModal', event => {

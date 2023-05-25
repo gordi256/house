@@ -118,7 +118,8 @@ class  RolesController extends Controller
         $role->name       = $request->name;
         $role->guard_name =  $request->guard_name;
         $role->save();
-        flash(__('admin.roles.created'))->success();
+        session()->flash('success', 'Роль  успешно создана');
+
         return redirect(route('rap.roles.index'));
     }
 
@@ -168,8 +169,8 @@ class  RolesController extends Controller
 
         $permissions = $request->get('permissions', []);
         $role->syncPermissions($permissions);
+        session()->flash('success', 'Роль  успешно обновлена');
 
-        flash(__('admin.roles.updated'))->success();
         return redirect(route('rap.roles.index'));
     }
 }

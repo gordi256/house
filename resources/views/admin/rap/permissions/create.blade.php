@@ -24,7 +24,7 @@
                 placeholder='Guard Name'>
         </div>
         <div class=" py-3 form-row justify-content-center">
-            <button type="submit" class="btn btn-primary float-right">Записать</button>
+            <button type="submit" class="btn btn-primary float-right">Сохранить</button>
             <a class="btn btn-default " href="{{ route('rap.permissions.index') }}" role="button">Отмена</a>
         </div>
     </form>

@@ -98,7 +98,7 @@
                     @include('admin.blocks.user_perms_form')
 
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-primary float-right">Записать</button>
+                        <button type="submit" class="btn btn-primary float-right">Сохранить</button>
                         <button type="submit" class="btn btn-default ">Отмена</button>
                     </div>
                 </form>

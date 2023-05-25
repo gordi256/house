@@ -46,7 +46,8 @@ class BuildingController extends Controller
             return abort(401);
         }
         $building = Building::create($request->all());
-        flash('Message Building create')->success();
+        session()->flash('success', 'Здание успешно создано');
+
         return redirect(route('building.edit', ['building' => $building]));
     }
 
@@ -113,11 +114,11 @@ class BuildingController extends Controller
         if (!Gate::allows('manage building')) {
             return abort(401);
         }
-
         $input = $request->all();
         // isset($input['active']) ? $input['active'] = '1' : $input['active'] = '0';
         $item = $building->update($input);
-        flash('Данные по зданию обновлены успешно')->success();
+        session()->flash('success', 'Здание успешно обновлено');
+
         return redirect(route('building.edit', ['building' => $building]));
     }
 

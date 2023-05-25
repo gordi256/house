@@ -27,8 +27,8 @@
                         <div class="form-group">
                             <label for="name">Наименование</label>
                             <input type="text" value="{{ old('name') }}"
-                                class="form-control @error('name') is-invalid @enderror" id="name"
-                                name="name" placeholder="Наименование категории" />
+                                class="form-control @error('name') is-invalid @enderror" id="name" name="name"
+                                placeholder="Наименование категории" />
                             @error('name')
                                 <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
@@ -39,7 +39,7 @@
                             @error('description')
                                 <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
-                        </div> 
+                        </div>
                         {{-- <div class="form-check">
                             <input type="checkbox" class="form-check-input" id="exampleCheck1" />
                             <label class="form-check-label" for="exampleCheck1">Check me out</label>
@@ -48,8 +48,9 @@
                     <!-- /.card-body -->
 
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-primary float-right">Записать</button>
-                        <button type="submit" class="btn btn-default ">Отмена</button>
+                        <button type="submit" class="btn btn-primary float-right">Сохранить</button>
+                        <a class="btn btn-default " href="{{ route('category.index') }}" role="button">Отмена</a>
+
                     </div>
                 </form>
             </div>

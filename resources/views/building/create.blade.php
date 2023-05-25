@@ -158,7 +158,7 @@
                     <!-- /.card-body -->
 
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-primary float-right">Записать</button>
+                        <button type="submit" class="btn btn-primary float-right">Сохранить</button>
                         <a class="btn btn-default " href="{{ route('building.index') }}" role="button">Отмена</a>
                     </div>
                 </form>

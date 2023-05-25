@@ -60,7 +60,8 @@ class UserController extends Controller
         $this->syncPermissions($request, $user);
         Mail::to($request->user())->send(new UserCreated($user));
 
-        flash('Message User create')->success();
+        session()->flash('success', 'Пользователь успешно сохранен');
+ 
         return redirect(route('user.edit', ['user' => $user]));
     }
     /**
@@ -106,8 +107,8 @@ class UserController extends Controller
         $user->update($input);
         $this->syncPermissions($request, $user);
         //  TODO сделать копирование пермишенов роли! Или не надо?
+        session()->flash('success', 'Пользователь успешно обновлен');
 
-        flash('Message')->success();
         return redirect(route('user.edit', ['user' => $user]));
     }
 
@@ -131,23 +132,25 @@ class UserController extends Controller
             return abort(401);
         }
 
-        $user = Admin::find($request->id);
+        $user = User::find($request->id);
         if (!(Hash::check($request->get('oldpass'), $user->password))) {
             // The passwords matches
-            // dd($request->all(),   $request->get('oldpass'), Auth::user()->password);
-            flash("Ваш текущий пароль не совпадает с введенным вами. Попробуйте еще раз.")->error();
+            session()->flash('error', 'Ваш текущий пароль не совпадает с введенным вами. Попробуйте еще раз.');
+
             return redirect()->back();
         }
 
         if (strcmp($request->get('oldpass'), $request->get('newpass')) == 0) {
-            flash("Новый пароль не может быть равен старому. Попробуйе другой пароль.")->error();
+            session()->flash('error', 'Новый пароль не может быть равен старому. Попробуйе другой пароль.');
+
             return redirect()->back();
         }
 
         $user->password = bcrypt($request->get('newpass'));
         $user->save();
+        session()->flash('success', 'Пароль удачно обновлен');
 
-        flash("Пароль удачно обновлен")->success();
+
         return redirect(route($this->path_admin . '.index'));
     }
 
@@ -157,14 +160,13 @@ class UserController extends Controller
         $permissions = $request->get('permissions', []);
         $roles = Role::find($roles);
 
-        // dd($request->all());
-
         if (!$user->hasAllRoles($roles)) {
             $user->permissions()->sync([]);
         } else {
             $user->syncPermissions($permissions);
         }
         $user->syncRoles($roles);
+
         return $user;
     }
 }

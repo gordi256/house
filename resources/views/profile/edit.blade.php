@@ -88,10 +88,9 @@
 
 
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-primary float-right">
-                            Обновить
-                        </button>
-                        <button type="submit" class="btn btn-default ">Отмена</button>
+                        <button type="submit" class="btn btn-primary float-right">Обновить</button>
+                        <a class="btn btn-default " href="{{ route('dashboard') }}" role="button">Отмена</a>
+
                     </div>
                 </form>
             </div>
