@@ -66,7 +66,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary close-btn" wire:click="closeModal()"
                         data-dismiss="modal">Отмена</button>
-                    <button type="button" wire:click="upload()" class="btn btn-primary close-modal">Сохранить</button>
+                    <button type="button" wire:click="upload()" class="btn btn-primary close-modal">Загрузить фото</button>
                 </div>
             </div>
         </div>

@@ -43,8 +43,9 @@ class CategoryController extends Controller
 
         $category  = Category::create($request->validated());
         session()->flash('success', 'Категория успешно создана');
+        return redirect(route('category.index' ));
 
-        return redirect(route('category.edit', ['category' => $category]));
+       // return redirect(route('category.edit', ['category' => $category]));
     }
 
     /**
@@ -87,8 +88,9 @@ class CategoryController extends Controller
         // isset($input['active']) ? $input['active'] = '1' : $input['active'] = '0';
         $item = $category->update($input);
         session()->flash('success', 'Категория успешно обновлена');
+        return redirect(route('category.index' ));
 
-        return redirect(route('category.edit', ['category' => $category]));
+        //return redirect(route('category.edit', ['category' => $category]));
     }
 
     /**

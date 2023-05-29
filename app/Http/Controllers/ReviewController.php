@@ -85,6 +85,8 @@ class ReviewController extends Controller
             $review_item->rating =  0;
             $review_item->save();
         }
+        session()->flash('success', 'Отчет успешно создан');
+
         return redirect(route('review.edit', ['review' => $review]));
     }
     /**

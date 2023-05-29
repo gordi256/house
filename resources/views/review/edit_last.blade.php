@@ -38,10 +38,12 @@
                     заполненные</a>
             </div>
         </div>
-        <a class="btn btn-danger" href="{{ route('report.download_photo', ['review' => $review->id]) }}" role="button"><i
+        <a class="btn btn-success" href="{{ route('report.download_photo', ['review' => $review->id]) }}" role="button"><i
                 class="fa  fa-camera"></i> Скачать фото</a>
         <button type="button" id="info" data-toggle="modal" data-target="#infoModal" class="btn btn-info">
             Помощь</button>
+            <a class="btn btn-danger" href="{{ route('review.index' ) }}" role="button"><i
+                class="fa fa-sign-out"></i> Выход </a>
         <div id="filter">
             <div class="row">
                 <div class="col">

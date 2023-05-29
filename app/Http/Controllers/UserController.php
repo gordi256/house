@@ -61,8 +61,8 @@ class UserController extends Controller
         Mail::to($request->user())->send(new UserCreated($user));
 
         session()->flash('success', 'Пользователь успешно сохранен');
- 
-        return redirect(route('user.edit', ['user' => $user]));
+        return redirect(route('user.index' ));
+        //return redirect(route('user.edit', ['user' => $user]));
     }
     /**
      * Display the specified resource.
@@ -108,8 +108,9 @@ class UserController extends Controller
         $this->syncPermissions($request, $user);
         //  TODO сделать копирование пермишенов роли! Или не надо?
         session()->flash('success', 'Пользователь успешно обновлен');
+        return redirect(route('user.index' ));
 
-        return redirect(route('user.edit', ['user' => $user]));
+       // return redirect(route('user.edit', ['user' => $user]));
     }
 
     /**

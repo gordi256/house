@@ -47,8 +47,8 @@ class BuildingController extends Controller
         }
         $building = Building::create($request->all());
         session()->flash('success', 'Здание успешно создано');
-
-        return redirect(route('building.edit', ['building' => $building]));
+        return redirect(route('building.index' ));
+     //   return redirect(route('building.edit', ['building' => $building]));
     }
 
     /**
@@ -118,8 +118,9 @@ class BuildingController extends Controller
         // isset($input['active']) ? $input['active'] = '1' : $input['active'] = '0';
         $item = $building->update($input);
         session()->flash('success', 'Здание успешно обновлено');
+      //  return redirect(route('building.edit', ['building' => $building]));
 
-        return redirect(route('building.edit', ['building' => $building]));
+        return redirect(route('building.index' ));
     }
 
     /**

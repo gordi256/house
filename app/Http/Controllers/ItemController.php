@@ -47,8 +47,9 @@ class ItemController extends Controller
         $request->unit = ItemEnum::tryFrom($request->unit);
         $item  = Item::create($request->all());
         session()->flash('success', 'Запись успешно создана');
+        return redirect(route('category.index' ));
 
-        return redirect(route('item.edit', ['item' => $item]));
+      //  return redirect(route('item.edit', ['item' => $item]));
     }
 
     /**
@@ -80,8 +81,9 @@ class ItemController extends Controller
         $input = $request->all();
         $item->update($input);
         session()->flash('success', 'Запись успешно обновлена');
+        return redirect(route('category.index' ));
 
-        return redirect(route('item.edit', ['item' => $item]));
+       // return redirect(route('item.edit', ['item' => $item]));
     }
 
     /**
