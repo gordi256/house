@@ -18,7 +18,7 @@
     </table>
     <div id="toolbar">
         <a class="btn btn-success" href="{{ route('review.edit', ['review' => $review->id]) }}" role="button"><i
-                class="fa fa-eye"></i> Анкета</a>
+                class="fa fa-eye"></i>Анкета</a>
         <div class="btn-group" role="group">
             <button id="btnGroupDrop1" type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false"> <i class="fa fa-download"></i>
@@ -31,32 +31,26 @@
                     заполненные</a>
             </div>
         </div>
-
     </div>
-
-
 
     <table id="table" data-toolbar="#toolbar" data-show-fullscreen="true" data-toggle="table"
         data-url="/api/v1/review/report" data-locale="ru-RU" class="table-information" data-data-field="items"
         data-filter-control="true" data-show-search-clear-button="true" data-query-params="queryParams"
         data-show-refresh="true" data-show-footer="true" data-show-columns="true">
-
         <thead>
             <tr>
                 <th data-field="index" data-sortable="true">#</th>
                 <th data-width="500" data-field="name">Наименование</th>
-                <th data-field="check" data-align="center">Отметка при наличии</br> повреждений</th>
+                <th data-field="check" data-align="center">Отметка при наличии повреждений</th>
                 <th data-field="unit" data-align="center">Ед.изм.</th>
-                <th data-field="value" data-align="right" data-sortable="true">Ориентировочный объём </br>работ,кол-во </th>
-                <th data-field="rating" data-align="center" data-sortable="true" data-cell-style="cellStyle"> Степень
-                    важности исполнения,</br> оценка рисков при
-                    эксплуатации </br>"Опасность&nbsp;в&nbsp;эксплуатации" </br>(опасно/безопасно)</th>
+                <th data-field="value" data-align="right" data-sortable="true">Ориентировочный объём работ,кол-во </th>
+                <th data-field="rating" data-align="center" data-sortable="true" data-cell-style="cellStyle">Степень
+                    важности исполнения, оценка рисков при эксплуатации  "Опасность&nbsp;в&nbsp;эксплуатации"  (опасно/безопасно)</th>
                 <th data-field="description" data-editable="true" data-formatter="descriptionFormatter">
                     Примечание, дополнение</th>
                 <th data-field="price" data-editable="true" data-sortable="true" data-align="right">Стоимость на ед., руб.
                 </th>
-                <th data-field="summa" data-editable="true" data-sortable="true" data-align="right">
-                    Ориентировочная</br>стоимость работ, руб.
+                <th data-field="summa" data-editable="true" data-sortable="true" data-align="right">Ориентировочная стоимость работ, руб.
                 </th>
             </tr>
         </thead>
@@ -71,10 +65,6 @@
     <script>
         $(function() {
             $('#table').bootstrapTable({
-                //  не работает с селектом(())
-                // stickyHeader: true,
-                //    stickyHeaderOffsetLeft: parseInt($('body').css('padding-left'), 10),
-                //   stickyHeaderOffsetRight: parseInt($('body').css('padding-right'), 10)
 
             })
         })
@@ -160,8 +150,6 @@
         function queryParams(params) {
             params.review_id = {{ $review->id }} // add param1
             params.your_param2 = 2 // add param2
-            // console.log(JSON.stringify(params));
-            // {"limit":10,"offset":0,"order":"asc","your_param1":1,"your_param2":2}
             return params
         }
 

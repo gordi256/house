@@ -61,7 +61,7 @@
         }
 
         function buildingFormatter(value, row) {
-            return '<a href="' + row.edit_link + '" title="Редактировать" >' + row.building + '</a>'
+            return '<i class="fa fa-check-circle " style="color:' + row.check_color +'"></i>  <a href="' + row.edit_link + '" title="Редактировать" >' + row.building + '</a>'
         }
     </script>
 @endsection

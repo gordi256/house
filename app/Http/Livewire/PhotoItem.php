@@ -16,7 +16,7 @@ class PhotoItem extends  Component
     public $modalFormVisible = false;
 
     public $item_id,  $item,  $media_id, $check, $item_name, $rating, $rate, $description, $conclusion, $value;
-    protected $listeners = ['photo_item' => 'photoItem','photo_refresh' => '$refresh'];
+    protected $listeners = ['photo_item' => 'photoItem', 'photo_refresh' => '$refresh'];
 
 
     private function resetInputFields()
@@ -24,6 +24,7 @@ class PhotoItem extends  Component
         $this->item =  '';
         $this->item_id =  '';
         $this->item_name =  '';
+        $this->images =  [];
         $this->photos =  [];
     }
 
@@ -34,7 +35,7 @@ class PhotoItem extends  Component
         $this->item_id = $item_id;
         $this->item_name = $item->item->name;
         $this->images = $item->getMedia('images');
-        $this->openModal();
+        // $this->openModal();
     }
 
     public function openModal()
@@ -45,16 +46,18 @@ class PhotoItem extends  Component
     public function closeModal()
     {
         $this->resetInputFields();
-        $this->reset(['photos']);
+        // $this->reset(['photos']);
         $this->dispatchBrowserEvent('reloadTable');
 
-        $this->dispatchBrowserEvent('closeModalPhoto');
+        // $this->dispatchBrowserEvent('closeModalPhoto');
     }
 
     public function render()
     {
         $this->modalFormVisible = false;
+        $this->dispatchBrowserEvent('openModalPhoto');
 
+        $this->dispatchBrowserEvent('galleryModalPhoto');
         return view('livewire.photo-upload', ['images' => $this->images]);
     }
 
@@ -104,9 +107,10 @@ class PhotoItem extends  Component
         //     'message' => "Фото сохранено!"
         // ]);
         $this->emit('photo_refresh');
+        $this->dispatchBrowserEvent('openModalPhoto');
 
         $this->dispatchBrowserEvent('reloadTable');
 
-       // $this->dispatchBrowserEvent('closeModal');
+        // $this->dispatchBrowserEvent('closeModal');
     }
 }

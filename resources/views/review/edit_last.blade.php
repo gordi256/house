@@ -21,11 +21,13 @@
     <div id="toolbar">
         <a class="btn btn-success" href="{{ route('review.show', ['review' => $review->id]) }}" role="button"><i
                 class="fa fa-eye"></i> Отчет</a>
+
         <a class="btn btn-danger confirm_button" data-id="{{ $review->id }}" href="#" role="button"> Подтвердить
             анкету</a>
-        <a class="btn btn-primary approve_button" data-id="{{ $review->id }}" href="#" role="button"><i
-                class="fa fa-plus"></i>Утвердить анкету </a>
-
+        @can('manage building')
+            <a class="btn btn-primary approve_button" data-id="{{ $review->id }}" href="#" role="button"><i
+                    class="fa fa-plus"></i>Утвердить анкету </a>
+        @endcan
         <div class="btn-group" role="group">
             <button id="btnGroupDrop1" type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false"> <i class="fa fa-download"></i>
@@ -42,8 +44,8 @@
                 class="fa  fa-camera"></i> Скачать фото</a>
         <button type="button" id="info" data-toggle="modal" data-target="#infoModal" class="btn btn-info">
             Помощь</button>
-            <a class="btn btn-danger" href="{{ route('review.index' ) }}" role="button"><i
-                class="fa fa-sign-out"></i> Выход </a>
+        <a class="btn btn-danger" href="{{ route('review.index') }}" role="button"><i class="fa fa-sign-out"></i> Выход
+        </a>
         <div id="filter">
             <div class="row">
                 <div class="col">
@@ -195,16 +197,17 @@
     <!-- /Modal info-->
     <table id="table" data-toolbar="#toolbar" data-show-fullscreen="true" data-toggle="table"
         data-url="/api/v1/review/list" data-locale="ru-RU" class="table-information" data-data-field="items"
-        data-filter-control="true" data-group-by="true" data-group-by-toggle="true" data-search="true" data-show-search-clear-button="true"
-        data-group-by-show-toggle-icon="true" data-group-by-field="category_order" data-query-params="queryParams"
-        data-show-refresh="true" data-show-footer="true" data-filter-control-container="#filter">
+        data-filter-control="true" data-group-by="true" data-group-by-toggle="true" data-search="true"
+        data-show-search-clear-button="true" data-group-by-show-toggle-icon="true" data-group-by-field="category_order"
+        data-query-params="queryParams" data-show-refresh="true" data-show-footer="true"
+        data-filter-control-container="#filter">
         {{-- data-editable-url="/api/v1/review/update" --}}
         <thead>
             <tr>
                 {{-- data-editable="true"   
                     data-editable-type="select" data-filter-control="select" --}}{{-- data-editable-pk="check_text"   data-editable-emptytext="Custom empty text." data-editable="true"
                  data-editable-source='[{value: 1, text: "text1"}, {value: 2, text: "text2"} ]'  --}}
-                <th data-field="index" data-sortable="true" data-sort-name="index"  data-sort-order="asc">#</th>
+                <th data-field="index" data-sortable="true" data-sort-name="index" data-sort-order="asc">#</th>
                 <th data-field="name">Наименование</th>
                 <th data-field="check" data-visible="true" data-editable-source="/api/v1/review/select_list"
                     data-editable="true" data-editable-type="select" data-editable-emptytext="---">Отметка при наличии
@@ -245,16 +248,39 @@
         rel="stylesheet" />
     <script src="{{ asset('js/x-editable-develop/dist/bootstrap4-editable/js/bootstrap-editable.min.js') }}"></script>
 
+    <script src="{{ asset('js/calert.unbabel.min.js') }}"></script>
 
     @livewire('photo-item')
     @livewire('edit-item')
 
     {{-- просмотр фото --}}
+    <link href="{{ asset('vendor/venobox/venobox.min.css') }}" rel="stylesheet">
+
     <script src="{{ asset('/vendor/venobox/venobox.min.js') }}" type="text/javascript"></script>
 
     {{-- просмотр фото --}}
-
     <script>
+        // photoModal
+        window.addEventListener('openModalPhoto', event => {
+        //    alert('openModalPhoto');
+        //    $("#photoModal").modal('show');
+
+
+        })
+
+        window.addEventListener('galleryModalPhoto', event => {
+            //  alert('galleryModalPhoto');
+
+            new VenoBox({
+                selector: '.my-image-links',
+                numeration: true,
+                infinigall: true,
+                share: true,
+                spinner: 'rotating-plane'
+            });
+
+        })
+
         $('#table').bootstrapTable({})
         $.fn.editable.defaults.mode = 'inline';
 
@@ -294,11 +320,44 @@
 
         });
 
+        $('body').on('click', '.confirm_button', function(e) {
+            var product_id = $(this).data('id');
+            console.log("product_id:", product_id);
+            calert('Вы действительно хотите подтвердить  анкету ?', {
+                    cancelButton: true,
+                    icon: 'question'
+                })
+                .then(result => {
+                    if (result.isConfirmed) {
 
+                        return calert('Операция подтверждена', '', 'success')
+                    } else {
+                        return calert('Cancel', 'Операция отменена', 'error')
+                    }
+                })
+        });
+
+
+        $('body').on('click', '.approve_button', function(e) {
+            var product_id = $(this).data('id');
+            console.log("product_id:", product_id);
+            calert('Вы действительно хотите утвердить анкету ?', {
+                    cancelButton: true,
+                    icon: 'question'
+                })
+                .then(result => {
+                    if (result.isConfirmed) {
+
+                        return calert('Операция подтверждена', '', 'success')
+                    } else {
+                        return calert('Cancel', 'Операция отменена', 'error')
+                    }
+                })
+        });
 
         $("#table").on("click-cell.bs.table", function(field, value, row, $el) {
 
-               // alert($el.id+"-"+$el.check+"-"+$el.name );
+            // alert($el.id+"-"+$el.check+"-"+$el.name );
             if (value != "id") {
                 if ($el.check == 'Да') {
                     window.livewire.emit("edit_item", $el.id);
@@ -426,22 +485,11 @@
             $('#table').bootstrapTable('refresh');
         })
 
-        // photoModal
-        window.addEventListener('openModalPhoto', event => {
 
-            new VenoBox({
-                selector: '.my-image-links',
-                numeration: true,
-                infinigall: true,
-                share: true,
-                spinner: 'rotating-plane'
-            });
-            $("#photoModal").modal('show');
-        })
 
         window.addEventListener('closeModalPhoto', event => {
             $("#photoModal").modal('hide');
-            
+
         })
 
 
@@ -451,6 +499,7 @@
 
         $('body').on('click', '.photo-button', function() {
             window.livewire.emit("photo_item", $(this).data('id'));
+               $("#photoModal").modal('show');
         });
     </script>
 

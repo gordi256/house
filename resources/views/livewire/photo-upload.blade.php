@@ -26,7 +26,7 @@
                                                 src="{{ $image->getUrl('preview') }}" class="img-fluid my-link"
                                                 alt="{{ $image->getFullUrl() }}"></a>
 
-                                        Размер: {{ $image->human_readable_size }}</br>
+                                        Размер: {{ $image->human_readable_size }} 
                                         <figcaption class="figure-caption">
                                             <button class="btn btn-danger " wire:click="delete({{ $image->id }})"><i
                                                     class="fa fa-trash"></i></button>

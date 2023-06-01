@@ -65,4 +65,19 @@ class Review extends Model
         }
         return number_format(round($summa, 2), 2, '.', '');
     }
+
+    public function getCheckColorAttribute()
+    {
+        $color = 'gray';
+        if ($this->confirmed === null && $this->approved === null) {
+            $color = 'gray';
+        }
+        if ($this->confirmed === 1 && $this->approved === null) {
+            $color = 'blue';
+        }
+        if ($this->confirmed === 1 && $this->approved === 1) {
+            $color = 'green';
+        }
+        return $color;
+    }
 }
