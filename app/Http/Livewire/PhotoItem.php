@@ -46,8 +46,8 @@ class PhotoItem extends  Component
     public function closeModal()
     {
         $this->resetInputFields();
-        // $this->reset(['photos']);
-        $this->dispatchBrowserEvent('reloadTable');
+        $this->reset(['photos']);
+        // $this->dispatchBrowserEvent('reloadTable');
 
         // $this->dispatchBrowserEvent('closeModalPhoto');
     }
@@ -109,8 +109,8 @@ class PhotoItem extends  Component
         $this->emit('photo_refresh');
         $this->dispatchBrowserEvent('openModalPhoto');
 
-        $this->dispatchBrowserEvent('reloadTable');
+      //  $this->dispatchBrowserEvent('reloadTable');
 
-        // $this->dispatchBrowserEvent('closeModal');
+         $this->dispatchBrowserEvent('galleryModalPhoto');
     }
 }

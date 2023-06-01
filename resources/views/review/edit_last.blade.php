@@ -22,11 +22,22 @@
         <a class="btn btn-success" href="{{ route('review.show', ['review' => $review->id]) }}" role="button"><i
                 class="fa fa-eye"></i> Отчет</a>
 
-        <a class="btn btn-danger confirm_button" data-id="{{ $review->id }}" href="#" role="button"> Подтвердить
-            анкету</a>
+ 
+        @if (!$review->confirmed)
+            <button type="button" class="btn btn-danger  confirm_button" data-id="{{ $review->id }}">Подтвердить
+                анкету</button>
+        @else
+            <button type="button" class="btn btn-success" disabled> </i>Подтверждена</button>
+        @endif
+
+
+
         @can('manage building')
-            <a class="btn btn-primary approve_button" data-id="{{ $review->id }}" href="#" role="button"><i
-                    class="fa fa-plus"></i>Утвердить анкету </a>
+            <button type="button" class="btn btn-primary  approve_button" data-id="{{ $review->id }}"
+                @if (!$review->confirmed || $review->approved) disabled @endif>Утвердить анкету </button>
+ 
+
+                
         @endcan
         <div class="btn-group" role="group">
             <button id="btnGroupDrop1" type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown"
@@ -262,8 +273,8 @@
     <script>
         // photoModal
         window.addEventListener('openModalPhoto', event => {
-        //    alert('openModalPhoto');
-        //    $("#photoModal").modal('show');
+            //    alert('openModalPhoto');
+            //    $("#photoModal").modal('show');
 
 
         })
@@ -283,15 +294,15 @@
 
         $('#table').bootstrapTable({})
         $.fn.editable.defaults.mode = 'inline';
-
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'X-XSRF-TOKEN': $('meta[name="_token"]').attr('content')
+            }
+        });
         $("#table").on("editable-save.bs.table", function(event, field, row, rowIndex, oldValue, el) {
             // alert(field + "  New value = " + row[field] + ", old value = " + oldValue + ", rowIndex value = " + ro.id);
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                    'X-XSRF-TOKEN': $('meta[name="_token"]').attr('content')
-                }
-            });
+
             $.ajax({
                 type: "POST",
                 url: "insert_data", // This is the URL of your PHP script which will handle inserting data into the database
@@ -321,16 +332,39 @@
         });
 
         $('body').on('click', '.confirm_button', function(e) {
-            var product_id = $(this).data('id');
-            console.log("product_id:", product_id);
+            var review_id = $(this).data('id');
+            console.log("review_id:", review_id);
             calert('Вы действительно хотите подтвердить  анкету ?', {
                     cancelButton: true,
-                    icon: 'question'
+                    icon: 'question',
+                    backdrop: {
+                        background: 'rgba(255,40,40,0.6)',
+                    }
                 })
                 .then(result => {
                     if (result.isConfirmed) {
+                        $.ajax({
+                            type: "POST",
+                            url: "confirm", // This is the URL of your PHP script which will handle inserting data into the database
+                            data: {
+                                review_id: review_id,
 
-                        return calert('Операция подтверждена', '', 'success')
+                            }, // The data to be sent to the server. Replace with your own data.
+                            success: function(data) {
+                                console.log("Data successfully sent to server!");
+                                location.reload();
+                                return calert('Операция подтверждена', '', 'success')
+                            },
+                            error: function(xhr, status, error) {
+                                console.error("Error sending data to server: " + error);
+                                alert("Error sending data to server: " + error);
+                                return calert('Операция не проведена', error, 'error');
+
+                            }
+
+
+                        });
+
                     } else {
                         return calert('Cancel', 'Операция отменена', 'error')
                     }
@@ -339,16 +373,42 @@
 
 
         $('body').on('click', '.approve_button', function(e) {
-            var product_id = $(this).data('id');
-            console.log("product_id:", product_id);
+            var review_id = $(this).data('id');
+            console.log("review_id:", review_id);
             calert('Вы действительно хотите утвердить анкету ?', {
                     cancelButton: true,
-                    icon: 'question'
+                    icon: 'question',
+                    backdrop: {
+                        background: 'rgba(255,40,40,0.6)',
+                    }
                 })
                 .then(result => {
                     if (result.isConfirmed) {
 
-                        return calert('Операция подтверждена', '', 'success')
+                        $.ajax({
+                            type: "POST",
+                            url: "approve", // This is the URL of your PHP script which will handle inserting data into the database
+                            data: {
+                                review_id: review_id,
+
+                            }, // The data to be sent to the server. Replace with your own data.
+                            success: function(data) {
+                                console.log("Data successfully sent to server!");
+                                location.reload();
+                                return calert('Операция подтверждена', '', 'success');
+                            },
+                            error: function(xhr, status, error) {
+                                console.error("Error sending data to server: " + error);
+                                alert("Error sending data to server: " + error);
+                                return calert('Операция не проведена', error, 'error');
+
+                            }
+
+
+                        });
+
+
+
                     } else {
                         return calert('Cancel', 'Операция отменена', 'error')
                     }
@@ -499,7 +559,7 @@
 
         $('body').on('click', '.photo-button', function() {
             window.livewire.emit("photo_item", $(this).data('id'));
-               $("#photoModal").modal('show');
+            $("#photoModal").modal('show');
         });
     </script>
 

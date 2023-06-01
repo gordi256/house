@@ -75,7 +75,7 @@ class ReviewController extends Controller
 
         $review_id = $review->id;
         // $items = Item::all();
-        $items = Item::orderBy('category_id', 'desc')->orderBy('order_column', 'desc')->get();  
+        $items = Item::orderBy('category_id', 'desc')->orderBy('order_column', 'desc')->get();
         foreach ($items as $item) {
             $review_item = new ReviewItem;
             $review_item->review_id =  $review_id;
@@ -170,6 +170,18 @@ class ReviewController extends Controller
         // установим confirmed!
         $review->confirmed = 1;
         $review->save();
+        session()->flash('success', 'Анкета  успешно подтверждена');
+
+        return redirect(route('review.edit', ['review' => $review]));
+    }
+
+    public function approve(Review $review)
+    {
+        // установим approved!
+        $review->approved = 1;
+        $review->save();
+        session()->flash('success', 'Анкета  успешно утверждена');
+
         return redirect(route('review.edit', ['review' => $review]));
     }
 
