@@ -19,10 +19,10 @@ class CategoryResource extends JsonResource
         return [
             'id' =>   $this->id,
             'name' =>   $this->name,
-            // 'organization' =>   $this->organization,
             'item_count' =>   $this->item_count,
             'edit_link' => @$this->edit_link,
             'show_link' => @$this->show_link,
+            'trashed' => @$this->trashed(),
         ];
     }
 }

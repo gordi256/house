@@ -26,6 +26,8 @@ class BuildingResource extends JsonResource
             'review_count' => @$this->review_count,
             'report_link' => @$this->report_link,
             'new_report_link' => @$this->new_report_link,
+            'trashed' => @$this->trashed(),
+
         ];
     }
 }

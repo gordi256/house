@@ -10,12 +10,14 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Nicolaslopezj\Searchable\SearchableTrait;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 
 class ReviewItem extends Model implements HasMedia
 {
     use HasFactory, InteractsWithMedia;
     use SearchableTrait;
+    use SoftDeletes;
 
     protected $guarded = [];
 

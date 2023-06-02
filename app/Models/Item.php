@@ -9,12 +9,14 @@ use App\Enums\ItemEnum;
 use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
 use Nicolaslopezj\Searchable\SearchableTrait;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Item extends Model implements Sortable
 {
     use HasFactory;
     use SortableTrait;
     use SearchableTrait;
+    use SoftDeletes;
 
 
     protected $guarded = [];
@@ -23,17 +25,11 @@ class Item extends Model implements Sortable
     {
         return $this->belongsTo(Category::class, 'category_id', 'id');
     }
+
     public function getEditLinkAttribute()
     {
         return    "/item/" . $this->id . "/edit";
     }
 
-    /**
-     * Write code on Method
-     *
-     * @return response()
-     */
-    // protected $casts = [
-    //     'unit' => ItemEnum::class
-    // ];
+ 
 }

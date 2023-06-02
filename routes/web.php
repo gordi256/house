@@ -30,8 +30,15 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['au
 
 
 Route::middleware('auth')->group(function () {
-    Route::resource('/category', CategoryController::class);
+
     Route::get('/catalog', [CategoryController::class, 'catalog'])->name('category.catalog');
+
+    Route::resource('/category', CategoryController::class);
+    Route::post('/delete_category', [CategoryController::class, 'destroy'])->name('category.delete_category');
+    Route::post('/undelete_category', [CategoryController::class, 'undelete'])->name('category.undelete_category');
+    Route::post('/category/delete_item', [ItemController::class, 'destroy'])->name('item.delete_item');
+    Route::post('/category/undelete_item', [ItemController::class, 'undelete'])->name('category.undelete_item');
+
     Route::resource('/item', ItemController::class);
 
     Route::resource('/building', BuildingController::class);
@@ -42,7 +49,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/review/{review}/download', [ReviewController::class, 'download'])->name('review.download');
     Route::get('/review/{review}/report_download', [ReviewController::class, 'report_download'])->name('report.download');
     Route::get('/review/{review}/report_download_all', [ReviewController::class, 'report_download_all'])->name('report.download_all');
-    
+
     Route::get('/review/{review}/download_photo', [ReviewController::class, 'download_photo'])->name('report.download_photo');
     Route::post('/review/{review}/confirm', [ReviewController::class, 'confirm'])->name('review.confirm');
     Route::post('/review/{review}/approve', [ReviewController::class, 'approve'])->name('review.approve');

@@ -24,6 +24,8 @@ class ReviewResource extends JsonResource
             'review_total' => @$this->review_total,
             'check_color' => @$this->check_color,
             'created_at' => @$this->created_at->diffForHumans(),
+            'trashed' => @$this->trashed(),
+
         ];
     }
 }

@@ -358,7 +358,7 @@
                             error: function(xhr, status, error) {
                                 console.error("Error sending data to server: " + error);
                                 alert("Error sending data to server: " + error);
-                                return calert('Операция не проведена', error, 'error');
+                                return calert('Операция не произведена', error, 'error');
 
                             }
 
@@ -400,7 +400,7 @@
                             error: function(xhr, status, error) {
                                 console.error("Error sending data to server: " + error);
                                 alert("Error sending data to server: " + error);
-                                return calert('Операция не проведена', error, 'error');
+                                return calert('Операция не произведена', error, 'error');
 
                             }
 

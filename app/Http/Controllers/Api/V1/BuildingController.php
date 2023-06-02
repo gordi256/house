@@ -18,6 +18,13 @@ class BuildingController extends Controller
 
         $sortDirection = 'desc';
         $sortField = 'created_at';
+        $items = Building::query();
+
+        if ($request->filled('with_trashed')) {
+
+            $items->withTrashed();
+        }
+
         if ($request->filled('offset')) {
             $offset = $request->offset;
         }
@@ -28,14 +35,14 @@ class BuildingController extends Controller
 
         $res = array();
         if ($request->filled('search')) {
-            $items = Building::withCount('review')->search($request->search)->orderBy('created_at', 'desc')->get();
+            $items ->withCount('review')->search($request->search)->orderBy('created_at', 'desc');
        
             $res['total'] = $items->count();
         } else {
-            $items = Building::withCount('review')->offset($offset)->limit($limit)->orderBy('created_at', 'desc')->get();
-            $res['total'] = Building::count();
+            $items =  $items ->withCount('review')->offset($offset)->limit($limit)->orderBy('created_at', 'desc');
+            $res['total'] =  $items ->count();
         }
-
+        $items = $items->get();
         $items->transform(function (Building $items) {
             return (new BuildingResource($items));
         });

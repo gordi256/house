@@ -105,35 +105,94 @@
 
     <script src="{{ asset('js/calert.unbabel.min.js') }}"></script>
     <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'X-XSRF-TOKEN': $('meta[name="_token"]').attr('content')
+            }
+        });
         $('body').on('click', '.delete_button', function(e) {
-            var product_id = $(this).data('id');
-            console.log("product_id:", product_id);
-            calert('Вы действительно хотите удалить расценку ?', {
+            var category_id = $(this).data('id');
+            console.log("category_id:", category_id);
+            calert('Вы действительно хотите удалить расценку?', {
                     cancelButton: true,
-                    icon: 'question'
+                    icon: 'question',
+                    backdrop: {
+                        background: 'rgba(255,40,40,0.6)',
+                    }
                 })
                 .then(result => {
                     if (result.isConfirmed) {
+                        $.ajax({
+                            type: "POST",
+                            url: "delete_item",
+                            data: {
+                                category_id: category_id,
+                            },
+                            success: function(data) {
+                                console.log("Data successfully sent to server!" + data);
+                                $('#table').bootstrapTable('refresh');
+                                return calert('Расценка  удалена ', '', 'success')
+                            },
+                            error: function(xhr, status, error) {
+                                console.error("Error status: " + status +
+                                    " Error sending data to server: " + error);
+                                var err = eval("(" + xhr.responseText + ")");
+                                return calert('Операция не произведена', err.message, 'error');
+                            }
+                        });
 
-                        return calert('Operation Success', '', 'success')
                     } else {
                         return calert('Cancel', 'Операция отменена', 'error')
                     }
                 })
         });
-    </script>
 
+        $('body').on('click', '.undelete_button', function(e) {
+            var category_id = $(this).data('id');
+            console.log("category_id:", category_id);
+            calert('Вы действительно хотите восстановить расценку?', {
+                    cancelButton: true,
+                    icon: 'question',
+                    backdrop: {
+                        background: 'rgba(255,40,40,0.6)',
+                    }
+                })
+                .then(result => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: "POST",
+                            url: "undelete_item",
+                            data: {
+                                category_id: category_id,
+                            },
+                            success: function(data) {
+                                console.log("Data successfully sent to server!" + data);
+                                $('#table').bootstrapTable('refresh');
+                                return calert('Расценка восстановлена ', '', 'success')
+                            },
+                            error: function(xhr, status, error) {
+                                console.error("Error status: " + status +
+                                    " Error sending data to server: " + error);
+                                var err = eval("(" + xhr.responseText + ")");
+                                return calert('Операция не произведена', err.message, 'error');
+                            }
+                        });
 
-    <script>
+                    } else {
+                        return calert('Cancel', 'Операция отменена', 'error')
+                    }
+                })
+        });
+
         $(function() {
             $('#table').bootstrapTable()
         })
 
         function queryParams(params) {
             params.category_id = {{ $category->id }} // add param1
-            params.your_param2 = 2 // add param2
-            // console.log(JSON.stringify(params));
-            // {"limit":10,"offset":0,"order":"asc","your_param1":1,"your_param2":2}
+            params.with_trashed = {{ $with_trashed }} // add param2
+
             return params
         }
 
@@ -144,7 +203,7 @@
                 '</a>'
         }
 
-        function actionFormatter(value, row) {
+        function actionFormatter1(value, row) {
 
             return '<div class="btn-group" role="group" aria-label="Basic example">' +
                 '<a class="btn btn-primary  btn-sm" href="' + row.edit_link +
@@ -153,9 +212,27 @@
                 '" href="#" title="Новый отчет"  ><i class="fa fa-trash"></i></a>' + '</div>'
         }
 
-    
-    </script>
+        function actionFormatter(value, row) {
+            action_str = '<div class="btn-group" role="group" aria-label="Basic example">' +
+                '<a class="btn btn-primary  btn-sm" href="' + row.edit_link +
+                '" title="Редактировать"  ><i class="fa fa-edit"></i></a>';
+            if (row.trashed) {
+                action_str = action_str + '<a class="btn btn-success   btn-sm undelete_button"   data-id="' + row.id +
+                    '" href="#" title="Восстановить"  ><i class="fa fa-recycle"></i></a>';
+            } else {
+                action_str = action_str + '<a class="btn btn-danger  btn-sm delete_button"   data-id="' + row.id +
+                    '" href="#" title="Удаление"  ><i class="fa fa-trash"></i></a>';
+            }
+            //  return '<div class="btn-group" role="group" aria-label="Basic example">' +
+            //      '<a class="btn btn-primary  btn-sm" href="' + row.edit_link +
+            //      '" title="Редактировать"  ><i class="fa fa-edit"></i></a>' +
+            //      '<a class="btn btn-danger  btn-sm delete_button"   data-id="' + row.id +
+            //     '" href="#" title="Удаление"  ><i class="fa fa-trash"></i></a>' + '</div>'
 
+            action_str = action_str + '</div>';
+            return action_str;
+        }
+    </script>
 @endsection
 
 

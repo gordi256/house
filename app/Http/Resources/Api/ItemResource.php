@@ -33,6 +33,7 @@ class ItemResource extends JsonResource
 
             'check' => $check[array_rand($check, 1)],
             'edit_link' => @$this->edit_link,
+            'trashed' => @$this->trashed(),
 
         ];
     }

@@ -26,6 +26,7 @@ class ItemListResource extends JsonResource
             'index' =>   $this->category->id . '.' . $this->order_column,
             'rate' =>   $this->rate,
             'edit_link' => @$this->edit_link,
+            'trashed' => @$this->trashed(),
 
         ];
     }

@@ -25,6 +25,8 @@ class UserResource extends JsonResource
 
             'edit_link' => @$this->edit_link,
             'report_link' => @$this->report_link,
+            'trashed' => @$this->trashed(),
+
         ];
     }
 }

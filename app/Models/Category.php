@@ -7,12 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
 use Nicolaslopezj\Searchable\SearchableTrait;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Category extends Model implements Sortable
 {
     use HasFactory;
     use SortableTrait;
     use SearchableTrait;
+    use SoftDeletes;
+
     /**
      * Searchable rules.
      *

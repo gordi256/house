@@ -9,12 +9,15 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Nicolaslopezj\Searchable\SearchableTrait;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
     use SearchableTrait;
     use HasRoles;
+    use SoftDeletes;
+
     /**
      * Searchable rules.
      *
@@ -77,13 +80,13 @@ class User extends Authenticatable
         return $this->hasMany(Review::class, 'user_id');
     }
 
-    public function getRoleAttribute()
-    {
-        if ($this->is_admin) {
-            return 'Администратор';
-        }
-        return 'Инженер';
-    }
+    // public function getRoleAttribute()
+    // {
+    //     if ($this->is_admin) {
+    //         return 'Администратор';
+    //     }
+    //     return 'Инженер';
+    // }
 
     public function getEditLinkAttribute()
     {
@@ -92,12 +95,12 @@ class User extends Authenticatable
 
     public function getFioAttribute()
     {
-        return   @$this->last_name . " " . @$this->first_name . " " . @$this->patronymic;
+        return @$this->last_name . " " . @$this->first_name . " " . @$this->patronymic;
     }
 
     public function getFioShortAttribute()
     {
-        return     $this->last_name . " " .  mb_substr($this->first_name, 0, 1) . ". " . mb_substr($this->patronymic, 0, 1) . ".";
+        return $this->last_name . " " .  mb_substr($this->first_name, 0, 1) . ". " . mb_substr($this->patronymic, 0, 1) . ".";
     }
 
     public function getCanDeletedAttribute()
@@ -108,15 +111,13 @@ class User extends Authenticatable
         return true;
     }
 
-
-    
     public function getUserRolesAttribute()
     {
 
-        $roles_string='';
+        $roles_string = '';
         $roles = $this->getRoleNames();
-        foreach ($roles as $key  ) {
-            $roles_string.=$key . ' ';
+        foreach ($roles as $key) {
+            $roles_string .= $key . ' ';
         }
         return $roles_string;
     }

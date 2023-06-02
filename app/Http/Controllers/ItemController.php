@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ItemEnum;
-use App\Models\{Item, Category};
+use App\Models\{Item, Category, ReviewItem};
 use App\Http\Requests\StoreItemRequest;
 use App\Http\Requests\UpdateItemRequest;
 use Illuminate\Http\Request;
@@ -43,13 +43,13 @@ class ItemController extends Controller
         if (!Gate::allows('manage item')) {
             return abort(401);
         }
-        
+
         $request->unit = ItemEnum::tryFrom($request->unit);
         $item  = Item::create($request->all());
         session()->flash('success', 'Запись успешно создана');
-        return redirect(route('category.index' ));
+        return redirect(route('category.index'));
 
-      //  return redirect(route('item.edit', ['item' => $item]));
+        //  return redirect(route('item.edit', ['item' => $item]));
     }
 
     /**
@@ -81,18 +81,63 @@ class ItemController extends Controller
         $input = $request->all();
         $item->update($input);
         session()->flash('success', 'Запись успешно обновлена');
-        return redirect(route('category.index' ));
+        return redirect(route('category.index'));
 
-       // return redirect(route('item.edit', ['item' => $item]));
+        // return redirect(route('item.edit', ['item' => $item]));
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Item $item)
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Request $request)
     {
-        //
-        // TODO удаление!
+        if (!Gate::allows('delete item')) {
+            return response()->json([
+                'error' => true,
+                'message' => 'У вас отсутствуют права на удаление категории'
+            ], 422);
+        }
 
+        $item = Item::find($request->category_id);
+        $items_count =  ReviewItem::where('item_id', $request->category_id)->count();
+
+        if ($items_count > 0) {
+            return response()->json([
+                'error' => true,
+                'message' => 'Нельзя удалить записи, которые использованы в отчетах'
+            ], 422);
+        }
+
+        $item->delete();
+
+        return response()->json([
+            'false' => true,
+            'message' => 'Запись удалена'
+        ], 200);
+    }
+
+
+    public function undelete(Request $request)
+    {
+        if (!Gate::allows('delete item')) {
+            return response()->json([
+                'error' => true,
+                'message' => 'У вас отсутствуют права на восстановление'
+            ], 422);
+        }
+
+        $category = Item::withTrashed()->find($request->category_id);
+
+
+
+        $category->restore();
+
+        return response()->json([
+            'false' => true,
+            'message' => 'Запись восстановлена'
+        ], 200);
     }
 }
