@@ -27,8 +27,14 @@ class ReviewController extends Controller
      */
     public function index()
     {
+
+
+        if (Gate::allows('delete review')) {
+            $with_trashed = 1;
+        }
         $data = [
             'title' =>  "Отчеты по зданиям",
+            'with_trashed' =>   $with_trashed,
         ];
 
         return view('review.index', $data);
@@ -240,8 +246,47 @@ class ReviewController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Review $review)
+    public function destroy(Request $request)
     {
-        //
+        if (!Gate::allows('delete review')) {
+            return response()->json([
+                'error' => true,
+                'message' => 'У вас отсутствуют права на удаление отчетов'
+            ], 422);
+        }
+
+        $item = Review::find($request->category_id);
+        //  $items_count =  Review::where('building_id', $request->category_id)->count();
+       // dd($item);
+        if ($item->approved  ) {
+            return response()->json([
+                'error' => true,
+                'message' => 'Нельзя удалить отчетах, который уже утвержден'
+            ], 422);
+        }
+        $item->delete();
+
+        return response()->json([
+            'false' => true,
+            'message' => 'Отчет удален'
+        ], 200);
+    }
+
+
+    public function undelete(Request $request)
+    {
+        if (!Gate::allows('delete review')) {
+            return response()->json([
+                'error' => true,
+                'message' => 'У вас отсутствуют права на восстановление отчетов'
+            ], 422);
+        }
+        $category = Review::withTrashed()->find($request->category_id);
+        $category->restore();
+
+        return response()->json([
+            'false' => true,
+            'message' => 'Отчет восстановлен'
+        ], 200);
     }
 }

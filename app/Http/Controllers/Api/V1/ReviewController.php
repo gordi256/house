@@ -18,6 +18,15 @@ class ReviewController extends Controller
 
         $sortDirection = 'desc';
         $sortField = 'created_at';
+
+        $items = Review::query();
+
+        if ($request->filled('with_trashed')) {
+
+            $items->withTrashed();
+        }
+
+
         if ($request->filled('offset')) {
             $offset = $request->offset;
         }
@@ -30,13 +39,17 @@ class ReviewController extends Controller
 
         if ($request->filled('search')) {
 
-            $items = Review::with('building', 'creator')->search($request->search)->orderBy('created_at', 'desc')->get();
+            $items ->with('building', 'creator')->search($request->search)->orderBy('created_at', 'desc') ;
             $res['total'] = $items->count();
         } else {
-            $items = Review::with('building', 'creator')->offset($offset)->limit($limit)->orderBy('created_at', 'desc')->get();
+            $items ->with('building', 'creator')->offset($offset)->limit($limit)->orderBy('created_at', 'desc')->get();
 
             $res['total'] = Review::count();
         }
+
+
+        $items = $items->get();
+
         $items->transform(function (Review $items) {
             return (new ReviewResource($items));
         });

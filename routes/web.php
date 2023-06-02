@@ -42,8 +42,13 @@ Route::middleware('auth')->group(function () {
     Route::resource('/item', ItemController::class);
 
     Route::resource('/building', BuildingController::class);
+    Route::post('/delete_building', [BuildingController::class, 'destroy'])->name('building.delete_building');
+    Route::post('/undelete_building', [BuildingController::class, 'undelete'])->name('building.undelete_building');
     Route::get('/building/{building}/review', [BuildingController::class, 'review'])->name('building.review');
     Route::resource('/review', ReviewController::class);
+    Route::post('/delete_review', [ReviewController::class, 'destroy'])->name('review.delete_review');
+    Route::post('/undelete_review', [ReviewController::class, 'undelete'])->name('review.undelete_review');
+    
 
     Route::get('/review/{review}/report', [ReviewController::class, 'report'])->name('review.report');
     Route::get('/review/{review}/download', [ReviewController::class, 'download'])->name('review.download');

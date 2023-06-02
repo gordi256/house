@@ -223,12 +223,7 @@
                 action_str = action_str + '<a class="btn btn-danger  btn-sm delete_button"   data-id="' + row.id +
                     '" href="#" title="Удаление"  ><i class="fa fa-trash"></i></a>';
             }
-            //  return '<div class="btn-group" role="group" aria-label="Basic example">' +
-            //      '<a class="btn btn-primary  btn-sm" href="' + row.edit_link +
-            //      '" title="Редактировать"  ><i class="fa fa-edit"></i></a>' +
-            //      '<a class="btn btn-danger  btn-sm delete_button"   data-id="' + row.id +
-            //     '" href="#" title="Удаление"  ><i class="fa fa-trash"></i></a>' + '</div>'
-
+      
             action_str = action_str + '</div>';
             return action_str;
         }

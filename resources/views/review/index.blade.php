@@ -10,7 +10,7 @@
         data-show-footer="true" data-filter-control="true" data-locale="ru-RU" data-cookie="true" data-search="true"
         data-show-refresh="true" data-show-search-clear-button="true" data-url="/api/v1/review" data-data-field="items"
         data-side-pagination="server" data-pagination="true" data-page-list="[10, 25, 50 ]" class="table-information"
-        data-search-highlight="true">
+        data-search-highlight="true" data-query-params="queryParams">
         <thead>
             <tr>
                 <th data-field="id">#</th>
@@ -18,7 +18,7 @@
                 <th data-field="creator" data-filter-control="select">Автор</th>
                 {{-- <th data-field="summa" data-align="right">Сумма</th> --}}
                 <th data-field="created_at" data-align="right">Дата отчета</th>
-                <th data-formatter="nameFormatter" data-switchable="false">Действия</th>
+                <th data-formatter="actionFormatter" data-switchable="false">Действия</th>
             </tr>
         </thead>
     </table>
@@ -29,28 +29,96 @@
 
     <script src="{{ asset('js/calert.unbabel.min.js') }}"></script>
     <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'X-XSRF-TOKEN': $('meta[name="_token"]').attr('content')
+            }
+        });
         $('body').on('click', '.delete_button', function(e) {
-            var product_id = $(this).data('id');
-            console.log("product_id:", product_id);
-            calert('Вы действительно хотите удалить отчет ?', {
+            var category_id = $(this).data('id');
+            console.log("category_id:", category_id);
+            calert('Вы действительно хотите удалить отчет?', {
                     cancelButton: true,
-                    icon: 'question'
+                    icon: 'question',
+                    backdrop: {
+                        background: 'rgba(255,40,40,0.6)',
+                    }
                 })
                 .then(result => {
                     if (result.isConfirmed) {
+                        $.ajax({
+                            type: "POST",
+                            url: "delete_review",
+                            data: {
+                                category_id: category_id,
+                            },
+                            success: function(data) {
+                                console.log("Data successfully sent to server!" + data);
+                                $('#table').bootstrapTable('refresh');
+                                return calert('Очет  удален', '', 'success')
+                            },
+                            error: function(xhr, status, error) {
+                                console.error("Error status: " + status +
+                                    " Error sending data to server: " + error);
+                                var err = eval("(" + xhr.responseText + ")");
+                                return calert('Операция не произведена', err.message, 'error');
+                            }
+                        });
 
-                        return calert('Operation Success', '', 'success')
                     } else {
                         return calert('Cancel', 'Операция отменена', 'error')
                     }
                 })
         });
-    </script>
 
-    <script>
+        $('body').on('click', '.undelete_button', function(e) {
+            var category_id = $(this).data('id');
+            console.log("category_id:", category_id);
+            calert('Вы действительно хотите восстановить отчет?', {
+                    cancelButton: true,
+                    icon: 'question',
+                    backdrop: {
+                        background: 'rgba(255,40,40,0.6)',
+                    }
+                })
+                .then(result => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: "POST",
+                            url: "undelete_review",
+                            data: {
+                                category_id: category_id,
+                            },
+                            success: function(data) {
+                                console.log("Data successfully sent to server!" + data);
+                                $('#table').bootstrapTable('refresh');
+                                return calert('Отчет восстановлен', '', 'success')
+                            },
+                            error: function(xhr, status, error) {
+                                console.error("Error status: " + status +
+                                    " Error sending data to server: " + error);
+                                var err = eval("(" + xhr.responseText + ")");
+                                return calert('Операция не произведена', err.message, 'error');
+                            }
+                        });
+
+                    } else {
+                        return calert('Cancel', 'Операция отменена', 'error')
+                    }
+                })
+        });
+
         $(function() {
             $('#table').bootstrapTable()
         })
+
+
+        function queryParams(params) {
+            params.with_trashed = {{ @$with_trashed }} // add param2
+
+            return params
+        }
 
         function nameFormatter(value, row) {
             return '<div class="btn-group" role="group" aria-label="Basic example">' +
@@ -61,8 +129,28 @@
         }
 
         function buildingFormatter(value, row) {
-            return '<i class="fa fa-check-circle " style="color:' + row.check_color +'"></i>  <a href="' + row.edit_link + '" title="Редактировать" >' + row.building + '</a>'
+            return '<i class="fa fa-check-circle " style="color:' + row.check_color + '"></i>  <a href="' + row.edit_link +
+                '" title="Редактировать" >' + row.building + '</a>'
         }
+
+        function actionFormatter(value, row) {
+            action_str = '<div class="btn-group" role="group" aria-label="Basic example">' +
+                '<a class="btn btn-primary  btn-sm" href="' + row.edit_link +
+                '" title="Редактировать"  ><i class="fa fa-edit"></i></a>' ;
+            if (row.trashed) {
+                action_str = action_str + '<a class="btn btn-success   btn-sm undelete_button"   data-id="' + row.id +
+                    '" href="#" title="Восстановить"  ><i class="fa fa-recycle"></i></a>';
+            } else {
+                action_str = action_str + '<a class="btn btn-danger  btn-sm delete_button"   data-id="' + row.id +
+                    '" href="#" title="Удаление"  ><i class="fa fa-trash"></i></a>';
+            }
+
+            action_str = action_str + '</div>';
+            return action_str;
+        }
+
+
+
     </script>
 @endsection
 

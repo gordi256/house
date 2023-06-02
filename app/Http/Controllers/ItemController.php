@@ -110,7 +110,6 @@ class ItemController extends Controller
                 'message' => 'Нельзя удалить записи, которые использованы в отчетах'
             ], 422);
         }
-
         $item->delete();
 
         return response()->json([
@@ -128,11 +127,7 @@ class ItemController extends Controller
                 'message' => 'У вас отсутствуют права на восстановление'
             ], 422);
         }
-
         $category = Item::withTrashed()->find($request->category_id);
-
-
-
         $category->restore();
 
         return response()->json([
