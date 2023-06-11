@@ -4,13 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\Image\Manipulations;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Nicolaslopezj\Searchable\SearchableTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-
-class Building extends Model
+class Building extends Model implements HasMedia
 {
-    use HasFactory;
+    use HasFactory, InteractsWithMedia;
     use SearchableTrait;
     use SoftDeletes;
     /**
@@ -36,9 +39,28 @@ class Building extends Model
     ];
     protected $guarded = [];
 
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $this
+            ->addMediaConversion('preview')
+            ->fit(Manipulations::FIT_CROP, 300, 300)
+            ->nonQueued();
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('images');
+        $this->addMediaCollection('documents');
+    }
+
     public function review()
     {
         return $this->hasMany(Review::class, 'building_id');
+    }
+
+    public function info()
+    {
+        return $this->hasOne(BuildingInfo::class, 'building_id');
     }
 
     public function getEditLinkAttribute()
