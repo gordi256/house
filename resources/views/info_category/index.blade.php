@@ -3,7 +3,7 @@
     <div id="toolbar">
 
         @can('create item')
-            <a class="btn btn-primary" href="{{ route('category.create') }}" role="button"><i class="fa fa-plus"></i> Новая
+            <a class="btn btn-primary" href="{{ route('info_category.create') }}" role="button"><i class="fa fa-plus"></i> Новая
                 категория
             </a>
         @endcan
@@ -12,7 +12,7 @@
 
     <table id="table" data-toolbar="#toolbar" data-toggle="table" data-show-fullscreen="true" data-cache="false"
         data-show-footer="true" data-locale="ru-RU" data-cookie="true" data-search="true" data-show-refresh="true"
-        data-show-search-clear-button="true" data-url="/api/v1/catalog" data-data-field="items" class="table-information"
+        data-show-search-clear-button="true" data-url="/api/v1/info_category" data-data-field="items" class="table-information"
         data-search-highlight="true" data-query-params="queryParams">
         <thead>
             <tr>
@@ -56,7 +56,7 @@
                     if (result.isConfirmed) {
                         $.ajax({
                             type: "POST",
-                            url: "delete_category", 
+                            url: "delete_info_category", 
                             data: {
                                 category_id: category_id,
                             }, 
@@ -93,7 +93,7 @@
                     if (result.isConfirmed) {
                         $.ajax({
                             type: "POST",
-                            url: "undelete_category", 
+                            url: "undelete_info_category", 
                             data: {
                                 category_id: category_id,
                             }, 

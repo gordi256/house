@@ -14,6 +14,9 @@ return new class extends Migration
         Schema::create('info_categories', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->integer('order_column');
+            $table->longText('description')->nullable();
+
             $table->boolean('active')->nullable();
             $table->softDeletes();
             $table->timestamps();

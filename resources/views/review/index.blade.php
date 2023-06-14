@@ -18,7 +18,7 @@
                 <th data-field="creator" data-filter-control="select">Автор</th>
                 {{-- <th data-field="summa" data-align="right">Сумма</th> --}}
                 <th data-field="created_at" data-align="right">Дата отчета</th>
-                <th data-formatter="actionFormatter" data-switchable="false">Действия</th>
+                <th data-formatter="actionFormatter" data-switchable="false" data-align="center">Действия</th>
             </tr>
         </thead>
     </table>

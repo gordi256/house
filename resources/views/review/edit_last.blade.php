@@ -235,7 +235,7 @@
                 <th data-field="price" data-sortable="true" data-align="right">Стоимость на ед., руб.</th>
                 <th data-field="summa" data-sortable="true" data-filter-control="input" data-align="right"
                     data-footer-formatter="priceFormatter">Ориентировочная стоимость работ, руб.</th>
-                <th data-field="id" data-formatter="actionFormatter" data-width="120" data-switchable="false">Действия
+                <th data-field="id" data-formatter="actionFormatter" data-width="120" data-switchable="false" data-align="center">Действия
                 </th>
 
             </tr>

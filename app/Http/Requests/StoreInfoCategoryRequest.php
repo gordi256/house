@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Models\InfoCategory;
+use Illuminate\Validation\Rule;
 
 class StoreInfoCategoryRequest extends FormRequest
 {
@@ -11,7 +13,7 @@ class StoreInfoCategoryRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +24,7 @@ class StoreInfoCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => ['required', 'max:255', Rule::unique(InfoCategory::class)],
         ];
     }
 }

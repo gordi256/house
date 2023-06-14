@@ -20,7 +20,16 @@ class Item extends Model implements Sortable
 
 
     protected $guarded = [];
+    
+    public $sortable = [
+        'order_column_name' => 'order_column',
+        'sort_when_creating' => true,
+    ];
 
+    public function buildSortQuery()
+    {
+        return static::query()->where('info_category_id', $this->info_category_id);
+    }
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class, 'category_id', 'id');

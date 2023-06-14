@@ -19,7 +19,7 @@
                 <th data-field="name" data-formatter="nameFormatter">Наименование</th>
                 <th data-field="organization">Организация </th>
                 <th data-field="review_count">Отчеты</th>
-                <th data-formatter="actionFormatter" data-switchable="false">Действия</th>
+                <th data-formatter="actionFormatter" data-switchable="false" data-align="center">Действия</th>
             </tr>
         </thead>
 

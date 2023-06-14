@@ -17,7 +17,7 @@
                 {{-- <th data-field="name">Объект </th> --}}
                 <th data-field="creator">Автор</th>
                 <th data-field="created_at" data-editable="true">Дата отчета</th>
-                <th data-formatter="nameFormatter" data-switchable="false">Действия</th>
+                <th data-formatter="nameFormatter" data-switchable="false" data-align="center">Действия</th>
             </tr>
         </thead>
     </table>

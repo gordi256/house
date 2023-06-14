@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Api\V1\{TestController, BuildingController, UserController, ReviewController, CategoryController};
+use App\Http\Controllers\Api\V1\{TestController, InfoCategoryController ,BuildingController, UserController, ReviewController, CategoryController};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
- 
+
 // ->middleware('auth')
 
 Route::prefix('v1')->name('v1.')->group(function () {
@@ -23,6 +23,9 @@ Route::prefix('v1')->name('v1.')->group(function () {
     Route::get('/test_list', [TestController::class, 'test']);
     Route::get('/catalog', [CategoryController::class, 'index']);
     Route::get('/category/{category}', [CategoryController::class, 'show']);
+
+    Route::get('/info_category', [InfoCategoryController::class, 'index']);
+    Route::get('/info_category/{category}', [InfoCategoryController::class, 'show']);
 
     Route::get('/building', [BuildingController::class, 'index']);
     Route::get('/building/review', [BuildingController::class, 'review']);

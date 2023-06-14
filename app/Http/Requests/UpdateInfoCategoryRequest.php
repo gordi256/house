@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Models\InfoCategory;
+use Illuminate\Validation\Rule;
 
 class UpdateInfoCategoryRequest extends FormRequest
 {
@@ -22,7 +24,7 @@ class UpdateInfoCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => ['required', 'max:255', Rule::unique(InfoCategory::class)->ignore($this->category->id)],
         ];
     }
 }

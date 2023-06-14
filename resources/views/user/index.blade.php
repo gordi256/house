@@ -16,7 +16,7 @@
                 <th data-formatter="nameFormatter"data-field="name">ФИО</th>
                 <th data-field="email">E-mail </th>
                 <th data-field="role">Роль </th>
-                <th data-formatter="actionFormatter" data-switchable="false">Действия</th>
+                <th data-formatter="actionFormatter" data-switchable="false" data-align="center">Действия</th>
             </tr>
         </thead>
     </table>

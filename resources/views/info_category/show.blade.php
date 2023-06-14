@@ -1,8 +1,8 @@
 @extends('layouts.app')
 @section('content')
     <div id="toolbar">
-        <a class="btn btn-success" href="{{ route('category.index') }}" role="button">Назад</a>
-        <a class="btn btn-primary" href="{{ route('item.create') }}" role="button"><i class="fa fa-plus"></i> Новый пункт</a>
+        <a class="btn btn-success" href="{{ route('info_category.index') }}" role="button">Назад</a>
+        <a class="btn btn-primary" href="{{ route('info_item.create') }}" role="button"><i class="fa fa-plus"></i> Новый пункт</a>
 
         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#formModal">
             Новый пункт
@@ -13,16 +13,16 @@
 
     <table id="table" data-toolbar="#toolbar" data-toggle="table" data-show-fullscreen="true" data-cache="false"
         data-show-footer="false" data-locale="ru-RU" data-cookie="true" data-search="true" data-show-refresh="true"
-        data-show-search-clear-button="true" data-url="/api/v1/category/{{ $category->id }}" data-data-field="items"
+        data-show-search-clear-button="true" data-url="/api/v1/info_category/{{ $category->id }}" data-data-field="items"
         class="table-information" data-search-highlight="true" data-query-params="queryParams">
         <thead>
             <tr>
                 <th data-field="id" data-sortable="true">#</th>
                 <th data-field="name" data-editable="true" data-sortable="true" data-formatter="nameFormatter">Наименование
                 </th>
-                <th data-field="unit" data-editable="true" data-align="center">Ед.изм.</th>
+                {{-- <th data-field="unit" data-editable="true" data-align="center">Ед.изм.</th>
                 <th data-field="rate" data-editable="true" data-align="right" data-editable="true">Стоимость на ед., руб.
-                </th>
+                </th> --}}
                 <th data-formatter="actionFormatter" data-switchable="false" data-align="center">Действия</th>
             </tr>
         </thead>
@@ -125,7 +125,7 @@
                     if (result.isConfirmed) {
                         $.ajax({
                             type: "POST",
-                            url: "delete_item",
+                            url: "delete_info_item",
                             data: {
                                 category_id: category_id,
                             },
@@ -162,7 +162,7 @@
                     if (result.isConfirmed) {
                         $.ajax({
                             type: "POST",
-                            url: "undelete_item",
+                            url: "undelete_info_item",
                             data: {
                                 category_id: category_id,
                             },

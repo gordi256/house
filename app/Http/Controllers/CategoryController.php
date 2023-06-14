@@ -125,9 +125,7 @@ class CategoryController extends Controller
                 'message' => 'Нельзя удалить категорию, у которой есть записи'
             ], 422);
         }
-
         $category->delete();
-
         return response()->json([
             'false' => true,
             'message' => 'Категория удалена'
@@ -142,13 +140,8 @@ class CategoryController extends Controller
                 'message' => 'У вас отсутствуют права на восстановление категории'
             ], 422);
         }
-
         $category = Category::withTrashed()->find($request->category_id);
-
-
-
         $category->restore();
-
         return response()->json([
             'false' => true,
             'message' => 'Категория восстановлена'

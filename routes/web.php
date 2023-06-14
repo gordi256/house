@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\{BuildingController, ProfileController, TestController, UserController, ReviewController, ItemController, CategoryController, DashboardController};
+use App\Http\Controllers\{BuildingController, InfoCategoryController, InfoItemController, ProfileController, TestController, UserController, ReviewController, ItemController, CategoryController, DashboardController};
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,19 +36,27 @@ Route::middleware('auth')->group(function () {
     Route::resource('/category', CategoryController::class);
     Route::post('/delete_category', [CategoryController::class, 'destroy'])->name('category.delete_category');
     Route::post('/undelete_category', [CategoryController::class, 'undelete'])->name('category.undelete_category');
-    Route::post('/category/delete_item', [ItemController::class, 'destroy'])->name('item.delete_item');
-    Route::post('/category/undelete_item', [ItemController::class, 'undelete'])->name('category.undelete_item');
 
     Route::resource('/item', ItemController::class);
+    Route::post('/category/delete_item', [ItemController::class, 'destroy'])->name('item.delete_item');
+    Route::post('/category/undelete_item', [ItemController::class, 'undelete'])->name('item.undelete_item');
+
+    Route::resource('/info_category', InfoCategoryController::class);
+    Route::post('/delete_info_category', [InfoCategoryController::class, 'destroy'])->name('info_category.delete_category');
+    Route::post('/undelete_info_category', [InfoCategoryController::class, 'undelete'])->name('info_category.undelete_category');
+
+    Route::resource('/info_item', InfoItemController::class);
+    Route::post('/info_category/delete_item', [InfoItemController::class, 'destroy'])->name('info_item.delete_item');
+    Route::post('/info_category/undelete_item', [InfoItemController::class, 'undelete'])->name('info_item.undelete_item');
 
     Route::resource('/building', BuildingController::class);
     Route::post('/delete_building', [BuildingController::class, 'destroy'])->name('building.delete_building');
     Route::post('/undelete_building', [BuildingController::class, 'undelete'])->name('building.undelete_building');
     Route::get('/building/{building}/review', [BuildingController::class, 'review'])->name('building.review');
+    
     Route::resource('/review', ReviewController::class);
     Route::post('/delete_review', [ReviewController::class, 'destroy'])->name('review.delete_review');
     Route::post('/undelete_review', [ReviewController::class, 'undelete'])->name('review.undelete_review');
-    
 
     Route::get('/review/{review}/report', [ReviewController::class, 'report'])->name('review.report');
     Route::get('/review/{review}/download', [ReviewController::class, 'download'])->name('review.download');
