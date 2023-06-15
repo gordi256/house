@@ -15,4 +15,11 @@ class BuildingInfo extends Model
         return $this->belongsTo(Building::class, 'building_id', 'id');
     }
 
+    public function item()
+    {
+        return $this->hasMany(InfoItem::class,'id' ,'info_item_id' )->orderBy('id');
+    }
+
+ 
+
 }

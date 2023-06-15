@@ -62,6 +62,14 @@ class Building extends Model implements HasMedia
     {
         return $this->hasOne(BuildingInfo::class, 'building_id');
     }
+    
+    public function getHasInfoAttribute()
+    {
+        if (count((array)$this->info)> 0) {
+            return true;
+        }
+        return false;
+    }
 
     public function getEditLinkAttribute()
     {

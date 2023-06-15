@@ -33,8 +33,16 @@ class InfoItem  extends Model implements Sortable
     {
         return $this->belongsTo(InfoCategory::class, 'info_category_id', 'id');
     }
+    
     public function getEditLinkAttribute()
     {
         return    "/info_item/" . $this->id . "/edit";
+    }
+
+
+    public function getIndexAttribute()
+    {
+        //  category->
+        return    $this->category->id . '.' . $this->order_column;
     }
 }

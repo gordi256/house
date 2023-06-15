@@ -12,6 +12,14 @@
                 <!-- /.card-header -->
                 <!-- form start -->
                 <div class="card-body">
+                    <div id="toolbar">
+                        @can('manage building')
+                            <a class="btn btn-primary" href="{{route('building.info', ['building' => $building->id]) }}"
+                                role="button"><i class="fa fa-plus"></i> Информация о здании
+                            </a>
+                        @endcan
+                    </div>
+
                     <div class="form-group">
                         <label for="name">Наименование</label>
                         {{ $building->name }}

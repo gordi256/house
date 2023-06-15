@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\{Building, Review};
-use App\Http\Resources\Api\{BuildingResource, ReviewResource};
+use App\Models\{Building, BuildingInfo, Review};
+use App\Http\Resources\Api\{BuildingResource, ReviewResource, BuildingInfoResource};
 
 class BuildingController extends Controller
 {
@@ -35,12 +35,12 @@ class BuildingController extends Controller
 
         $res = array();
         if ($request->filled('search')) {
-            $items ->withCount('review')->search($request->search)->orderBy('created_at', 'desc');
-       
+            $items->withCount('review')->search($request->search)->orderBy('created_at', 'desc');
+
             $res['total'] = $items->count();
         } else {
-            $items =  $items ->withCount('review')->offset($offset)->limit($limit)->orderBy('created_at', 'desc');
-            $res['total'] =  $items ->count();
+            $items =  $items->withCount('review')->offset($offset)->limit($limit)->orderBy('created_at', 'desc');
+            $res['total'] =  $items->count();
         }
         $items = $items->get();
         $items->transform(function (Building $items) {
@@ -48,6 +48,21 @@ class BuildingController extends Controller
         });
 
         $res['items'] = $items;
+        return json_encode($res);
+    }
+
+    public function info(Request $request)
+    {
+        $res = array();
+        $items = BuildingInfo::where('building_id', $request->building_id)->get();
+        $items->load('item', 'item.category');
+        $items->transform(function (BuildingInfo $items) {
+            return (new BuildingInfoResource($items));
+        });
+
+        $res['total'] = BuildingInfo::where('building_id', $request->building_id)->count();
+        $res['items'] = $items;
+
         return json_encode($res);
     }
 

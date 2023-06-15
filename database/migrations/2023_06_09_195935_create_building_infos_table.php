@@ -22,7 +22,7 @@ return new class extends Migration
                 ->constrained();
 
             $table->string('value')->nullable();
-            $table->longText('description');
+            $table->longText('description')->nullable();
 
             $table->timestamps();
         });

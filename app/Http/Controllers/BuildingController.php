@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Building;
 use App\Http\Requests\StoreBuildingRequest;
 use App\Http\Requests\UpdateBuildingRequest;
+use App\Models\BuildingInfo;
+use App\Models\InfoCategory;
 use App\Models\Review;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
@@ -57,13 +59,65 @@ class BuildingController extends Controller
     }
 
     /**
+     * Display the info resource.
+     */
+    public function info(Building $building)
+    {
+        $info = $building->info;
+        $data = [
+            'title' =>  "Характеристики здания " . $building->name,
+            'building' => $building
+        ];
+
+
+
+        return view('building.info', $data);
+    }
+    /**
+     * Update the specified resource in storage.
+     */
+    public function insert_data(Request $request)
+    {
+        //
+        // dd($request->all());
+
+        $item = BuildingInfo::find($request->id);
+        // if ($request->field === 'check') {
+            $item->value = $request->value;
+        // }
+        $item->save();
+    }
+
+    public function info_create(Building $building)
+    {
+        $info_categories = InfoCategory::with('item')->get();
+        foreach ($info_categories as $info_category) {
+            # code...
+           
+            foreach ($info_category->item as $item) {
+                
+                $info = new BuildingInfo() ;
+                $info->building_id =  $building->id;
+                $info->info_item_id =  $item->id;
+                
+                $info->save();
+            }
+        }
+        session()->flash('success', 'Информация о доме успешно создана');
+
+        return redirect(route('building.info', ['building' => $building]));
+    }
+
+    /**
      * Display the specified resource.
      */
     public function show(Building $building)
     {
         $data = [
+            'title' =>  "Информация о здании " . $building->name,
             'building' => $building
         ];
+        //    dd($building);
         return view('building.show', $data);
     }
     /**

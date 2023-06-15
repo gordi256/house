@@ -48,12 +48,18 @@ Route::middleware('auth')->group(function () {
     Route::resource('/info_item', InfoItemController::class);
     Route::post('/info_category/delete_item', [InfoItemController::class, 'destroy'])->name('info_item.delete_item');
     Route::post('/info_category/undelete_item', [InfoItemController::class, 'undelete'])->name('info_item.undelete_item');
+    
+    Route::get('/building/{building}/info', [BuildingController::class, 'info'])->name('building.info');
+    Route::post('/building/{building}/insert_info_data', [BuildingController::class, 'insert_data'])->name('building.insert_data');
+
+    Route::get('/building/{building}/info_create', [BuildingController::class, 'info_create'])->name('building.info_create');
+
+    Route::get('/building/{building}/review', [BuildingController::class, 'review'])->name('building.review');
 
     Route::resource('/building', BuildingController::class);
     Route::post('/delete_building', [BuildingController::class, 'destroy'])->name('building.delete_building');
     Route::post('/undelete_building', [BuildingController::class, 'undelete'])->name('building.undelete_building');
-    Route::get('/building/{building}/review', [BuildingController::class, 'review'])->name('building.review');
-    
+
     Route::resource('/review', ReviewController::class);
     Route::post('/delete_review', [ReviewController::class, 'destroy'])->name('review.delete_review');
     Route::post('/undelete_review', [ReviewController::class, 'undelete'])->name('review.undelete_review');

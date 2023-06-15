@@ -29,6 +29,7 @@ Route::prefix('v1')->name('v1.')->group(function () {
 
     Route::get('/building', [BuildingController::class, 'index']);
     Route::get('/building/review', [BuildingController::class, 'review']);
+    Route::get('/building/info', [BuildingController::class, 'info']);
 
     Route::get('/user', [UserController::class, 'index']);
     Route::get('/review', [ReviewController::class, 'index']);
