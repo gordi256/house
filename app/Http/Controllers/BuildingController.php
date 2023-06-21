@@ -18,6 +18,8 @@ class BuildingController extends Controller
      */
     public function index()
     {
+        $with_trashed = 0;
+
         if (Gate::allows('manage building')) {
             $with_trashed = 1;
         }
